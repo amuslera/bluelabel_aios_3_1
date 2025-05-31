@@ -102,6 +102,16 @@ Building a production-ready, modular AI agent platform that orchestrates special
 4. **Scalability**: Ability to handle concurrent workflows
 5. **Reliability**: Uptime, recovery time, data consistency
 
+## Development Workflow
+
+1. **Start each session** by reading this file to understand current context
+2. **Use TodoWrite tool** to create and track sprint tasks
+3. **Follow sprint methodology** with clear acceptance criteria
+4. **Commit regularly** with descriptive messages following conventional commits
+5. **Update documentation** as you implement features
+6. **Run tests** before committing changes
+7. **Update PROJECT_PHASES.md** at the end of each sprint with progress checkmarks (✅/❌)
+
 ## Commands to Run
 
 ```bash
