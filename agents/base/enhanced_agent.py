@@ -13,14 +13,75 @@ from agents.base.lifecycle import AgentLifecycleManager, AgentState
 from agents.base.health import HealthMonitor, HealthStatus
 from agents.base.recovery import RecoveryManager
 from agents.base.exceptions import AgentError
-from core.memory.memory_manager import AIOSMemoryManager
 from core.memory.base import MemoryType, MemoryPriority, MemoryScope
 from core.routing.router import LLMRouter
-from core.routing.base import RoutingContext, RoutingStrategy, TaskType as RoutingTaskType
+from core.routing.router import RoutingContext, RoutingStrategy, RoutingDecision
 from core.routing.providers.base import LLMRequest, LLMResponse
 
 # Import existing types
 from .types import AgentType, TaskType, Priority, AgentHealth, AgentStats, AgentMetadata
+
+
+class MockMemoryManager:
+    """Simplified memory manager for testing and development."""
+    
+    def __init__(self, agent_id: str):
+        self.agent_id = agent_id
+        self._conversations = {}
+        self._knowledge = {}
+    
+    async def initialize(self):
+        """Initialize memory manager."""
+        pass
+    
+    async def cleanup(self):
+        """Cleanup memory manager."""
+        pass
+    
+    async def store_conversation(self, conversation_id: str, role: str, content: str, metadata: Dict[str, Any] = None):
+        """Store conversation message."""
+        if conversation_id not in self._conversations:
+            self._conversations[conversation_id] = []
+        self._conversations[conversation_id].append({
+            "role": role,
+            "content": content,
+            "metadata": metadata or {},
+            "timestamp": datetime.utcnow()
+        })
+    
+    async def get_conversation_history(self, conversation_id: str, limit: int = 10) -> List[Dict[str, Any]]:
+        """Get conversation history."""
+        return self._conversations.get(conversation_id, [])[-limit:]
+    
+    async def store_knowledge(self, content: str, category: str, keywords: List[str], 
+                            metadata: Optional[Dict[str, Any]] = None, scope: MemoryScope = MemoryScope.AGENT_INSTANCE) -> str:
+        """Store knowledge."""
+        knowledge_id = str(uuid.uuid4())
+        self._knowledge[knowledge_id] = {
+            "content": content,
+            "category": category,
+            "keywords": keywords,
+            "metadata": metadata or {},
+            "scope": scope,
+            "created_at": datetime.utcnow()
+        }
+        return knowledge_id
+    
+    async def search_knowledge(self, query: str, category: Optional[str] = None, limit: int = 10) -> List[Dict[str, Any]]:
+        """Search knowledge base."""
+        results = []
+        for knowledge_id, knowledge in self._knowledge.items():
+            if category and knowledge["category"] != category:
+                continue
+            # Simple keyword matching
+            if any(keyword in query.lower() for keyword in knowledge["keywords"]):
+                results.append({
+                    "id": knowledge_id,
+                    "content": knowledge["content"],
+                    "category": knowledge["category"],
+                    "relevance": 1.0
+                })
+        return results[:limit]
 
 
 class AgentCapability(str, Enum):
@@ -120,27 +181,14 @@ class EnhancedBaseAgent(ABC):
         self.lifecycle = AgentLifecycleManager(self.agent_id)
         
         # Initialize health monitor
-        self.health = HealthMonitor(
-            agent_id=self.agent_id,
-            check_interval=config.health_check_interval,
-            max_memory_mb=config.max_memory_mb,
-            max_cpu_percent=config.max_cpu_percent
-        )
+        self.health = HealthMonitor(agent_id=self.agent_id)
         
         # Initialize recovery manager
-        self.recovery = RecoveryManager(
-            agent_id=self.agent_id,
-            max_attempts=config.max_recovery_attempts,
-            timeout=config.recovery_timeout,
-            enable_circuit_breaker=config.enable_circuit_breaker
-        )
+        self.recovery = RecoveryManager(agent_id=self.agent_id)
         
-        # Initialize memory manager
-        self.memory = AIOSMemoryManager(
-            agent_id=self.agent_id,
-            backend_type=config.memory_backend,
-            enable_compression=config.enable_memory_compression
-        )
+        # Initialize memory manager (simplified for now)
+        # TODO: Integrate with actual AIOSMemoryManager
+        self.memory = MockMemoryManager(self.agent_id)
         
         # Initialize LLM router
         self.router = LLMRouter()
@@ -170,14 +218,15 @@ class EnhancedBaseAgent(ABC):
             # Initialize memory manager
             await self.memory.initialize()
             
-            # Initialize router
-            await self.router.initialize()
+            # Initialize router (if it has initialize method)
+            if hasattr(self.router, 'initialize'):
+                await self.router.initialize()
             
-            # Start health monitoring
-            await self.health.start_monitoring()
+            # Start health monitoring (if it has this method)
+            if hasattr(self.health, 'start_monitoring'):
+                await self.health.start_monitoring()
             
-            # Initialize recovery manager
-            await self.recovery.initialize()
+            # Recovery manager doesn't need initialization
             
             # Custom initialization
             await self._on_initialize()
@@ -208,8 +257,9 @@ class EnhancedBaseAgent(ABC):
             # Set shutdown event
             self._shutdown_event.set()
             
-            # Stop health monitoring
-            await self.health.stop_monitoring()
+            # Stop health monitoring (if it has this method)
+            if hasattr(self.health, 'stop_monitoring'):
+                await self.health.stop_monitoring()
             
             # Custom shutdown
             await self._on_shutdown()
@@ -217,8 +267,9 @@ class EnhancedBaseAgent(ABC):
             # Cleanup memory
             await self.memory.cleanup()
             
-            # Cleanup router
-            await self.router.cleanup()
+            # Cleanup router (if it has cleanup method)
+            if hasattr(self.router, 'cleanup'):
+                await self.router.cleanup()
             
             # Transition to stopped
             await self.lifecycle.transition_to(AgentState.STOPPED)
@@ -244,11 +295,15 @@ class EnhancedBaseAgent(ABC):
                 metadata=task.metadata
             )
             
-            # Execute with recovery
-            result = await self.recovery.execute_with_recovery(
-                self._execute_task,
-                task
-            )
+            # Execute with recovery (if available)
+            if hasattr(self.recovery, 'execute_with_recovery'):
+                result = await self.recovery.execute_with_recovery(
+                    self._execute_task,
+                    task
+                )
+            else:
+                # Execute directly without recovery for now
+                result = await self._execute_task(task)
             
             # Store result in conversation history
             await self.memory.store_conversation(
@@ -304,20 +359,25 @@ class EnhancedBaseAgent(ABC):
             
             # Route and execute request
             llm_request = LLMRequest(
-                prompt=full_prompt,
+                messages=[{"role": "user", "content": full_prompt}],
+                model_id="mock-cto-model",  # Will be overridden by routing decision
                 max_tokens=self.config.max_tokens,
                 temperature=self.config.temperature,
                 stream=False
             )
             
+            # Create routing policy from strategy
+            from core.routing.router import RoutingPolicy
+            policy = RoutingPolicy(strategy=self.config.default_routing_strategy)
+            
             decision = await self.router.route_request(
                 llm_request,
                 routing_context,
-                strategy=self.config.default_routing_strategy
+                policy=policy
             )
             
             # Generate response
-            response = await self.router.generate(llm_request, decision)
+            response = await self.router.execute_request(llm_request, decision)
             
             # Process the response
             result_output = await self._process_response(response, task)
@@ -329,13 +389,13 @@ class EnhancedBaseAgent(ABC):
                 task_id=task.task_id,
                 success=True,
                 output=result_output,
-                tokens_used=response.usage.total_tokens if response.usage else 0,
+                tokens_used=response.total_tokens,
                 cost=decision.estimated_cost,
                 execution_time=execution_time,
                 model_used=decision.model_id,
-                provider_used=decision.provider_id,
+                provider_used=decision.provider_name,
                 metadata={
-                    "routing_strategy": routing_context.strategy.value if routing_context.strategy else "unknown",
+                    "routing_strategy": policy.strategy.value,
                     "complexity": task.complexity,
                     "privacy_sensitive": task.privacy_sensitive
                 }
@@ -391,24 +451,29 @@ class EnhancedBaseAgent(ABC):
         """Convenience method for LLM generation with routing."""
         if routing_context is None:
             routing_context = RoutingContext(
-                task_type=RoutingTaskType.GENERAL,
+                task_type=TaskType.GENERAL,
                 agent_id=self.agent_id
             )
         
         request = LLMRequest(
-            prompt=prompt,
+            messages=[{"role": "user", "content": prompt}],
+            model_id=kwargs.get("model_id", "mock-cto-model"),  # Will be overridden by routing
             max_tokens=kwargs.get("max_tokens", self.config.max_tokens),
             temperature=kwargs.get("temperature", self.config.temperature),
-            **kwargs
+            stream=kwargs.get("stream", False)
         )
+        
+        # Create routing policy from strategy
+        from core.routing.router import RoutingPolicy
+        policy = RoutingPolicy(strategy=self.config.default_routing_strategy)
         
         decision = await self.router.route_request(
             request,
             routing_context,
-            strategy=self.config.default_routing_strategy
+            policy=policy
         )
         
-        return await self.router.generate(request, decision)
+        return await self.router.execute_request(request, decision)
     
     async def store_knowledge(
         self,
@@ -547,30 +612,22 @@ class EnhancedBaseAgent(ABC):
         
         return "\\n\\n".join(parts)
     
-    def _map_task_type(self, task_type: TaskType) -> RoutingTaskType:
-        """Map agent task type to routing task type."""
-        mapping = {
-            TaskType.CODE_GENERATION: RoutingTaskType.CODE_GENERATION,
-            TaskType.CODE_REVIEW: RoutingTaskType.CODE_REVIEW,
-            TaskType.BUG_FIX: RoutingTaskType.DEBUGGING,
-            TaskType.TESTING: RoutingTaskType.TESTING,
-            TaskType.DOCUMENTATION: RoutingTaskType.DOCUMENTATION,
-            TaskType.SYSTEM_DESIGN: RoutingTaskType.ANALYSIS,
-            TaskType.GENERAL: RoutingTaskType.GENERAL,
-        }
-        return mapping.get(task_type, RoutingTaskType.GENERAL)
+    def _map_task_type(self, task_type: TaskType) -> TaskType:
+        """Map agent task type (just pass through for now)."""
+        # Since routing uses the same TaskType, we can pass through directly
+        return task_type
     
-    def _get_required_capabilities(self, task_type: RoutingTaskType) -> List[str]:
+    def _get_required_capabilities(self, task_type: TaskType) -> List[str]:
         """Get required model capabilities for a task type."""
         capability_map = {
-            RoutingTaskType.CODE_GENERATION: ["code_generation", "reasoning"],
-            RoutingTaskType.CODE_REVIEW: ["code_analysis", "reasoning"],
-            RoutingTaskType.DEBUGGING: ["code_analysis", "reasoning"],
-            RoutingTaskType.DOCUMENTATION: ["text_generation"],
-            RoutingTaskType.TESTING: ["code_generation", "reasoning"],
-            RoutingTaskType.ANALYSIS: ["reasoning", "text_generation"],
-            RoutingTaskType.CHAT: ["text_generation"],
-            RoutingTaskType.GENERAL: ["text_generation"]
+            TaskType.CODE_GENERATION: ["code_generation", "reasoning"],
+            TaskType.CODE_REVIEW: ["code_analysis", "reasoning"],
+            TaskType.BUG_FIX: ["code_analysis", "reasoning"],
+            TaskType.DOCUMENTATION: ["text_generation"],
+            TaskType.TESTING: ["code_generation", "reasoning"],
+            TaskType.SYSTEM_DESIGN: ["reasoning", "text_generation"],
+            TaskType.TECH_DECISION: ["reasoning", "text_generation"],
+            TaskType.GENERAL: ["text_generation"]
         }
         return capability_map.get(task_type, ["text_generation"])
     
