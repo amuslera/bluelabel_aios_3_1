@@ -103,6 +103,8 @@ class BaseAgent(ABC):
         llm_router=None,
         message_queue=None,
         memory_store=None,
+        agent_registry=None,
+        agent_discovery=None,
     ):
         # Core identity and configuration
         self.id = agent_id or str(uuid.uuid4())
@@ -112,6 +114,11 @@ class BaseAgent(ABC):
         self.llm_router = llm_router
         self.message_queue = message_queue
         self.memory_store = memory_store
+        self.agent_registry = agent_registry
+        self.agent_discovery = agent_discovery
+        
+        # Communication interface (initialized during startup)
+        self.communication: Any = None  # Will be AgentCommunicationInterface
         
         # State management
         self.state = AgentState.INITIALIZING
@@ -393,9 +400,41 @@ class BaseAgent(ABC):
         Returns:
             Optional[str]: Response from the target agent, if any
         """
-        # TODO: Implement inter-agent communication
-        self.logger.info(f"Sending message to {target_agent_id}: {message}")
-        return None
+        if not self.communication:
+            self.logger.warning("Communication interface not initialized")
+            return None
+        
+        try:
+            from .communication import MessageType
+            
+            # Convert string message type to enum
+            msg_type = MessageType.NOTIFICATION
+            if message_type == "request":
+                msg_type = MessageType.REQUEST
+            elif message_type == "response":
+                msg_type = MessageType.RESPONSE
+            
+            if msg_type == MessageType.REQUEST:
+                # Send request and wait for response
+                response = await self.communication.send_request(
+                    recipient_id=target_agent_id,
+                    subject=message,
+                    content={"message": message},
+                    message_type=msg_type,
+                )
+                return response.get("data", {}).get("message", "")
+            else:
+                # Send notification
+                await self.communication.send_notification(
+                    recipient_id=target_agent_id,
+                    subject=message,
+                    content={"message": message},
+                )
+                return None
+                
+        except Exception as e:
+            self.logger.error(f"Failed to communicate with {target_agent_id}: {e}")
+            return None
 
     def get_memory(self, key: str) -> Any:
         """Get a value from agent memory."""
@@ -472,8 +511,29 @@ class BaseAgent(ABC):
 
     # Placeholder methods for lifecycle helpers
     async def _initialize_dependencies(self) -> None:
-        """Initialize external dependencies. Override in subclasses."""
-        pass
+        """Initialize external dependencies."""
+        # Initialize communication interface if message queue is available
+        if self.message_queue:
+            from .communication import AgentCommunicationInterface
+            self.communication = AgentCommunicationInterface(
+                agent_id=self.id,
+                message_queue=self.message_queue,
+                discovery=self.agent_discovery,
+            )
+            await self.communication.initialize()
+            
+            # Register default message handlers
+            await self._setup_default_message_handlers()
+        
+        # Register with agent registry if available
+        if self.agent_registry:
+            from ..types import RegistrationRequest
+            registration_request = RegistrationRequest(
+                metadata=self.metadata,
+                initial_state=self.state,
+                config=self.config.model_dump() if self.config else {},
+            )
+            await self.agent_registry.register_agent(registration_request)
 
     async def _load_memory(self) -> None:
         """Load persistent memory from storage."""
@@ -557,6 +617,152 @@ class BaseAgent(ABC):
         elif self.state == AgentState.UNHEALTHY:
             self.state = AgentState.IDLE if not self.is_busy else AgentState.BUSY
             self.logger.info(f"Agent {self.name} recovered to healthy state")
+
+    async def _setup_default_message_handlers(self) -> None:
+        """Set up default message handlers for common message types."""
+        if not self.communication:
+            return
+        
+        from .communication import MessageType
+        
+        # Register handlers for different message types
+        self.communication.register_handler(
+            MessageType.HEALTH_CHECK,
+            self._handle_health_check_message
+        )
+        
+        self.communication.register_handler(
+            MessageType.STATUS_UPDATE,
+            self._handle_status_update_message
+        )
+        
+        self.communication.register_handler(
+            MessageType.TASK_ASSIGNMENT,
+            self._handle_task_assignment_message
+        )
+        
+        self.communication.register_handler(
+            MessageType.TASK_DELEGATION,
+            self._handle_task_delegation_message
+        )
+
+    async def _handle_health_check_message(self, message: Any) -> None:
+        """Handle health check messages."""
+        from .communication import MessageType
+        
+        try:
+            # Update heartbeat
+            self.last_heartbeat = datetime.utcnow()
+            
+            # Send health status response if requested
+            if message.requires_response:
+                health_data = {
+                    "agent_id": self.id,
+                    "health_score": self._calculate_health_score(),
+                    "state": self.state.value,
+                    "uptime_seconds": self.uptime_seconds,
+                    "is_healthy": self._is_healthy(),
+                }
+                
+                await self.communication.send_response(
+                    request_message=message,
+                    content=health_data,
+                    success=True,
+                )
+                
+        except Exception as e:
+            self.logger.error(f"Error handling health check message: {e}")
+
+    async def _handle_status_update_message(self, message: Any) -> None:
+        """Handle status update messages."""
+        try:
+            # Log status update request
+            self.logger.info(f"Status update requested by {message.sender_id}")
+            
+            # Send current status if response is required
+            if message.requires_response:
+                status_data = self.get_status()
+                
+                await self.communication.send_response(
+                    request_message=message,
+                    content=status_data,
+                    success=True,
+                )
+                
+        except Exception as e:
+            self.logger.error(f"Error handling status update message: {e}")
+
+    async def _handle_task_assignment_message(self, message: Any) -> None:
+        """Handle task assignment messages."""
+        try:
+            # Extract task information from message
+            content = message.content
+            task_type_str = content.get("task_type")
+            description = content.get("description", "")
+            parameters = content.get("parameters", {})
+            
+            if not task_type_str:
+                if message.requires_response:
+                    await self.communication.send_response(
+                        request_message=message,
+                        content={"error": "Missing task_type in assignment"},
+                        success=False,
+                    )
+                return
+            
+            # Create task from assignment
+            from .agent import Task
+            from .types import TaskType
+            
+            task = Task(
+                type=TaskType(task_type_str),
+                description=description,
+                parameters=parameters,
+                assigned_agent_id=self.id,
+                context={"assigned_by": message.sender_id},
+            )
+            
+            # Check if we can handle this task
+            if not self.can_handle_task(task):
+                if message.requires_response:
+                    await self.communication.send_response(
+                        request_message=message,
+                        content={"error": f"Cannot handle task type {task_type_str}"},
+                        success=False,
+                    )
+                return
+            
+            # Execute the task
+            result = await self.execute_task(task)
+            
+            # Send result if response is required
+            if message.requires_response:
+                await self.communication.send_response(
+                    request_message=message,
+                    content={
+                        "task_result": result.model_dump(),
+                        "execution_successful": result.status == "success",
+                    },
+                    success=True,
+                )
+                
+        except Exception as e:
+            self.logger.error(f"Error handling task assignment: {e}")
+            if message.requires_response:
+                try:
+                    await self.communication.send_response(
+                        request_message=message,
+                        content={"error": str(e)},
+                        success=False,
+                    )
+                except Exception:
+                    pass  # Avoid cascading errors
+
+    async def _handle_task_delegation_message(self, message: Any) -> None:
+        """Handle task delegation messages."""
+        # For now, treat delegation the same as assignment
+        # Subclasses can override for more sophisticated delegation handling
+        await self._handle_task_assignment_message(message)
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(id={self.id}, name={self.name})"
