@@ -127,3 +127,28 @@ chat_with_*.py
 local/
 scratch/
 debug/
+
+# Project specific - agent test directories
+monitoring_system/
+monitoring_project/
+visibility_project/
+theatrical_monitor_project/
+todoapp/
+todo_app_demo.md
+start_todo_app.sh
+
+# Temporary agent projects
+agent_*/
+*_project/
+
+# PR info files
+.pr_info.json
+
+# Agent activity logs
+activities.jsonl
+*.jsonl
+
+# Test files from demos
+test_cto_agent_live.py
+demo_theatrical_agent.py
+test_simple_collaboration.py
