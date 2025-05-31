@@ -11,7 +11,7 @@ import time
 import uuid
 from abc import ABC, abstractmethod
 from datetime import datetime
-from typing import Any
+from typing import Any, Optional
 
 from pydantic import BaseModel, Field
 
@@ -46,10 +46,10 @@ class Task(BaseModel):
     complexity: int = Field(default=5, ge=1, le=10)
     requires_privacy: bool = False
     created_at: datetime = Field(default_factory=datetime.utcnow)
-    deadline: datetime | None = None
+    deadline: Optional[datetime] = None
     context: dict[str, Any] = Field(default_factory=dict)
-    assigned_agent_id: str | None = None
-    parent_task_id: str | None = None
+    assigned_agent_id: Optional[str] = None
+    parent_task_id: Optional[str] = None
 
 
 class TaskResult(BaseModel):
@@ -58,8 +58,8 @@ class TaskResult(BaseModel):
     task_id: str
     agent_id: str
     status: str  # "success", "error", "partial", "timeout"
-    result: dict[str, Any] | None = None
-    error: str | None = None
+    result: Optional[dict[str, Any]] = None
+    error: Optional[str] = None
     execution_time: float
     model_used: str
     cost_estimate: float = 0.0
@@ -98,8 +98,8 @@ class BaseAgent(ABC):
 
     def __init__(
         self,
-        agent_id: str | None = None,
-        config: AgentConfig | None = None,
+        agent_id: Optional[str] = None,
+        config: Optional[AgentConfig] = None,
         llm_router=None,
         message_queue=None,
         memory_store=None,
@@ -109,40 +109,40 @@ class BaseAgent(ABC):
         # Core identity and configuration
         self.id = agent_id or str(uuid.uuid4())
         self.config = config
-        
+
         # External dependencies
         self.llm_router = llm_router
         self.message_queue = message_queue
         self.memory_store = memory_store
         self.agent_registry = agent_registry
         self.agent_discovery = agent_discovery
-        
+
         # Communication interface (initialized during startup)
         self.communication: Any = None  # Will be AgentCommunicationInterface
-        
+
         # State management
         self.state = AgentState.INITIALIZING
         self.start_time = time.time()
         self.last_heartbeat = datetime.utcnow()
-        
+
         # Task management
         self.current_tasks: dict[str, Task] = {}
         self.task_history: list[TaskResult] = []
         self.task_queue: asyncio.Queue = asyncio.Queue()
-        
+
         # Memory and statistics
         self.memory: dict[str, Any] = {}
         self.stats = AgentStats(agent_id=self.id)
         self.error_count = 0
-        self.last_error: str | None = None
-        
+        self.last_error: Optional[str] = None
+
         # Background tasks
         self._background_tasks: set[asyncio.Task] = set()
         self._shutdown_event = asyncio.Event()
-        
+
         # Initialize logging for this agent
         self.logger = logging.getLogger(f"agent.{self.id}")
-        
+
         # Create agent metadata
         self.metadata = self._create_metadata()
 
@@ -155,7 +155,7 @@ class BaseAgent(ABC):
                 name=f"Agent-{self.id[:8]}",
                 description="Generic agent with basic capabilities",
             )
-        
+
         return AgentMetadata(
             id=self.id,
             type=self.config.agent_type,
@@ -188,7 +188,7 @@ class BaseAgent(ABC):
         """Check if the agent can accept new tasks."""
         if self.state not in [AgentState.IDLE, AgentState.BUSY]:
             return False
-        
+
         max_tasks = self.config.max_concurrent_tasks if self.config else 1
         return len(self.current_tasks) < max_tasks
 
@@ -200,27 +200,29 @@ class BaseAgent(ABC):
     async def start(self) -> None:
         """Start the agent and begin background processes."""
         try:
-            self.logger.info(f"Starting agent {self.name} (type: {self.agent_type.value})")
+            self.logger.info(
+                f"Starting agent {self.name} (type: {self.agent_type.value})"
+            )
             self.state = AgentState.INITIALIZING
-            
+
             # Initialize external dependencies
             await self._initialize_dependencies()
-            
+
             # Load persistent memory
             await self._load_memory()
-            
+
             # Call subclass initialization
             await self.on_start()
-            
+
             # Start background tasks
             await self._start_background_tasks()
-            
+
             # Mark as idle and ready for tasks
             self.state = AgentState.IDLE
             self.last_heartbeat = datetime.utcnow()
-            
+
             self.logger.info(f"Agent {self.name} started successfully")
-            
+
         except Exception as e:
             self.state = AgentState.ERROR
             self.error_count += 1
@@ -233,26 +235,26 @@ class BaseAgent(ABC):
         try:
             self.logger.info(f"Stopping agent {self.name} (graceful: {graceful})")
             self.state = AgentState.STOPPING
-            
+
             # Signal shutdown to background tasks
             self._shutdown_event.set()
-            
+
             if graceful:
                 # Wait for current tasks to complete
                 await self._wait_for_tasks_completion()
-                
+
                 # Save memory state
                 await self._save_memory()
-            
+
             # Stop background tasks
             await self._stop_background_tasks()
-            
+
             # Call subclass cleanup
             await self.on_stop()
-            
+
             self.state = AgentState.STOPPED
             self.logger.info(f"Agent {self.name} stopped successfully")
-            
+
         except Exception as e:
             self.state = AgentState.ERROR
             self.logger.error(f"Error stopping agent {self.name}: {e}")
@@ -388,7 +390,7 @@ class BaseAgent(ABC):
 
     async def communicate_with_agent(
         self, target_agent_id: str, message: str, message_type: str = "general"
-    ) -> str | None:
+    ) -> Optional[str]:
         """
         Send a message to another agent.
 
@@ -403,17 +405,17 @@ class BaseAgent(ABC):
         if not self.communication:
             self.logger.warning("Communication interface not initialized")
             return None
-        
+
         try:
             from .communication import MessageType
-            
+
             # Convert string message type to enum
             msg_type = MessageType.NOTIFICATION
             if message_type == "request":
                 msg_type = MessageType.REQUEST
             elif message_type == "response":
                 msg_type = MessageType.RESPONSE
-            
+
             if msg_type == MessageType.REQUEST:
                 # Send request and wait for response
                 response = await self.communication.send_request(
@@ -431,7 +433,7 @@ class BaseAgent(ABC):
                     content={"message": message},
                 )
                 return None
-                
+
         except Exception as e:
             self.logger.error(f"Failed to communicate with {target_agent_id}: {e}")
             return None
@@ -481,32 +483,34 @@ class BaseAgent(ABC):
         """Check if the agent is in a healthy state."""
         if self.state in [AgentState.ERROR, AgentState.UNHEALTHY, AgentState.STOPPED]:
             return False
-        
+
         # Check if heartbeat is recent
         time_since_heartbeat = (datetime.utcnow() - self.last_heartbeat).total_seconds()
-        heartbeat_threshold = (self.config.health_check_interval * 2) if self.config else 60
-        
+        heartbeat_threshold = (
+            (self.config.health_check_interval * 2) if self.config else 60
+        )
+
         return time_since_heartbeat < heartbeat_threshold
 
     def _calculate_health_score(self) -> float:
         """Calculate a health score between 0.0 and 1.0."""
         if not self._is_healthy():
             return 0.0
-        
+
         # Base score
         score = 1.0
-        
+
         # Reduce score based on recent errors
         if self.error_count > 0:
             # Reduce by 10% for each error in recent history, min 0.5
             error_penalty = min(0.5, self.error_count * 0.1)
             score -= error_penalty
-        
+
         # Consider task success rate if we have history
         if len(self.task_history) > 0:
             success_rate = self.stats.success_rate
             score = (score + success_rate) / 2
-        
+
         return max(0.0, min(1.0, score))
 
     # Placeholder methods for lifecycle helpers
@@ -515,19 +519,21 @@ class BaseAgent(ABC):
         # Initialize communication interface if message queue is available
         if self.message_queue:
             from .communication import AgentCommunicationInterface
+
             self.communication = AgentCommunicationInterface(
                 agent_id=self.id,
                 message_queue=self.message_queue,
                 discovery=self.agent_discovery,
             )
             await self.communication.initialize()
-            
+
             # Register default message handlers
             await self._setup_default_message_handlers()
-        
+
         # Register with agent registry if available
         if self.agent_registry:
             from ..types import RegistrationRequest
+
             registration_request = RegistrationRequest(
                 metadata=self.metadata,
                 initial_state=self.state,
@@ -565,26 +571,25 @@ class BaseAgent(ABC):
         """Stop all background tasks."""
         for task in self._background_tasks:
             task.cancel()
-        
+
         if self._background_tasks:
             await asyncio.gather(*self._background_tasks, return_exceptions=True)
-        
+
         self._background_tasks.clear()
 
     async def _wait_for_tasks_completion(self, timeout: float = 30.0) -> None:
         """Wait for current tasks to complete."""
         if not self.current_tasks:
             return
-        
+
         self.logger.info(f"Waiting for {len(self.current_tasks)} tasks to complete")
-        
+
         try:
-            await asyncio.wait_for(
-                self._wait_for_all_tasks(), 
-                timeout=timeout
-            )
+            await asyncio.wait_for(self._wait_for_all_tasks(), timeout=timeout)
         except asyncio.TimeoutError:
-            self.logger.warning(f"Timeout waiting for tasks to complete, proceeding with shutdown")
+            self.logger.warning(
+                f"Timeout waiting for tasks to complete, proceeding with shutdown"
+            )
 
     async def _wait_for_all_tasks(self) -> None:
         """Wait until all current tasks are completed."""
@@ -595,7 +600,7 @@ class BaseAgent(ABC):
         """Background health check loop."""
         if not self.config:
             return
-        
+
         while not self._shutdown_event.is_set():
             try:
                 await asyncio.sleep(self.config.health_check_interval)
@@ -608,7 +613,7 @@ class BaseAgent(ABC):
     async def _perform_health_check(self) -> None:
         """Perform a health check and update status."""
         self.last_heartbeat = datetime.utcnow()
-        
+
         # Update health status
         if not self._is_healthy():
             if self.state != AgentState.ERROR:
@@ -622,38 +627,34 @@ class BaseAgent(ABC):
         """Set up default message handlers for common message types."""
         if not self.communication:
             return
-        
+
         from .communication import MessageType
-        
+
         # Register handlers for different message types
         self.communication.register_handler(
-            MessageType.HEALTH_CHECK,
-            self._handle_health_check_message
+            MessageType.HEALTH_CHECK, self._handle_health_check_message
         )
-        
+
         self.communication.register_handler(
-            MessageType.STATUS_UPDATE,
-            self._handle_status_update_message
+            MessageType.STATUS_UPDATE, self._handle_status_update_message
         )
-        
+
         self.communication.register_handler(
-            MessageType.TASK_ASSIGNMENT,
-            self._handle_task_assignment_message
+            MessageType.TASK_ASSIGNMENT, self._handle_task_assignment_message
         )
-        
+
         self.communication.register_handler(
-            MessageType.TASK_DELEGATION,
-            self._handle_task_delegation_message
+            MessageType.TASK_DELEGATION, self._handle_task_delegation_message
         )
 
     async def _handle_health_check_message(self, message: Any) -> None:
         """Handle health check messages."""
         from .communication import MessageType
-        
+
         try:
             # Update heartbeat
             self.last_heartbeat = datetime.utcnow()
-            
+
             # Send health status response if requested
             if message.requires_response:
                 health_data = {
@@ -663,13 +664,13 @@ class BaseAgent(ABC):
                     "uptime_seconds": self.uptime_seconds,
                     "is_healthy": self._is_healthy(),
                 }
-                
+
                 await self.communication.send_response(
                     request_message=message,
                     content=health_data,
                     success=True,
                 )
-                
+
         except Exception as e:
             self.logger.error(f"Error handling health check message: {e}")
 
@@ -678,17 +679,17 @@ class BaseAgent(ABC):
         try:
             # Log status update request
             self.logger.info(f"Status update requested by {message.sender_id}")
-            
+
             # Send current status if response is required
             if message.requires_response:
                 status_data = self.get_status()
-                
+
                 await self.communication.send_response(
                     request_message=message,
                     content=status_data,
                     success=True,
                 )
-                
+
         except Exception as e:
             self.logger.error(f"Error handling status update message: {e}")
 
@@ -700,7 +701,7 @@ class BaseAgent(ABC):
             task_type_str = content.get("task_type")
             description = content.get("description", "")
             parameters = content.get("parameters", {})
-            
+
             if not task_type_str:
                 if message.requires_response:
                     await self.communication.send_response(
@@ -709,11 +710,11 @@ class BaseAgent(ABC):
                         success=False,
                     )
                 return
-            
+
             # Create task from assignment
             from .agent import Task
             from .types import TaskType
-            
+
             task = Task(
                 type=TaskType(task_type_str),
                 description=description,
@@ -721,7 +722,7 @@ class BaseAgent(ABC):
                 assigned_agent_id=self.id,
                 context={"assigned_by": message.sender_id},
             )
-            
+
             # Check if we can handle this task
             if not self.can_handle_task(task):
                 if message.requires_response:
@@ -731,10 +732,10 @@ class BaseAgent(ABC):
                         success=False,
                     )
                 return
-            
+
             # Execute the task
             result = await self.execute_task(task)
-            
+
             # Send result if response is required
             if message.requires_response:
                 await self.communication.send_response(
@@ -745,7 +746,7 @@ class BaseAgent(ABC):
                     },
                     success=True,
                 )
-                
+
         except Exception as e:
             self.logger.error(f"Error handling task assignment: {e}")
             if message.requires_response:

@@ -5,13 +5,18 @@ Provides structured error handling for agent operations, task execution,
 and system integration failures.
 """
 
-from typing import Any
+from typing import Any, Optional
 
 
 class AgentError(Exception):
     """Base exception for all agent-related errors."""
 
-    def __init__(self, message: str, agent_id: str | None = None, error_code: str | None = None):
+    def __init__(
+        self,
+        message: str,
+        agent_id: Optional[str] = None,
+        error_code: Optional[str] = None,
+    ):
         super().__init__(message)
         self.agent_id = agent_id
         self.error_code = error_code
@@ -36,7 +41,12 @@ class AgentInitializationError(AgentError):
 class AgentRegistrationError(AgentError):
     """Raised when agent registration with the registry fails."""
 
-    def __init__(self, message: str, agent_id: str | None = None, registry_response: dict | None = None):
+    def __init__(
+        self,
+        message: str,
+        agent_id: Optional[str] = None,
+        registry_response: Optional[dict] = None,
+    ):
         super().__init__(message, agent_id, "REGISTRATION_FAILED")
         self.registry_response = registry_response
 
@@ -44,7 +54,13 @@ class AgentRegistrationError(AgentError):
 class AgentStateError(AgentError):
     """Raised when an agent is in an invalid state for the requested operation."""
 
-    def __init__(self, message: str, agent_id: str | None = None, current_state: str | None = None, expected_state: str | None = None):
+    def __init__(
+        self,
+        message: str,
+        agent_id: Optional[str] = None,
+        current_state: Optional[str] = None,
+        expected_state: Optional[str] = None,
+    ):
         super().__init__(message, agent_id, "INVALID_STATE")
         self.current_state = current_state
         self.expected_state = expected_state
@@ -53,7 +69,13 @@ class AgentStateError(AgentError):
 class TaskExecutionError(AgentError):
     """Raised when task execution fails."""
 
-    def __init__(self, message: str, agent_id: str | None = None, task_id: str | None = None, task_type: str | None = None):
+    def __init__(
+        self,
+        message: str,
+        agent_id: Optional[str] = None,
+        task_id: Optional[str] = None,
+        task_type: Optional[str] = None,
+    ):
         super().__init__(message, agent_id, "TASK_EXECUTION_FAILED")
         self.task_id = task_id
         self.task_type = task_type
@@ -62,7 +84,13 @@ class TaskExecutionError(AgentError):
 class TaskValidationError(AgentError):
     """Raised when task validation fails."""
 
-    def __init__(self, message: str, agent_id: str | None = None, task_id: str | None = None, validation_errors: list[str] | None = None):
+    def __init__(
+        self,
+        message: str,
+        agent_id: Optional[str] = None,
+        task_id: Optional[str] = None,
+        validation_errors: Optional[list[str]] = None,
+    ):
         super().__init__(message, agent_id, "TASK_VALIDATION_FAILED")
         self.task_id = task_id
         self.validation_errors = validation_errors or []
@@ -71,7 +99,13 @@ class TaskValidationError(AgentError):
 class TaskTimeoutError(AgentError):
     """Raised when task execution times out."""
 
-    def __init__(self, message: str, agent_id: str | None = None, task_id: str | None = None, timeout_seconds: float | None = None):
+    def __init__(
+        self,
+        message: str,
+        agent_id: Optional[str] = None,
+        task_id: Optional[str] = None,
+        timeout_seconds: Optional[float] = None,
+    ):
         super().__init__(message, agent_id, "TASK_TIMEOUT")
         self.task_id = task_id
         self.timeout_seconds = timeout_seconds
@@ -80,7 +114,13 @@ class TaskTimeoutError(AgentError):
 class AgentCapabilityError(AgentError):
     """Raised when an agent lacks the capability to handle a task."""
 
-    def __init__(self, message: str, agent_id: str | None = None, required_capability: str | None = None, available_capabilities: list[str] | None = None):
+    def __init__(
+        self,
+        message: str,
+        agent_id: Optional[str] = None,
+        required_capability: Optional[str] = None,
+        available_capabilities: Optional[list[str]] = None,
+    ):
         super().__init__(message, agent_id, "INSUFFICIENT_CAPABILITY")
         self.required_capability = required_capability
         self.available_capabilities = available_capabilities or []
@@ -89,7 +129,13 @@ class AgentCapabilityError(AgentError):
 class AgentCommunicationError(AgentError):
     """Raised when agent-to-agent communication fails."""
 
-    def __init__(self, message: str, agent_id: str | None = None, target_agent_id: str | None = None, communication_type: str | None = None):
+    def __init__(
+        self,
+        message: str,
+        agent_id: Optional[str] = None,
+        target_agent_id: Optional[str] = None,
+        communication_type: Optional[str] = None,
+    ):
         super().__init__(message, agent_id, "COMMUNICATION_FAILED")
         self.target_agent_id = target_agent_id
         self.communication_type = communication_type
@@ -98,7 +144,12 @@ class AgentCommunicationError(AgentError):
 class AgentMemoryError(AgentError):
     """Raised when agent memory operations fail."""
 
-    def __init__(self, message: str, agent_id: str | None = None, memory_operation: str | None = None):
+    def __init__(
+        self,
+        message: str,
+        agent_id: Optional[str] = None,
+        memory_operation: Optional[str] = None,
+    ):
         super().__init__(message, agent_id, "MEMORY_ERROR")
         self.memory_operation = memory_operation
 
@@ -106,7 +157,13 @@ class AgentMemoryError(AgentError):
 class AgentHealthError(AgentError):
     """Raised when agent health checks fail."""
 
-    def __init__(self, message: str, agent_id: str | None = None, health_check_type: str | None = None, health_score: float | None = None):
+    def __init__(
+        self,
+        message: str,
+        agent_id: Optional[str] = None,
+        health_check_type: Optional[str] = None,
+        health_score: Optional[float] = None,
+    ):
         super().__init__(message, agent_id, "HEALTH_CHECK_FAILED")
         self.health_check_type = health_check_type
         self.health_score = health_score
@@ -115,7 +172,13 @@ class AgentHealthError(AgentError):
 class LLMRoutingError(AgentError):
     """Raised when LLM routing fails."""
 
-    def __init__(self, message: str, agent_id: str | None = None, requested_model: str | None = None, available_models: list[str] | None = None):
+    def __init__(
+        self,
+        message: str,
+        agent_id: Optional[str] = None,
+        requested_model: Optional[str] = None,
+        available_models: Optional[list[str]] = None,
+    ):
         super().__init__(message, agent_id, "LLM_ROUTING_FAILED")
         self.requested_model = requested_model
         self.available_models = available_models or []
@@ -124,7 +187,13 @@ class LLMRoutingError(AgentError):
 class ModelExecutionError(AgentError):
     """Raised when LLM model execution fails."""
 
-    def __init__(self, message: str, agent_id: str | None = None, model_id: str | None = None, provider: str | None = None):
+    def __init__(
+        self,
+        message: str,
+        agent_id: Optional[str] = None,
+        model_id: Optional[str] = None,
+        provider: Optional[str] = None,
+    ):
         super().__init__(message, agent_id, "MODEL_EXECUTION_FAILED")
         self.model_id = model_id
         self.provider = provider
@@ -133,7 +202,13 @@ class ModelExecutionError(AgentError):
 class ResourceLimitError(AgentError):
     """Raised when agent hits resource limits."""
 
-    def __init__(self, message: str, agent_id: str | None = None, resource_type: str | None = None, limit_value: float | None = None):
+    def __init__(
+        self,
+        message: str,
+        agent_id: Optional[str] = None,
+        resource_type: Optional[str] = None,
+        limit_value: Optional[float] = None,
+    ):
         super().__init__(message, agent_id, "RESOURCE_LIMIT_EXCEEDED")
         self.resource_type = resource_type
         self.limit_value = limit_value
@@ -142,7 +217,12 @@ class ResourceLimitError(AgentError):
 class ConfigurationError(AgentError):
     """Raised when agent configuration is invalid."""
 
-    def __init__(self, message: str, agent_id: str | None = None, config_key: str | None = None):
+    def __init__(
+        self,
+        message: str,
+        agent_id: Optional[str] = None,
+        config_key: Optional[str] = None,
+    ):
         super().__init__(message, agent_id, "INVALID_CONFIGURATION")
         self.config_key = config_key
 
@@ -150,7 +230,13 @@ class ConfigurationError(AgentError):
 class DependencyError(AgentError):
     """Raised when agent dependencies are unavailable."""
 
-    def __init__(self, message: str, agent_id: str | None = None, dependency_name: str | None = None, dependency_type: str | None = None):
+    def __init__(
+        self,
+        message: str,
+        agent_id: Optional[str] = None,
+        dependency_name: Optional[str] = None,
+        dependency_type: Optional[str] = None,
+    ):
         super().__init__(message, agent_id, "DEPENDENCY_UNAVAILABLE")
         self.dependency_name = dependency_name
         self.dependency_type = dependency_type
@@ -208,7 +294,9 @@ def is_retryable_error(error: Exception) -> bool:
     return True
 
 
-def create_error_context(error: Exception, agent_id: str | None = None, task_id: str | None = None) -> dict[str, Any]:
+def create_error_context(
+    error: Exception, agent_id: Optional[str] = None, task_id: Optional[str] = None
+) -> dict[str, Any]:
     """Create error context for logging and monitoring."""
     context = {
         "error_type": type(error).__name__,

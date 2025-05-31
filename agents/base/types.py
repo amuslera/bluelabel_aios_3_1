@@ -6,7 +6,7 @@ Defines agent lifecycle states, types, capabilities, and metadata schemas.
 
 from datetime import datetime
 from enum import Enum
-from typing import Any
+from typing import Any, Optional
 
 from pydantic import BaseModel, Field
 
@@ -94,7 +94,10 @@ class AgentCapability(BaseModel):
     name: str
     description: str
     task_types: list[TaskType]
-    complexity_range: tuple[int, int] = (1, 10)  # Min and max complexity this capability can handle
+    complexity_range: tuple[int, int] = (
+        1,
+        10,
+    )  # Min and max complexity this capability can handle
     requires_tools: list[str] = Field(default_factory=list)
     confidence_level: float = Field(default=1.0, ge=0.0, le=1.0)
 
@@ -120,9 +123,9 @@ class AgentHealth(BaseModel):
     agent_id: str
     state: AgentState
     last_heartbeat: datetime = Field(default_factory=datetime.utcnow)
-    last_task_completed: datetime | None = None
+    last_task_completed: Optional[datetime] = None
     error_count: int = 0
-    last_error: str | None = None
+    last_error: Optional[str] = None
     memory_usage_mb: float = 0.0
     cpu_usage_percent: float = 0.0
     response_time_ms: float = 0.0
@@ -149,7 +152,7 @@ class RegistrationRequest(BaseModel):
 
     metadata: AgentMetadata
     initial_state: AgentState = AgentState.INITIALIZING
-    endpoint: str | None = None  # For remote agents
+    endpoint: Optional[str] = None  # For remote agents
     config: dict[str, Any] = Field(default_factory=dict)
 
 
@@ -160,7 +163,7 @@ class RegistrationResponse(BaseModel):
     agent_id: str
     message: str
     assigned_queues: list[str] = Field(default_factory=list)
-    registry_endpoint: str | None = None
+    registry_endpoint: Optional[str] = None
 
 
 # Default capabilities for each agent type
@@ -169,7 +172,11 @@ DEFAULT_CAPABILITIES = {
         AgentCapability(
             name="Architecture Design",
             description="Design system architecture and make technical decisions",
-            task_types=[TaskType.SYSTEM_DESIGN, TaskType.TECH_DECISION, TaskType.ARCHITECTURE_REVIEW],
+            task_types=[
+                TaskType.SYSTEM_DESIGN,
+                TaskType.TECH_DECISION,
+                TaskType.ARCHITECTURE_REVIEW,
+            ],
             complexity_range=(5, 10),
         ),
         AgentCapability(
@@ -189,7 +196,11 @@ DEFAULT_CAPABILITIES = {
         AgentCapability(
             name="Backend Development",
             description="Develop server-side applications and APIs",
-            task_types=[TaskType.CODE_GENERATION, TaskType.BUG_FIX, TaskType.REFACTORING],
+            task_types=[
+                TaskType.CODE_GENERATION,
+                TaskType.BUG_FIX,
+                TaskType.REFACTORING,
+            ],
             complexity_range=(2, 9),
         ),
         AgentCapability(
@@ -209,7 +220,11 @@ DEFAULT_CAPABILITIES = {
         AgentCapability(
             name="Frontend Development",
             description="Develop user interfaces and web applications",
-            task_types=[TaskType.CODE_GENERATION, TaskType.BUG_FIX, TaskType.REFACTORING],
+            task_types=[
+                TaskType.CODE_GENERATION,
+                TaskType.BUG_FIX,
+                TaskType.REFACTORING,
+            ],
             complexity_range=(2, 8),
         ),
         AgentCapability(
@@ -237,7 +252,11 @@ DEFAULT_CAPABILITIES = {
         AgentCapability(
             name="Infrastructure Management",
             description="Manage cloud infrastructure and deployments",
-            task_types=[TaskType.INFRASTRUCTURE, TaskType.DEPLOYMENT, TaskType.MONITORING_SETUP],
+            task_types=[
+                TaskType.INFRASTRUCTURE,
+                TaskType.DEPLOYMENT,
+                TaskType.MONITORING_SETUP,
+            ],
             complexity_range=(4, 10),
         ),
         AgentCapability(
@@ -260,7 +279,9 @@ DEFAULT_CAPABILITIES = {
 
 def get_default_capabilities(agent_type: AgentType) -> list[AgentCapability]:
     """Get the default capabilities for an agent type."""
-    return DEFAULT_CAPABILITIES.get(agent_type, DEFAULT_CAPABILITIES[AgentType.GENERALIST])
+    return DEFAULT_CAPABILITIES.get(
+        agent_type, DEFAULT_CAPABILITIES[AgentType.GENERALIST]
+    )
 
 
 def validate_agent_capability(agent_type: AgentType, task_type: TaskType) -> bool:

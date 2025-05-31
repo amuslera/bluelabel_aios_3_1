@@ -6,6 +6,7 @@ Supports Anthropic Claude, OpenAI, and local Ollama models.
 import logging
 import os
 from abc import ABC, abstractmethod
+from typing import Optional
 
 import httpx
 from pydantic import BaseModel
@@ -42,7 +43,7 @@ class LLMClient(ABC):
 class AnthropicClient(LLMClient):
     """Client for Anthropic Claude models."""
 
-    def __init__(self, api_key: str | None = None):
+    def __init__(self, api_key: Optional[str] = None):
         self.api_key = api_key or os.getenv("ANTHROPIC_API_KEY")
         if not self.api_key:
             raise ValueError("ANTHROPIC_API_KEY environment variable is required")
@@ -147,7 +148,7 @@ class AnthropicClient(LLMClient):
 class OpenAIClient(LLMClient):
     """Client for OpenAI models."""
 
-    def __init__(self, api_key: str | None = None):
+    def __init__(self, api_key: Optional[str] = None):
         self.api_key = api_key or os.getenv("OPENAI_API_KEY")
         if not self.api_key:
             raise ValueError("OPENAI_API_KEY environment variable is required")

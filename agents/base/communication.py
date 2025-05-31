@@ -25,23 +25,23 @@ logger = logging.getLogger(__name__)
 
 class MessageType(Enum):
     """Types of agent-to-agent messages."""
-    
+
     # Direct communication
     REQUEST = "request"  # Request for action/information
     RESPONSE = "response"  # Response to a request
     NOTIFICATION = "notification"  # One-way notification
-    
+
     # Task coordination
     TASK_ASSIGNMENT = "task_assignment"  # Assign task to agent
     TASK_RESULT = "task_result"  # Task completion result
     TASK_DELEGATION = "task_delegation"  # Delegate task to another agent
     TASK_COLLABORATION = "task_collaboration"  # Collaborative task request
-    
+
     # System messages
     AGENT_ANNOUNCEMENT = "agent_announcement"  # Agent availability announcement
     HEALTH_CHECK = "health_check"  # Health check ping
     STATUS_UPDATE = "status_update"  # Agent status update
-    
+
     # Broadcast messages
     BROADCAST = "broadcast"  # Message to all agents
     TYPE_BROADCAST = "type_broadcast"  # Message to agents of specific type
@@ -50,35 +50,35 @@ class MessageType(Enum):
 
 class Priority(Enum):
     """Message priority levels."""
-    
+
     URGENT = 1  # Immediate processing required
-    HIGH = 2    # High priority
+    HIGH = 2  # High priority
     NORMAL = 5  # Normal priority
-    LOW = 8     # Low priority
+    LOW = 8  # Low priority
     BACKGROUND = 10  # Background processing
 
 
 class AgentCommunicationMessage(BaseModel):
     """Standard message format for agent communication."""
-    
+
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     message_type: MessageType
     sender_id: str
     recipient_id: str | None = None  # None for broadcast
     conversation_id: str | None = None  # For tracking conversation threads
     parent_message_id: str | None = None  # For response chains
-    
+
     # Content
     subject: str
     content: dict[str, Any] = Field(default_factory=dict)
-    
+
     # Metadata
     priority: Priority = Priority.NORMAL
     timeout_seconds: float | None = None
     requires_response: bool = False
     created_at: datetime = Field(default_factory=datetime.utcnow)
     expires_at: datetime | None = None
-    
+
     # Context
     context: dict[str, Any] = Field(default_factory=dict)
     tags: list[str] = Field(default_factory=list)
@@ -86,7 +86,7 @@ class AgentCommunicationMessage(BaseModel):
 
 class ConversationThread(BaseModel):
     """Tracks a conversation between agents."""
-    
+
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     participants: list[str]
     subject: str
@@ -99,7 +99,7 @@ class ConversationThread(BaseModel):
 
 class PendingRequest(BaseModel):
     """Tracks pending requests awaiting responses."""
-    
+
     request_id: str
     sender_id: str
     recipient_id: str
@@ -112,7 +112,7 @@ class PendingRequest(BaseModel):
 class AgentCommunicationInterface:
     """
     Handles agent-to-agent communication via message queue.
-    
+
     Features:
     - Request/response patterns with timeout handling
     - Broadcast messaging to multiple agents
@@ -120,7 +120,7 @@ class AgentCommunicationInterface:
     - Message routing and delivery confirmation
     - Collaboration patterns for multi-agent tasks
     """
-    
+
     def __init__(
         self,
         agent_id: str,
@@ -133,16 +133,16 @@ class AgentCommunicationInterface:
         self.message_queue = message_queue
         self.discovery = discovery
         self.default_timeout = default_timeout
-        
+
         # State tracking
         self.pending_requests: dict[str, PendingRequest] = {}
         self.conversations: dict[str, ConversationThread] = {}
         self.message_handlers: dict[MessageType, list[Callable]] = {}
-        
+
         # Background tasks
         self._cleanup_task: asyncio.Task | None = None
         self._shutdown_event = asyncio.Event()
-        
+
         # Statistics
         self.stats = {
             "messages_sent": 0,
@@ -158,8 +158,10 @@ class AgentCommunicationInterface:
     async def initialize(self) -> None:
         """Initialize the communication interface."""
         try:
-            logger.info(f"Initializing communication interface for agent {self.agent_id}")
-            
+            logger.info(
+                f"Initializing communication interface for agent {self.agent_id}"
+            )
+
             # Register message handler with queue
             handler = AgentMessageHandler(self)
             await self.message_queue.register_handler(
@@ -167,38 +169,41 @@ class AgentCommunicationInterface:
                 handler=handler,
                 routing_keys=[
                     f"agent.{self.agent_id}",  # Direct messages
-                    "agent.broadcast",         # Broadcast messages
+                    "agent.broadcast",  # Broadcast messages
                     f"agent.{self.agent_id}.request",  # Direct requests
-                    f"agent.{self.agent_id}.response", # Direct responses
+                    f"agent.{self.agent_id}.response",  # Direct responses
                 ],
                 queue_name=f"agent.{self.agent_id}.inbox",
             )
-            
+
             # Start background cleanup task
             self._cleanup_task = asyncio.create_task(self._cleanup_loop())
-            
-            logger.info(f"Communication interface initialized for agent {self.agent_id}")
-            
+
+            logger.info(
+                f"Communication interface initialized for agent {self.agent_id}"
+            )
+
         except Exception as e:
             logger.error(f"Failed to initialize communication interface: {e}")
             raise AgentCommunicationError(
-                f"Communication initialization failed: {e}",
-                agent_id=self.agent_id
+                f"Communication initialization failed: {e}", agent_id=self.agent_id
             )
 
     async def shutdown(self) -> None:
         """Shutdown the communication interface."""
         try:
-            logger.info(f"Shutting down communication interface for agent {self.agent_id}")
-            
+            logger.info(
+                f"Shutting down communication interface for agent {self.agent_id}"
+            )
+
             # Signal shutdown
             self._shutdown_event.set()
-            
+
             # Cancel pending requests
             for request in self.pending_requests.values():
                 if request.future and not request.future.done():
                     request.future.cancel()
-            
+
             # Stop cleanup task
             if self._cleanup_task:
                 self._cleanup_task.cancel()
@@ -206,9 +211,11 @@ class AgentCommunicationInterface:
                     await self._cleanup_task
                 except asyncio.CancelledError:
                     pass
-            
-            logger.info(f"Communication interface shutdown complete for agent {self.agent_id}")
-            
+
+            logger.info(
+                f"Communication interface shutdown complete for agent {self.agent_id}"
+            )
+
         except Exception as e:
             logger.error(f"Error during communication shutdown: {e}")
 
@@ -224,13 +231,13 @@ class AgentCommunicationInterface:
     ) -> dict[str, Any]:
         """
         Send a request to another agent and wait for response.
-        
+
         Returns:
             Response content from the recipient agent
         """
         try:
             timeout = timeout or self.default_timeout
-            
+
             # Create request message
             message = AgentCommunicationMessage(
                 message_type=message_type,
@@ -243,7 +250,7 @@ class AgentCommunicationInterface:
                 timeout_seconds=timeout,
                 requires_response=True,
             )
-            
+
             # Create pending request tracker
             future = asyncio.Future()
             pending_request = PendingRequest(
@@ -254,18 +261,18 @@ class AgentCommunicationInterface:
                 timeout_at=datetime.utcnow() + timedelta(seconds=timeout),
                 future=future,
             )
-            
+
             self.pending_requests[message.id] = pending_request
-            
+
             # Send message
             await self._send_message(message)
-            
+
             # Wait for response with timeout
             try:
                 response = await asyncio.wait_for(future, timeout=timeout)
                 self.stats["responses_received"] += 1
                 return response
-                
+
             except asyncio.TimeoutError:
                 self.stats["timeouts"] += 1
                 raise TaskTimeoutError(
@@ -274,11 +281,11 @@ class AgentCommunicationInterface:
                     task_id=message.id,
                     timeout_seconds=timeout,
                 )
-            
+
             finally:
                 # Cleanup pending request
                 self.pending_requests.pop(message.id, None)
-                
+
         except Exception as e:
             self.stats["errors"] += 1
             logger.error(f"Failed to send request to {recipient_id}: {e}")
@@ -309,10 +316,10 @@ class AgentCommunicationInterface:
                 },
                 priority=request_message.priority,
             )
-            
+
             await self._send_message(response)
             self.stats["responses_sent"] += 1
-            
+
         except Exception as e:
             self.stats["errors"] += 1
             logger.error(f"Failed to send response: {e}")
@@ -342,9 +349,9 @@ class AgentCommunicationInterface:
                 priority=priority,
                 requires_response=False,
             )
-            
+
             await self._send_message(message)
-            
+
         except Exception as e:
             self.stats["errors"] += 1
             logger.error(f"Failed to send notification to {recipient_id}: {e}")
@@ -374,7 +381,7 @@ class AgentCommunicationInterface:
             else:
                 message_type = MessageType.BROADCAST
                 routing_key = "agent.broadcast"
-            
+
             message = AgentCommunicationMessage(
                 message_type=message_type,
                 sender_id=self.agent_id,
@@ -384,7 +391,7 @@ class AgentCommunicationInterface:
                 priority=priority,
                 requires_response=False,
             )
-            
+
             # Send via specific routing key
             await self.message_queue.publish(
                 routing_key=routing_key,
@@ -394,10 +401,10 @@ class AgentCommunicationInterface:
                 message_type=message_type.value,
                 priority=priority.value,
             )
-            
+
             self.stats["messages_sent"] += 1
             logger.info(f"Broadcast message sent: {subject}")
-            
+
         except Exception as e:
             self.stats["errors"] += 1
             logger.error(f"Failed to broadcast message: {e}")
@@ -424,13 +431,13 @@ class AgentCommunicationInterface:
                     preferred_agent_type=preferred_agent_type,
                     exclude_agents=[self.agent_id],  # Don't delegate to self
                 )
-            
+
             if not target_agent_id:
                 raise AgentCommunicationError(
                     f"No suitable agent found for task type {task_type.value}",
                     agent_id=self.agent_id,
                 )
-            
+
             # Send task delegation request
             content = {
                 "task_type": task_type.value,
@@ -438,7 +445,7 @@ class AgentCommunicationInterface:
                 "parameters": task_parameters or {},
                 "delegated_by": self.agent_id,
             }
-            
+
             response = await self.send_request(
                 recipient_id=target_agent_id,
                 subject=f"Task Delegation: {task_type.value}",
@@ -446,10 +453,10 @@ class AgentCommunicationInterface:
                 message_type=MessageType.TASK_DELEGATION,
                 timeout=timeout,
             )
-            
+
             logger.info(f"Task delegated to {target_agent_id}: {task_description}")
             return response
-            
+
         except Exception as e:
             logger.error(f"Failed to delegate task: {e}")
             raise AgentCommunicationError(
@@ -469,9 +476,9 @@ class AgentCommunicationInterface:
                 participants=[self.agent_id] + participants,
                 subject=subject,
             )
-            
+
             self.conversations[conversation.id] = conversation
-            
+
             # Send initial message if provided
             if initial_message:
                 for participant in participants:
@@ -481,10 +488,10 @@ class AgentCommunicationInterface:
                         content=initial_message,
                         conversation_id=conversation.id,
                     )
-            
+
             logger.info(f"Started conversation {conversation.id}: {subject}")
             return conversation.id
-            
+
         except Exception as e:
             logger.error(f"Failed to start conversation: {e}")
             raise AgentCommunicationError(
@@ -500,7 +507,7 @@ class AgentCommunicationInterface:
         """Register a handler for specific message types."""
         if message_type not in self.message_handlers:
             self.message_handlers[message_type] = []
-        
+
         self.message_handlers[message_type].append(handler)
         logger.debug(f"Registered handler for {message_type.value}")
 
@@ -510,18 +517,21 @@ class AgentCommunicationInterface:
             # Parse agent communication message
             message_data = raw_message.payload
             message = AgentCommunicationMessage.model_validate(message_data)
-            
+
             self.stats["messages_received"] += 1
-            
+
             # Update conversation tracking
             if message.conversation_id:
                 await self._update_conversation(message)
-            
+
             # Handle responses to pending requests
-            if message.message_type == MessageType.RESPONSE and message.parent_message_id:
+            if (
+                message.message_type == MessageType.RESPONSE
+                and message.parent_message_id
+            ):
                 await self._handle_response(message)
                 return
-            
+
             # Route to registered handlers
             handlers = self.message_handlers.get(message.message_type, [])
             for handler in handlers:
@@ -529,11 +539,14 @@ class AgentCommunicationInterface:
                     await handler(message)
                 except Exception as e:
                     logger.error(f"Handler error for {message.message_type.value}: {e}")
-            
+
             # Track request statistics
-            if message.message_type in [MessageType.REQUEST, MessageType.TASK_DELEGATION]:
+            if message.message_type in [
+                MessageType.REQUEST,
+                MessageType.TASK_DELEGATION,
+            ]:
                 self.stats["requests_received"] += 1
-            
+
         except Exception as e:
             self.stats["errors"] += 1
             logger.error(f"Error handling incoming message: {e}")
@@ -543,12 +556,14 @@ class AgentCommunicationInterface:
         return {
             **self.stats,
             "pending_requests": len(self.pending_requests),
-            "active_conversations": len([c for c in self.conversations.values() if c.is_active]),
+            "active_conversations": len(
+                [c for c in self.conversations.values() if c.is_active]
+            ),
             "total_conversations": len(self.conversations),
         }
 
     # Private helper methods
-    
+
     async def _send_message(self, message: AgentCommunicationMessage) -> None:
         """Send a message via the message queue."""
         # Determine routing key
@@ -556,13 +571,13 @@ class AgentCommunicationInterface:
             routing_key = f"agent.{message.recipient_id}"
         else:
             routing_key = "agent.broadcast"
-        
+
         # Add request suffix for requests
         if message.message_type in [MessageType.REQUEST, MessageType.TASK_DELEGATION]:
             routing_key += ".request"
         elif message.message_type == MessageType.RESPONSE:
             routing_key += ".response"
-        
+
         await self.message_queue.publish(
             routing_key=routing_key,
             payload=message.model_dump(),
@@ -571,9 +586,9 @@ class AgentCommunicationInterface:
             message_type=message.message_type.value,
             priority=message.priority.value,
         )
-        
+
         self.stats["messages_sent"] += 1
-        
+
         # Track request statistics
         if message.message_type in [MessageType.REQUEST, MessageType.TASK_DELEGATION]:
             self.stats["requests_sent"] += 1
@@ -582,8 +597,12 @@ class AgentCommunicationInterface:
         """Handle response to a pending request."""
         request_id = response.parent_message_id
         pending_request = self.pending_requests.get(request_id)
-        
-        if pending_request and pending_request.future and not pending_request.future.done():
+
+        if (
+            pending_request
+            and pending_request.future
+            and not pending_request.future.done()
+        ):
             # Resolve the pending future with response content
             pending_request.future.set_result(response.content)
         else:
@@ -596,7 +615,7 @@ class AgentCommunicationInterface:
             conversation = self.conversations[conversation_id]
             conversation.last_activity = datetime.utcnow()
             conversation.message_count += 1
-            
+
             # Add new participants if not already included
             if message.sender_id not in conversation.participants:
                 conversation.participants.append(message.sender_id)
@@ -617,37 +636,39 @@ class AgentCommunicationInterface:
         """Remove expired pending requests."""
         now = datetime.utcnow()
         expired_requests = [
-            req_id for req_id, req in self.pending_requests.items()
+            req_id
+            for req_id, req in self.pending_requests.items()
             if req.timeout_at < now
         ]
-        
+
         for req_id in expired_requests:
             pending_request = self.pending_requests.pop(req_id)
             if pending_request.future and not pending_request.future.done():
                 pending_request.future.cancel()
-        
+
         if expired_requests:
             logger.debug(f"Cleaned up {len(expired_requests)} expired requests")
 
     async def _cleanup_old_conversations(self) -> None:
         """Remove old inactive conversations."""
         cutoff_time = datetime.utcnow() - timedelta(hours=24)  # Keep for 24 hours
-        
+
         old_conversations = [
-            conv_id for conv_id, conv in self.conversations.items()
+            conv_id
+            for conv_id, conv in self.conversations.items()
             if conv.last_activity < cutoff_time and not conv.is_active
         ]
-        
+
         for conv_id in old_conversations:
             del self.conversations[conv_id]
-        
+
         if old_conversations:
             logger.debug(f"Cleaned up {len(old_conversations)} old conversations")
 
 
 class AgentMessageHandler(MessageHandler):
     """Message handler that routes messages to agent communication interface."""
-    
+
     def __init__(self, comm_interface: AgentCommunicationInterface):
         self.comm_interface = comm_interface
 

@@ -8,7 +8,7 @@ It handles strategic planning, architecture decisions, and team coordination.
 import json
 import logging
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional
 
 from agents.base.agent import AgentConfig, BaseAgent, Task
 from core.routing.llm_client import llm_factory
@@ -31,7 +31,7 @@ class CTOAgent(BaseAgent):
     """
 
     def __init__(
-        self, agent_id: str | None = None, llm_router: LLMRouter | None = None
+        self, agent_id: Optional[str] = None, llm_router: Optional[LLMRouter] = None
     ):
         # Create CTO-specific configuration
         config = AgentConfig(
