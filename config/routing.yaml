@@ -1,0 +1,200 @@
+# Message Routing Configuration for AIOSv3
+# Defines exchanges, queues, and routing rules for agent communication
+
+exchanges:
+  agents:
+    name: aiosv3.agents
+    type: topic
+    durable: true
+    auto_delete: false
+    arguments:
+      description: "Main exchange for agent-to-agent communication"
+
+  broadcast:
+    name: aiosv3.broadcast
+    type: fanout
+    durable: true
+    auto_delete: false
+    arguments:
+      description: "Broadcast exchange for system-wide messages"
+
+  system:
+    name: aiosv3.system
+    type: direct
+    durable: true
+    auto_delete: false
+    arguments:
+      description: "System commands and control messages"
+
+  dlx:
+    name: aiosv3.agents.dlx
+    type: topic
+    durable: true
+    auto_delete: false
+    arguments:
+      description: "Dead letter exchange for failed messages"
+
+queue_configs:
+  agent_direct:
+    name_pattern: "agent.{agent_id}"
+    durable: true
+    exclusive: false
+    auto_delete: false
+    message_ttl: 3600000  # 1 hour
+    dead_letter_exchange: aiosv3.agents.dlx
+    dead_letter_routing_key: "failed.{agent_id}"
+
+  agent_tasks:
+    name_pattern: "agent.{agent_id}.tasks"
+    durable: true
+    exclusive: false
+    auto_delete: false
+    max_length: 1000
+    message_ttl: 7200000  # 2 hours
+    dead_letter_exchange: aiosv3.agents.dlx
+    dead_letter_routing_key: "failed.{agent_id}.tasks"
+
+  broadcast:
+    name_pattern: "broadcast.{agent_id}"
+    durable: false
+    exclusive: false
+    auto_delete: true
+    message_ttl: 300000  # 5 minutes
+
+  system:
+    name_pattern: "system.{component}"
+    durable: true
+    exclusive: false
+    auto_delete: false
+    message_ttl: 1800000  # 30 minutes
+    dead_letter_exchange: aiosv3.agents.dlx
+    dead_letter_routing_key: "failed.system.{component}"
+
+  responses:
+    name_pattern: "response.{agent_id}.{correlation_id}"
+    durable: false
+    exclusive: true
+    auto_delete: true
+    message_ttl: 30000  # 30 seconds
+
+  dlx:
+    name_pattern: "dlx.{original_routing_key}"
+    durable: true
+    exclusive: false
+    auto_delete: false
+    message_ttl: 86400000  # 24 hours
+
+routing_rules:
+  # Direct agent communication
+  agent_direct:
+    pattern: "agent.{agent_id}.{message_type}"
+    exchange: agents
+    queue_config: agent_direct
+    description: "Direct communication to specific agents"
+    priority: 10
+    enabled: true
+
+  # Task distribution by agent type
+  agent_tasks:
+    pattern: "task.{agent_type}.{task_type}"
+    exchange: agents
+    queue_config: agent_tasks
+    description: "Task distribution by agent and task type"
+    priority: 9
+    enabled: true
+
+  # Broadcast messages
+  broadcast_all:
+    pattern: "broadcast.{message_type}"
+    exchange: broadcast
+    queue_config: broadcast
+    description: "Broadcast messages to all agents"
+    priority: 7
+    enabled: true
+
+  # System commands
+  system_commands:
+    pattern: "system.{command}"
+    exchange: system
+    queue_config: system
+    description: "System-level commands and control"
+    priority: 8
+    enabled: true
+
+  # Response routing for request-reply pattern
+  responses:
+    pattern: "response.{agent_id}.{correlation_id}"
+    exchange: agents
+    queue_config: responses
+    description: "Response messages for request-reply pattern"
+    priority: 10
+    enabled: true
+
+  # Error handling
+  error_handling:
+    pattern: "error.{agent_id}.{error_type}"
+    exchange: agents
+    queue_config: agent_direct
+    description: "Error notification and handling"
+    priority: 6
+    enabled: true
+
+  # Status updates and heartbeats
+  status_updates:
+    pattern: "status.{agent_id}.{status_type}"
+    exchange: agents
+    queue_config: agent_direct
+    description: "Agent status updates and heartbeats"
+    priority: 5
+    enabled: true
+
+  # Dead letter handling
+  dlx_routing:
+    pattern: "failed.{original_routing_key}"
+    exchange: dlx
+    queue_config: dlx
+    description: "Dead letter queue for failed messages"
+    priority: 1
+    enabled: true
+
+# Agent type routing patterns
+agent_types:
+  cto:
+    routing_keys:
+      - "agent.cto.*"
+      - "task.management.*"
+      - "broadcast.*"
+      - "system.planning"
+      - "status.team.*"
+
+  backend:
+    routing_keys:
+      - "agent.backend.*"
+      - "task.backend.*"
+      - "task.api.*"
+      - "task.database.*"
+      - "broadcast.*"
+
+  frontend:
+    routing_keys:
+      - "agent.frontend.*"
+      - "task.frontend.*"
+      - "task.ui.*"
+      - "task.components.*"
+      - "broadcast.*"
+
+  qa:
+    routing_keys:
+      - "agent.qa.*"
+      - "task.testing.*"
+      - "task.quality.*"
+      - "broadcast.*"
+      - "error.*.*"
+
+  devops:
+    routing_keys:
+      - "agent.devops.*"
+      - "task.deployment.*"
+      - "task.infrastructure.*"
+      - "system.*"
+      - "broadcast.*"

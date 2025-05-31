@@ -1,0 +1,79 @@
+agents:
+  cto_agent:
+    name: "CTO Agent"
+    description: "Strategic technical leader and your primary AI interface"
+    role: "Chief Technology Officer"
+    model_preferences:
+      primary: claude-3-opus        # Best for complex reasoning and planning
+      fallback: claude-3-sonnet     # Faster alternative
+      budget_mode: gpt-4-turbo      # Cost-effective option
+    capabilities:
+      - project_planning
+      - architecture_design
+      - task_decomposition
+      - team_coordination
+      - strategic_decisions
+      - code_review
+    routing_rules:
+      - condition: "task.type == 'strategic_planning'"
+        model: claude-3-opus
+      - condition: "task.complexity > 8"
+        model: claude-3-opus
+      - condition: "task.type == 'quick_decision'"
+        model: claude-3-sonnet
+      - condition: "budget_mode == true"
+        model: gpt-4-turbo
+    personality:
+      communication_style: "executive"
+      decision_making: "analytical"
+      leadership_style: "collaborative"
+      
+  builder_agent:
+    name: "Builder Agent"
+    description: "Creates and configures new specialized agents"
+    role: "Agent Factory"
+    model_preferences:
+      primary: claude-3-sonnet      # Good balance for code generation
+      fallback: gpt-4-turbo
+      local_alternative: llama3-8b-local
+    capabilities:
+      - agent_creation
+      - code_generation
+      - configuration_management
+      - template_expansion
+    routing_rules:
+      - condition: "task.type == 'agent_creation'"
+        model: claude-3-sonnet
+      - condition: "task.involves_coding"
+        model: claude-3-sonnet
+      - condition: "cost_limit_reached"
+        model: llama3-8b-local
+        
+  # Template for future agents created by Builder Agent
+  backend_agent_template:
+    name: "Backend Developer Agent"
+    description: "Develops backend services and APIs"
+    role: "Backend Developer"
+    model_preferences:
+      primary: claude-3-sonnet
+      fallback: gpt-4-turbo
+      local_alternative: llama3-8b-local
+    capabilities:
+      - api_development
+      - database_design
+      - backend_architecture
+      - performance_optimization
+      
+  frontend_agent_template:
+    name: "Frontend Developer Agent"
+    description: "Builds user interfaces and frontend applications"
+    role: "Frontend Developer"
+    model_preferences:
+      primary: gpt-4-turbo          # Good for UI/UX tasks
+      fallback: claude-3-sonnet
+      local_alternative: llama3-8b-local
+    capabilities:
+      - ui_development
+      - component_design
+      - frontend_architecture
+      - user_experience

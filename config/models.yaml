@@ -1,0 +1,93 @@
+models:
+  # Cloud Models - Available Now
+  claude-3-opus:
+    provider: anthropic
+    type: cloud
+    model_id: claude-3-5-sonnet-20241022
+    capabilities:
+      - complex_reasoning
+      - architecture_design
+      - code_generation
+      - project_planning
+    cost_per_1k_tokens:
+      input: 0.015
+      output: 0.075
+    max_tokens: 4096
+    temperature: 0.7
+    
+  claude-3-sonnet:
+    provider: anthropic
+    type: cloud
+    model_id: claude-3-5-sonnet-20241022
+    capabilities:
+      - code_generation
+      - general_reasoning
+      - task_execution
+    cost_per_1k_tokens:
+      input: 0.003
+      output: 0.015
+    max_tokens: 4096
+    temperature: 0.7
+    
+  gpt-4-turbo:
+    provider: openai
+    type: cloud
+    model_id: gpt-4-turbo-preview
+    capabilities:
+      - code_generation
+      - problem_solving
+      - creative_tasks
+    cost_per_1k_tokens:
+      input: 0.01
+      output: 0.03
+    max_tokens: 4096
+    temperature: 0.7
+    
+  gpt-3.5-turbo:
+    provider: openai
+    type: cloud
+    model_id: gpt-3.5-turbo
+    capabilities:
+      - code_generation
+      - simple_reasoning
+      - quick_tasks
+    cost_per_1k_tokens:
+      input: 0.0005
+      output: 0.0015
+    max_tokens: 4096
+    temperature: 0.7
+
+  # Local Models - For Future Use (Mac Mini)
+  llama3-70b:
+    provider: ollama
+    type: local
+    model_id: llama3:70b-instruct-q4_K_M
+    endpoint: http://localhost:11434
+    capabilities:
+      - code_generation
+      - general_reasoning
+    enabled: false  # Enable when Mac Mini is available
+    
+  deepseek-coder:
+    provider: ollama
+    type: local
+    model_id: deepseek-coder:33b-instruct-q4_K_M
+    endpoint: http://localhost:11434
+    capabilities:
+      - code_generation
+      - code_review
+    enabled: false
+    
+  # Local Models - MacBook Pro (Available Now)
+  llama3-8b-local:
+    provider: ollama
+    type: local
+    model_id: llama3:8b-instruct
+    endpoint: http://localhost:11434
+    capabilities:
+      - simple_tasks
+      - code_completion
+    enabled: true
+    cost_per_1k_tokens:
+      input: 0.0
+      output: 0.0
