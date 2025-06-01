@@ -1,4 +1,4 @@
-# AIOSv3 - Modular AI Agent Platform
+# AIOSv3.1 - Modular AI Agent Platform
 
 > A production-ready platform for orchestrating multiple specialized AI agents that collaborate autonomously to deliver complex digital products.
 
@@ -105,14 +105,20 @@ uvicorn api.main:app --reload
 ## 📁 Project Structure
 
 ```
-bluelabel-AIOSv3/
-├── agents/           # Agent implementations
-├── core/            # Core platform components
-├── integrations/    # External integrations
+bluelabel-aios-3-1/
+├── agents/          # Agent implementations
 ├── api/             # REST API
+├── core/            # Core platform components
 ├── config/          # Configuration files
 ├── infrastructure/  # Docker/K8s files
-└── docs/           # Documentation
+├── tests/           # Test suite
+├── scripts/         # Utility scripts
+├── docs/            # Documentation
+│   ├── architecture/
+│   ├── development/
+│   ├── planning/
+│   └── vision/
+└── archive/         # Previous prototypes and demos
 ```
 
 See [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) for detailed structure.
