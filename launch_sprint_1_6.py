@@ -104,7 +104,8 @@ class Sprint16Launcher:
             r.ping()
             return True
         except:
-            return False
+            console.print("    [yellow]Redis not running - some features will be limited[/yellow]")
+            return True  # Make it optional for now
             
     def _check_task_files(self):
         """Check if task files exist"""
