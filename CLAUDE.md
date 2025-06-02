@@ -264,9 +264,15 @@ The platform now includes a comprehensive real-time visualization system for age
 **Available Demos:**
 - `python3 src/visualization/interactive_demo.py` - Full interactive experience with keyboard controls
 - `python3 src/visualization/quick_interactive_demo.py` - Quick enhanced features showcase
+- `python3 src/visualization/ascii_demo.py` - **ASCII version for terminal compatibility**
 - `python3 src/visualization/test_enhanced_features.py` - Feature testing and validation
 - `python3 src/visualization/final_demo.py` - Complete 6-phase sprint simulation
 - `python3 src/visualization/quick_final_demo.py` - Quick demonstration
+
+**Terminal Compatibility:**
+- **Standard Version**: Uses Unicode box drawing (may show dotted lines in some terminals)
+- **ASCII Version**: Uses plain ASCII characters (+, -, |) for universal compatibility
+- **Recommendation**: If you see dotted borders, use the ASCII version for solid lines
 
 The enhanced visualization system provides professional-grade agent collaboration monitoring with full interactivity and complete session analysis capabilities.
 
