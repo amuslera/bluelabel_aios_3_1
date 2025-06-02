@@ -1,0 +1,291 @@
+{
+  "session_info": {
+    "start_time": "2025-06-02T11:38:05.201879",
+    "end_time": "2025-06-02T11:38:05.209380",
+    "agents": [
+      {
+        "name": "Marcus Chen",
+        "role": "Backend Engineer",
+        "total_actions": 1
+      },
+      {
+        "name": "Emily Rodriguez",
+        "role": "Frontend Engineer",
+        "total_actions": 1
+      },
+      {
+        "name": "Alex Thompson",
+        "role": "QA Engineer",
+        "total_actions": 1
+      },
+      {
+        "name": "Jordan Kim",
+        "role": "DevOps Engineer",
+        "total_actions": 1
+      }
+    ]
+  },
+  "final_metrics": {
+    "lines_written": 180,
+    "tests_passed": 32,
+    "bugs_found": 2,
+    "deployments": 0
+  },
+  "final_workflow": [
+    {
+      "name": "Planning",
+      "completed": true
+    },
+    {
+      "name": "Development",
+      "completed": true
+    },
+    {
+      "name": "Testing",
+      "completed": false
+    },
+    {
+      "name": "Deployment",
+      "completed": false
+    }
+  ],
+  "events": [
+    {
+      "timestamp": "2025-06-02T11:38:05.201879",
+      "event_type": "message",
+      "data": {
+        "from": "Marcus Chen",
+        "to": "Team",
+        "content": "\ud83d\ude80 Starting backend development with FastAPI",
+        "type": "chat"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:38:05.201884",
+      "event_type": "message",
+      "data": {
+        "from": "Emily Rodriguez",
+        "to": "Team",
+        "content": "\ud83c\udfa8 Creating React components with TypeScript",
+        "type": "chat"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:38:05.201886",
+      "event_type": "message",
+      "data": {
+        "from": "Alex Thompson",
+        "to": "Team",
+        "content": "\ud83d\udd0d Setting up comprehensive test suite",
+        "type": "chat"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:38:05.201888",
+      "event_type": "message",
+      "data": {
+        "from": "Jordan Kim",
+        "to": "Team",
+        "content": "\u2699\ufe0f Configuring CI/CD pipeline",
+        "type": "chat"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:38:05.201890",
+      "event_type": "message",
+      "data": {
+        "from": "Marcus Chen",
+        "to": "Emily Rodriguez",
+        "content": "API endpoints ready - check Swagger docs",
+        "type": "chat"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:38:05.201892",
+      "event_type": "message",
+      "data": {
+        "from": "Emily Rodriguez",
+        "to": "Marcus Chen",
+        "content": "Perfect! Frontend consuming APIs now",
+        "type": "chat"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:38:05.201894",
+      "event_type": "message",
+      "data": {
+        "from": "Alex Thompson",
+        "to": "Team",
+        "content": "Found 2 security issues - creating tickets",
+        "type": "chat"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:38:05.201895",
+      "event_type": "message",
+      "data": {
+        "from": "Jordan Kim",
+        "to": "Team",
+        "content": "Production deployment successful! \ud83c\udf89",
+        "type": "chat"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:38:05.201902",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Marcus Chen",
+        "activity": "coding",
+        "description": "Implementing JWT authentication service",
+        "progress": 85
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:38:05.201904",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Emily Rodriguez",
+        "activity": "designing",
+        "description": "Creating responsive login forms",
+        "progress": 70
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:38:05.201906",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Alex Thompson",
+        "activity": "testing",
+        "description": "Running security vulnerability scans",
+        "progress": 60
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:38:05.201908",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Jordan Kim",
+        "activity": "deploying",
+        "description": "Blue-green production deployment",
+        "progress": 95
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:38:05.201909",
+      "event_type": "workflow_update",
+      "data": {
+        "name": "Sprint Demo",
+        "items": [
+          {
+            "name": "Planning",
+            "completed": true
+          },
+          {
+            "name": "Development",
+            "completed": true
+          },
+          {
+            "name": "Testing",
+            "completed": false
+          },
+          {
+            "name": "Deployment",
+            "completed": false
+          }
+        ]
+      }
+    }
+  ],
+  "chat_history": [
+    {
+      "from": "Marcus Chen",
+      "to": "Team",
+      "content": "\ud83d\ude80 Starting backend development with FastAPI",
+      "type": "chat",
+      "timestamp": "2025-06-02T11:38:05.201860"
+    },
+    {
+      "from": "Emily Rodriguez",
+      "to": "Team",
+      "content": "\ud83c\udfa8 Creating React components with TypeScript",
+      "type": "chat",
+      "timestamp": "2025-06-02T11:38:05.201882"
+    },
+    {
+      "from": "Alex Thompson",
+      "to": "Team",
+      "content": "\ud83d\udd0d Setting up comprehensive test suite",
+      "type": "chat",
+      "timestamp": "2025-06-02T11:38:05.201885"
+    },
+    {
+      "from": "Jordan Kim",
+      "to": "Team",
+      "content": "\u2699\ufe0f Configuring CI/CD pipeline",
+      "type": "chat",
+      "timestamp": "2025-06-02T11:38:05.201887"
+    },
+    {
+      "from": "Marcus Chen",
+      "to": "Emily Rodriguez",
+      "content": "API endpoints ready - check Swagger docs",
+      "type": "chat",
+      "timestamp": "2025-06-02T11:38:05.201889"
+    },
+    {
+      "from": "Emily Rodriguez",
+      "to": "Marcus Chen",
+      "content": "Perfect! Frontend consuming APIs now",
+      "type": "chat",
+      "timestamp": "2025-06-02T11:38:05.201891"
+    },
+    {
+      "from": "Alex Thompson",
+      "to": "Team",
+      "content": "Found 2 security issues - creating tickets",
+      "type": "chat",
+      "timestamp": "2025-06-02T11:38:05.201893"
+    },
+    {
+      "from": "Jordan Kim",
+      "to": "Team",
+      "content": "Production deployment successful! \ud83c\udf89",
+      "type": "chat",
+      "timestamp": "2025-06-02T11:38:05.201895"
+    }
+  ],
+  "agent_action_history": {
+    "Marcus Chen": [
+      {
+        "activity_type": "coding",
+        "description": "Implementing JWT authentication service",
+        "progress": 85,
+        "timestamp": "2025-06-02T11:38:05.201899"
+      }
+    ],
+    "Emily Rodriguez": [
+      {
+        "activity_type": "designing",
+        "description": "Creating responsive login forms",
+        "progress": 70,
+        "timestamp": "2025-06-02T11:38:05.201903"
+      }
+    ],
+    "Alex Thompson": [
+      {
+        "activity_type": "testing",
+        "description": "Running security vulnerability scans",
+        "progress": 60,
+        "timestamp": "2025-06-02T11:38:05.201905"
+      }
+    ],
+    "Jordan Kim": [
+      {
+        "activity_type": "deploying",
+        "description": "Blue-green production deployment",
+        "progress": 95,
+        "timestamp": "2025-06-02T11:38:05.201907"
+      }
+    ]
+  }
+}
