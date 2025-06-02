@@ -92,15 +92,17 @@
 - ✅ MARCUS-005: Validated AgentConfig JSON serialization
 **Plan**: `/sprints/active/SPRINT_2.2.1_MARCUS_FIXES.md`
 
-### Sprint 2.4: QA Agent (Alex Thompson) ⏳
-**Status**: PLANNED
+### Sprint 2.4: QA Agent (Alex Thompson) ✅
+**Status**: COMPLETE
+**Completed**: June 2025 - Session 4
 - Test generation and automation
 - Bug detection and reporting
 - Quality metrics tracking
 - Integration with dev agents
 
-### Sprint 2.5: DevOps Agent (Jordan Kim) ⏳
-**Status**: PLANNED
+### Sprint 2.5: DevOps Agent (Jordan Kim) ✅
+**Status**: COMPLETE
+**Completed**: June 2025 - Session 5
 - CI/CD pipeline management
 - Infrastructure as Code
 - Container orchestration
@@ -175,18 +177,18 @@
 - **Key Achievement**: Full platform foundation
 
 ### Phase 2 Metrics (Current)
-- **Completed Sprints**: 3.1/6 (52%) - includes 1 mini-sprint
+- **Completed Sprints**: 5/6 (83%)
 - **Average Velocity**: 8 tasks/session
 - **Success Rate**: 100%
 - **Cost Reduction**: 88% (LLM routing)
 
 ### Overall Progress
 - **Total Planned Sprints**: ~16
-- **Completed**: 9.1 (57%) - includes mini-sprints
-- **Active Phase**: 2 (Agent Development)
-- **Operational Agents**: 2 (Marcus & Emily)
+- **Completed**: 11 (69%)
+- **Active Phase**: 2 (Agent Development - Near Complete)
+- **Operational Agents**: 4 (Marcus, Emily, Alex, Jordan)
 
 ---
 
-**Last Updated**: June 2025 - Session 2  
-**Active Sprint**: 2.3 (Frontend Agent - Emily Rodriguez)
+**Last Updated**: June 2025 - Session 5  
+**Active Sprint**: 2.6 (Agent Polish & Enhancement) - Planning
