@@ -78,7 +78,32 @@ class ImprovedVisualizer:
             "deployments": 0
         }
         self.workflow_items = []
-        self.session_log = []  # Full session log for export
+        self.session_log = []
+        # Chat scrolling
+        self.chat_scroll_offset = 0
+        self.chat_max_visible = 6
+        
+    def scroll_chat_up(self, lines: int = 1):
+        """Scroll chat history up"""
+        self.chat_scroll_offset = max(0, self.chat_scroll_offset - lines)
+        
+    def scroll_chat_down(self, lines: int = 1):
+        """Scroll chat history down"""
+        max_offset = max(0, len(self.messages) - self.chat_max_visible)
+        self.chat_scroll_offset = min(max_offset, self.chat_scroll_offset + lines)
+        
+    def scroll_chat_to_bottom(self):
+        """Scroll to bottom of chat"""
+        self.chat_scroll_offset = max(0, len(self.messages) - self.chat_max_visible)
+        
+    def get_chat_scroll_info(self) -> str:
+        """Get scroll position info"""
+        total = len(self.messages)
+        if total == 0:
+            return "No messages"
+        visible_start = self.chat_scroll_offset + 1
+        visible_end = min(self.chat_scroll_offset + self.chat_max_visible, total)
+        return f"Messages {visible_start}-{visible_end}/{total}"  # Full session log for export
         
     def _initialize_agents(self) -> Dict[str, AgentProfile]:
         """Initialize agent profiles with initials"""
@@ -214,14 +239,19 @@ class ImprovedVisualizer:
         )
         
     def render_messages_panel(self) -> Panel:
-        """Render messages with agent initials"""
+        """Render messages with agent initials and scrolling"""
         table = Table(show_header=False, box=None, padding=(0, 1))
         table.add_column("Message", style="white")
         
-        # Show last 6 messages
-        recent = self.messages[-6:] if self.messages else []
+        # Get visible messages based on scroll position
+        if self.messages:
+            start_idx = self.chat_scroll_offset
+            end_idx = start_idx + self.chat_max_visible
+            visible_messages = self.messages[start_idx:end_idx]
+        else:
+            visible_messages = []
         
-        for msg in recent:
+        for msg in visible_messages:
             if msg.from_agent == "System":
                 # System messages
                 table.add_row(f"[bold yellow]📢 System: {msg.content}[/bold yellow]")
@@ -246,12 +276,16 @@ class ImprovedVisualizer:
                                 f"[{to_agent.color}]{to_agent.icon}{to_agent.initials}:[/{to_agent.color}] {first_line}"
                             )
                             
-        if not recent:
+        if not visible_messages:
             table.add_row("[dim]No messages yet[/dim]")
+        
+        # Update title with scroll info
+        scroll_info = self.get_chat_scroll_info()
+        title = f"💬 Team Chat ({scroll_info})"
             
         return Panel(
             table,
-            title="💬 Team Chat",
+            title=title,
             border_style="blue",
             box=box.ROUNDED
         )
@@ -455,9 +489,14 @@ class ImprovedVisualizer:
         
         self.messages.append(message)
         
+        # Auto-scroll to bottom when new message arrives
+        self.scroll_chat_to_bottom()
+        
         # Keep only last 20 messages
         if len(self.messages) > 20:
             self.messages = self.messages[-20:]
+            # Adjust scroll position after trimming
+            self.scroll_chat_to_bottom()
             
         # Log event
         self._log_event("message", {
@@ -476,7 +515,9 @@ class ImprovedVisualizer:
         """Export session log to JSON file"""
         if not filename:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            filename = f"ai_team_session_{timestamp}.json"
+            # Save to data/sessions directory
+            os.makedirs("data/sessions", exist_ok=True)
+            filename = f"data/sessions/ai_team_session_{timestamp}.json"
             
         # Create comprehensive log
         export_data = {

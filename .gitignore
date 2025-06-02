@@ -152,3 +152,7 @@ activities.jsonl
 test_cto_agent_live.py
 demo_theatrical_agent.py
 test_simple_collaboration.py
+
+# Session data and reports
+data/sessions/
+data/reports/
