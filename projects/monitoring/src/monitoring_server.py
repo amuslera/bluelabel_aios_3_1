@@ -8,6 +8,8 @@ import asyncio
 import json
 import time
 import weakref
+import logging
+import os
 from typing import Set, Dict, Any, Optional
 from datetime import datetime
 from aiohttp import web
@@ -21,9 +23,36 @@ class MonitoringServer:
         self.app = web.Application()
         self.websockets: Set[weakref.ref] = set()
         self.activity_store = ActivityStore()
+        self.logger = self.setup_logging()
         self.setup_routes()
         self.setup_cors()
         
+    def setup_logging(self) -> logging.Logger:
+        """Setup logging configuration."""
+        logger = logging.getLogger('monitoring_server')
+        logger.setLevel(logging.INFO)
+        
+        if not logger.handlers:
+            log_file = os.getenv('MONITORING_LOG_FILE', 'logs/monitoring.log')
+            os.makedirs(os.path.dirname(log_file), exist_ok=True)
+            
+            file_handler = logging.FileHandler(log_file)
+            file_handler.setLevel(logging.INFO)
+            
+            console_handler = logging.StreamHandler()
+            console_handler.setLevel(logging.ERROR)
+            
+            formatter = logging.Formatter(
+                '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+            )
+            file_handler.setFormatter(formatter)
+            console_handler.setFormatter(formatter)
+            
+            logger.addHandler(file_handler)
+            logger.addHandler(console_handler)
+        
+        return logger
+    
     def setup_routes(self):
         """Configure server routes."""
         # WebSocket endpoint
@@ -71,10 +100,10 @@ class MonitoringServer:
                     data = json.loads(msg.data)
                     await self.handle_ws_message(data, ws)
                 elif msg.type == aiohttp.WSMsgType.ERROR:
-                    print(f'WebSocket error: {ws.exception()}')
+                    self.logger.error(f'WebSocket error: {ws.exception()}')
                     
         except Exception as e:
-            print(f"WebSocket handler error: {e}")
+            self.logger.error(f"WebSocket handler error: {e}")
         finally:
             self.websockets.discard(ws_ref)
             
@@ -117,7 +146,17 @@ class MonitoringServer:
     
     def run(self):
         """Start the server."""
-        web.run_app(self.app, host='0.0.0.0', port=self.port)
+        print(f"🚀 Monitoring Server starting on port {self.port}")
+        print(f"📝 Logs: logs/monitoring.log")
+        self.logger.info(f"Monitoring Server starting on port {self.port}")
+        
+        # Suppress aiohttp access logs to prevent stdout flooding
+        web.run_app(
+            self.app, 
+            host='0.0.0.0', 
+            port=self.port,
+            access_log=None  # Disable access logging
+        )
 
 
 class ActivityStore:
@@ -159,5 +198,4 @@ class ActivityStore:
 
 if __name__ == '__main__':
     server = MonitoringServer()
-    print(f"Starting monitoring server on port {server.port}...")
     server.run()

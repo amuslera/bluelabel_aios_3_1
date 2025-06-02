@@ -1,0 +1,38 @@
+{
+  "prerequisites": {
+    "status": "passed",
+    "checks": {
+      "python_version": true,
+      "src_directory": true,
+      "tests_directory": true,
+      "monitoring_code": true,
+      "control_center_code": true
+    },
+    "message": "All prerequisites met"
+  },
+  "unit_tests": {
+    "status": "failed",
+    "error": "cannot import name 'run_manual_tests' from 'test_agent_coordination' (/Users/arielmuslera/Development/Projects/bluelabel-AIOSv3.1/tests/unit/test_agent_coordination.py)",
+    "message": "Unit tests failed"
+  },
+  "integration_tests": {
+    "status": "skipped",
+    "message": "Monitoring server not available",
+    "recommendation": "Start monitoring server: python projects/monitoring/src/enhanced_monitoring_server.py"
+  },
+  "performance_tests": {
+    "status": "failed",
+    "error": "1 validation error for Task\ntype\n  Input should be 'code_review', 'code_generation', 'bug_fix', 'refactoring', 'testing', 'documentation', 'system_design', 'tech_decision', 'architecture_review', 'performance_analysis', 'deployment', 'monitoring_setup', 'infrastructure', 'ci_cd', 'requirements_analysis', 'risk_assessment', 'feasibility_study', 'agent_collaboration', 'status_report', 'knowledge_sharing', 'general', 'research' or 'planning' [type=enum, input_value='performance', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.11/v/enum",
+    "message": "Performance tests failed"
+  },
+  "summary": {
+    "overall_status": "FAILED",
+    "grade": "F",
+    "tests_passed": 0,
+    "tests_skipped": 1,
+    "tests_failed": 2,
+    "tests_total": 3,
+    "success_rate": 0.0
+  },
+  "end_time": "2025-06-02T01:47:39.945321"
+}

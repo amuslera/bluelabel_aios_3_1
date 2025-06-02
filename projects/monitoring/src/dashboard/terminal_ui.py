@@ -6,6 +6,8 @@ Following junior developer practices with clear documentation.
 """
 
 import asyncio
+import logging
+import os
 from datetime import datetime
 from typing import Dict, List, Any
 import json
@@ -34,6 +36,7 @@ class MonitoringDashboard:
         self.tasks = {}
         self.activities = []
         self.running = True
+        self.logger = self.setup_logging()
         
         # Layout setup
         self.layout = Layout()
@@ -49,7 +52,28 @@ class MonitoringDashboard:
             Layout(name="tasks", ratio=1)
         )
         
-        print("Dashboard initialized")
+        self.logger.info("Dashboard initialized")
+    
+    def setup_logging(self) -> logging.Logger:
+        """Setup logging to prevent stdout interference."""
+        logger = logging.getLogger('monitoring_dashboard')
+        logger.setLevel(logging.INFO)
+        
+        if not logger.handlers:
+            log_file = os.getenv('DASHBOARD_LOG_FILE', 'logs/dashboard.log')
+            os.makedirs(os.path.dirname(log_file), exist_ok=True)
+            
+            file_handler = logging.FileHandler(log_file)
+            file_handler.setLevel(logging.INFO)
+            
+            # NO console handler to prevent stdout pollution
+            formatter = logging.Formatter(
+                '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+            )
+            file_handler.setFormatter(formatter)
+            logger.addHandler(file_handler)
+        
+        return logger
     
     def create_header(self) -> Panel:
         """Create header panel."""
@@ -176,11 +200,21 @@ class MonitoringDashboard:
     
     async def run(self):
         """Run the dashboard."""
-        with Live(self.layout, refresh_per_second=2, screen=True):
-            while self.running:
-                await self.load_data()
-                await self.update_display()
-                await asyncio.sleep(1)
+        # Suppress Rich's internal debugging and coordinate output
+        try:
+            with Live(
+                self.layout, 
+                refresh_per_second=2, 
+                screen=True,
+                console=Console(stderr=True)  # Route to stderr to avoid stdout pollution
+            ):
+                while self.running:
+                    await self.load_data()
+                    await self.update_display()
+                    await asyncio.sleep(1)
+        except Exception as e:
+            self.logger.error(f"Dashboard error: {e}")
+            # Don't print to stdout
 
 
 async def main():
@@ -188,9 +222,13 @@ async def main():
     dashboard = MonitoringDashboard()
     
     try:
+        print("🚀 Starting monitoring dashboard...")
+        print("📊 Dashboard logs: logs/dashboard.log")
+        print("Press Ctrl+C to stop")
         await dashboard.run()
     except KeyboardInterrupt:
-        print("\nDashboard stopped")
+        dashboard.logger.info("Dashboard stopped by user")
+        print("\n✅ Dashboard stopped")
 
 
 if __name__ == "__main__":

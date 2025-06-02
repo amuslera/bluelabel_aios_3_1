@@ -17,6 +17,7 @@ from .base import (
     ProviderHealthStatus,
 )
 from .claude import ClaudeProvider, ClaudeConfig
+from .openai import OpenAIProvider, OpenAIConfig
 from .local import LocalProvider, LocalConfig
 
 __all__ = [
@@ -33,6 +34,8 @@ __all__ = [
     # Provider implementations
     "ClaudeProvider",
     "ClaudeConfig",
+    "OpenAIProvider",
+    "OpenAIConfig",
     "LocalProvider",
     "LocalConfig",
 ]

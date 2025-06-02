@@ -15,6 +15,7 @@ import time
 import weakref
 import hashlib
 import secrets
+import logging
 from typing import Set, Dict, Any, Optional
 from datetime import datetime, timedelta
 from aiohttp import web, WSMsgType
@@ -94,8 +95,39 @@ class EnhancedMonitoringServer:
         self.setup_routes()
         self.setup_cors()
         
-        print(f"Master API Key: {self.master_api_key}")
+        self.logger = self.setup_logging()
+        self.logger.info(f"Master API Key: {self.master_api_key}")
         
+    def setup_logging(self) -> logging.Logger:
+        """Setup logging configuration to prevent stdout flooding."""
+        logger = logging.getLogger('enhanced_monitoring_server')
+        logger.setLevel(logging.INFO)
+        
+        # Only add handler if none exists
+        if not logger.handlers:
+            # File handler for logs
+            log_file = os.getenv('MONITORING_LOG_FILE', 'logs/monitoring.log')
+            os.makedirs(os.path.dirname(log_file), exist_ok=True)
+            
+            file_handler = logging.FileHandler(log_file)
+            file_handler.setLevel(logging.INFO)
+            
+            # Console handler for critical errors only
+            console_handler = logging.StreamHandler()
+            console_handler.setLevel(logging.ERROR)
+            
+            # Formatter
+            formatter = logging.Formatter(
+                '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+            )
+            file_handler.setFormatter(formatter)
+            console_handler.setFormatter(formatter)
+            
+            logger.addHandler(file_handler)
+            logger.addHandler(console_handler)
+        
+        return logger
+    
     def generate_api_key(self) -> str:
         """Generate a secure API key."""
         return f"aios_{secrets.token_urlsafe(32)}"
@@ -197,11 +229,11 @@ class EnhancedMonitoringServer:
                             'message': 'Invalid JSON'
                         })
                 elif msg.type == WSMsgType.ERROR:
-                    print(f'WebSocket error: {ws.exception()}')
+                    self.logger.error(f'WebSocket error: {ws.exception()}')
                     break
                     
         except Exception as e:
-            print(f"WebSocket handler error: {e}")
+            self.logger.error(f"WebSocket handler error: {e}")
             try:
                 await ws.send_json({
                     'type': 'error',
@@ -569,7 +601,7 @@ class EnhancedMonitoringServer:
         """)
         await self.db.db.commit()
         
-        print("✅ Database initialized")
+        self.logger.info("Database initialized")
     
     async def start_server(self):
         """Start the server with initialization."""
@@ -578,20 +610,26 @@ class EnhancedMonitoringServer:
         await runner.setup()
         site = web.TCPSite(runner, '0.0.0.0', self.port)
         await site.start()
-        print(f"✅ Server running on http://0.0.0.0:{self.port}")
+        self.logger.info(f"Server running on http://0.0.0.0:{self.port}")
         
         # Keep running
         try:
             await asyncio.Event().wait()
         except KeyboardInterrupt:
-            print("Shutting down...")
+            self.logger.info("Shutting down...")
             await runner.cleanup()
     
     def run(self):
         """Start the enhanced server."""
+        # Only show startup info, suppress verbose output
         print(f"🚀 Enhanced Monitoring Server starting on port {self.port}")
-        print(f"🔑 Master API Key: {self.master_api_key}")
         print(f"📊 Rate limit: {self.rate_limit} requests/minute")
+        print(f"📝 Logs: logs/monitoring.log")
+        
+        # Log detailed info to file
+        self.logger.info(f"Enhanced Monitoring Server starting on port {self.port}")
+        self.logger.info(f"Master API Key: {self.master_api_key}")
+        self.logger.info(f"Rate limit: {self.rate_limit} requests/minute")
         
         asyncio.run(self.start_server())
 

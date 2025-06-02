@@ -1,0 +1,37 @@
+{
+  "prerequisites": {
+    "status": "passed",
+    "checks": {
+      "python_version": true,
+      "src_directory": true,
+      "tests_directory": true,
+      "monitoring_code": true,
+      "control_center_code": true
+    },
+    "message": "All prerequisites met"
+  },
+  "unit_tests": {
+    "status": "failed",
+    "error": "No module named 'psutil'",
+    "message": "Unit tests failed"
+  },
+  "integration_tests": {
+    "status": "failed",
+    "error": "No module named 'aiohttp'",
+    "message": "Integration tests failed"
+  },
+  "performance_tests": {
+    "status": "skipped",
+    "message": "Skipped due to integration test failures"
+  },
+  "summary": {
+    "overall_status": "FAILED",
+    "grade": "F",
+    "tests_passed": 0,
+    "tests_skipped": 1,
+    "tests_failed": 2,
+    "tests_total": 3,
+    "success_rate": 0.0
+  },
+  "end_time": "2025-06-02T01:47:16.568216"
+}

@@ -26,12 +26,13 @@ AIOSv3.1 uses a modular, event-driven microservices architecture where specializ
 ┌─────────────────────────────────────────────────────────────┐
 │                     AGENT LAYER                              │
 │  ┌─────────────┐  ┌──────────────┐  ┌─────────────────┐   │
-│  │  CTO Agent  │  │   Frontend   │  │    Backend      │   │
+│  │PROJECT CTO* │  │   Frontend   │  │    Backend      │   │
 │  │   (Sarah)   │  │Agent (Alex)  │  │ Agent (Marcus)  │   │
 │  ├─────────────┤  ├──────────────┤  ├─────────────────┤   │
 │  │  QA Agent   │  │    DevOps    │  │   Specialist    │   │
 │  │   (Sam)     │  │Agent (Jordan)│  │     Agents      │   │
 │  └─────────────┘  └──────────────┘  └─────────────────┘   │
+│  * Currently handled by Platform CTO (Claude Code)           │
 └─────────────────────────────────────────────────────────────┘
                               │
 ┌─────────────────────────────────────────────────────────────┐
@@ -50,6 +51,37 @@ AIOSv3.1 uses a modular, event-driven microservices architecture where specializ
 │  └─────────────┘  └──────────────┘  └─────────────────┘   │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+## 🎭 Leadership Hierarchy
+
+### Hierarchical CTO Structure
+**Decision**: Two-tier CTO architecture separating platform from project concerns
+
+**Roles**:
+1. **Platform CTO (Claude Code - Current Instance)**
+   - Owns and maintains the AI agent platform infrastructure
+   - Makes platform-level architectural decisions
+   - Implements core agent capabilities and frameworks
+   - Manages orchestration and coordination systems
+   - Ensures agents have necessary tools and integrations
+
+2. **Project CTO (Sarah Kim - Future Agent)**
+   - Leads specific software development projects
+   - Breaks down requirements into agent tasks
+   - Coordinates specialist agents on deliverables
+   - Makes project-specific technical decisions
+   - Interfaces with humans on project needs
+
+**Current Implementation**:
+- Platform CTO (this Claude instance) temporarily handles both roles
+- This dual-role approach allows us to learn what works before implementing Sarah
+- All documentation clearly indicates when acting as Platform vs Project CTO
+
+**Benefits**:
+- Clear separation of concerns
+- No role conflicts or redundant decision-making
+- Platform stability while projects iterate
+- Natural escalation path for decisions
 
 ## 🏗️ Core Architectural Decisions
 
