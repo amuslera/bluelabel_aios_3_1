@@ -106,18 +106,22 @@ uvicorn api.main:app --reload
 
 ```
 bluelabel-aios-3-1/
-├── agents/          # Agent implementations
-├── api/             # REST API
-├── core/            # Core platform components
+├── src/             # Core source code
+│   ├── agents/      # Agent implementations
+│   ├── api/         # REST API
+│   ├── core/        # Core platform components
+│   └── orchestration/ # Task orchestration
+├── projects/        # Completed feature projects
+│   ├── control_center/
+│   └── monitoring/
 ├── config/          # Configuration files
 ├── infrastructure/  # Docker/K8s files
 ├── tests/           # Test suite
 ├── scripts/         # Utility scripts
-├── docs/            # Documentation
-│   ├── architecture/
-│   ├── development/
-│   ├── planning/
-│   └── vision/
+├── templates/       # Reusable templates
+├── standards/       # Coding standards
+├── sprints/         # Sprint planning & history
+├── docs/            # Additional documentation
 └── archive/         # Previous prototypes and demos
 ```
 

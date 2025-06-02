@@ -6,7 +6,7 @@ import pytest
 from unittest.mock import AsyncMock, MagicMock, patch
 from datetime import datetime, timedelta
 
-from agents.base.types import (
+from src.agents.base.types import (
     AgentHealth,
     AgentMetadata,
     AgentState,
@@ -15,9 +15,9 @@ from agents.base.types import (
     RegistrationRequest,
     TaskType,
 )
-from agents.base.exceptions import AgentRegistrationError, DependencyError
-from core.orchestration.registry import AgentRegistry
-from core.orchestration.discovery import AgentDiscovery
+from src.agents.base.exceptions import AgentRegistrationError, DependencyError
+from src.core.orchestration.registry import AgentRegistry
+from src.core.orchestration.discovery import AgentDiscovery
 
 
 @pytest.fixture

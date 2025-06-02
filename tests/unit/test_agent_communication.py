@@ -7,7 +7,7 @@ import asyncio
 from unittest.mock import AsyncMock, MagicMock
 from datetime import datetime, timedelta
 
-from agents.base.communication import (
+from src.agents.base.communication import (
     AgentCommunicationInterface,
     AgentCommunicationMessage,
     MessageType,
@@ -15,9 +15,9 @@ from agents.base.communication import (
     ConversationThread,
     PendingRequest,
 )
-from agents.base.types import AgentType, TaskType
-from agents.base.exceptions import AgentCommunicationError, TaskTimeoutError
-from core.messaging.agent_router import AgentMessageRouter
+from src.agents.base.types import AgentType, TaskType
+from src.agents.base.exceptions import AgentCommunicationError, TaskTimeoutError
+from src.core.messaging.agent_router import AgentMessageRouter
 
 
 @pytest.fixture
@@ -342,7 +342,7 @@ class TestAgentCommunicationInterface:
         communication_interface.register_handler(MessageType.REQUEST, test_handler)
         
         # Create mock AgentMessage
-        from core.messaging.queue import AgentMessage
+        from src.core.messaging.queue import AgentMessage
         agent_message = AgentMessage(
             envelope={"sender_id": "sender-agent"},
             payload=sample_message.model_dump(),
@@ -559,7 +559,7 @@ class TestAgentMessageRouter:
     async def test_direct_message_routing(self, agent_router, mock_registry):
         """Test direct message routing to specific agent."""
         # Mock healthy agent
-        from agents.base.types import AgentHealth, AgentState
+        from src.agents.base.types import AgentHealth, AgentState
         
         mock_health = AgentHealth(
             agent_id="target-agent",

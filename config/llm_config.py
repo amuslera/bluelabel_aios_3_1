@@ -7,8 +7,8 @@ Provides configuration for LLM providers and routing strategies.
 import os
 from typing import Dict, Any, List
 
-from core.routing.providers.claude import ClaudeConfig
-from core.routing.router import RoutingStrategy
+from src.core.routing.providers.claude import ClaudeConfig
+from src.core.routing.router import RoutingStrategy
 
 
 def get_claude_config() -> ClaudeConfig:

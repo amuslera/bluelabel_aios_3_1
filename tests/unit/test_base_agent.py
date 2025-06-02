@@ -7,9 +7,9 @@ from unittest.mock import AsyncMock, MagicMock
 from datetime import datetime
 from typing import Any
 
-from agents.base.agent import BaseAgent, Task, TaskResult, AgentConfig
-from agents.base.types import AgentType, TaskType, Priority, AgentState
-from agents.base.exceptions import AgentInitializationError, TaskExecutionError
+from src.agents.base.agent import BaseAgent, Task, TaskResult, AgentConfig
+from src.agents.base.types import AgentType, TaskType, Priority, AgentState
+from src.agents.base.exceptions import AgentInitializationError, TaskExecutionError
 
 
 class TestAgent(BaseAgent):
@@ -289,7 +289,7 @@ class TestAgentExceptions:
 
     def test_agent_error_creation(self):
         """Test basic AgentError creation."""
-        from agents.base.exceptions import AgentError
+        from src.agents.base.exceptions import AgentError
         
         error = AgentError("Test error", agent_id="test-123", error_code="TEST_ERROR")
         
@@ -299,7 +299,7 @@ class TestAgentExceptions:
 
     def test_agent_error_to_dict(self):
         """Test AgentError serialization."""
-        from agents.base.exceptions import AgentError
+        from src.agents.base.exceptions import AgentError
         
         error = AgentError("Test error", agent_id="test-123")
         error_dict = error.to_dict()
@@ -310,7 +310,7 @@ class TestAgentExceptions:
 
     def test_error_classification(self):
         """Test error severity and retry classification."""
-        from agents.base.exceptions import (
+        from src.agents.base.exceptions import (
             get_error_severity,
             is_retryable_error,
             TaskValidationError,

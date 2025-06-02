@@ -10,8 +10,8 @@ from typing import Any
 import pytest
 from dotenv import load_dotenv
 
-from agents.specialists.cto_agent import CTOAgent
-from core.routing.router import LLMRouter
+from src.agents.specialists.cto_agent import CTOAgent
+from src.core.routing.router import LLMRouter
 
 # Load test environment variables
 load_dotenv()
