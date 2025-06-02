@@ -6,7 +6,8 @@ Defines agent lifecycle states, types, capabilities, and metadata schemas.
 
 from datetime import datetime
 from enum import Enum
-from typing import Any, Optional
+from typing import Any, Dict, Optional
+import uuid
 
 from pydantic import BaseModel, Field
 
@@ -52,6 +53,7 @@ class TaskType(Enum):
 
     # Architecture tasks
     SYSTEM_DESIGN = "system_design"
+    DATABASE_DESIGN = "database_design"
     TECH_DECISION = "tech_decision"
     ARCHITECTURE_REVIEW = "architecture_review"
     PERFORMANCE_ANALYSIS = "performance_analysis"
@@ -78,7 +80,7 @@ class TaskType(Enum):
     PLANNING = "planning"
 
 
-class Priority(Enum):
+class TaskPriority(Enum):
     """Task priority levels."""
 
     CRITICAL = 1
@@ -86,6 +88,24 @@ class Priority(Enum):
     MEDIUM = 5
     LOW = 8
     BACKGROUND = 10
+
+
+# Backwards compatibility alias
+Priority = TaskPriority
+
+
+class Task(BaseModel):
+    """Represents a task that can be assigned to an agent."""
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    type: TaskType
+    priority: TaskPriority = TaskPriority.MEDIUM
+    description: str
+    data: Dict[str, Any] = Field(default_factory=dict)
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    assigned_to: Optional[str] = None
+    deadline: Optional[datetime] = None
+    dependencies: list[str] = Field(default_factory=list)
+    metadata: Dict[str, Any] = Field(default_factory=dict)
 
 
 class AgentCapability(BaseModel):
@@ -212,7 +232,7 @@ DEFAULT_CAPABILITIES = {
         AgentCapability(
             name="Database Design",
             description="Design and optimize database schemas",
-            task_types=[TaskType.SYSTEM_DESIGN, TaskType.PERFORMANCE_ANALYSIS],
+            task_types=[TaskType.DATABASE_DESIGN, TaskType.SYSTEM_DESIGN, TaskType.PERFORMANCE_ANALYSIS],
             complexity_range=(4, 9),
         ),
     ],
