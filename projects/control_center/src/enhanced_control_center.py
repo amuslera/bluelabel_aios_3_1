@@ -17,6 +17,11 @@ from textual.reactive import reactive
 from textual.message import Message
 from textual.timer import Timer
 
+from agent_widgets import (
+    DetailedAgentStatus, EnhancedAgentOrchestra, 
+    SystemHealthDashboard, PerformanceTrends
+)
+
 @dataclass
 class AgentStatus:
     """Agent status information."""
@@ -284,6 +289,99 @@ class EnhancedControlCenter(App):
         color: $text;
         padding: 0 1;
     }
+    
+    /* Enhanced agent widgets styling */
+    .agent-card {
+        border: solid $primary;
+        padding: 1;
+        margin: 1;
+        width: 1fr;
+        height: auto;
+    }
+    
+    .agent-header {
+        text-style: bold;
+        margin-bottom: 1;
+    }
+    
+    .metric {
+        margin: 0 1;
+        text-align: center;
+    }
+    
+    .capabilities {
+        color: $text-muted;
+        margin-top: 1;
+    }
+    
+    .header-row {
+        height: 3;
+        align: center middle;
+    }
+    
+    .action-buttons {
+        dock: bottom;
+        height: 3;
+        align: center middle;
+    }
+    
+    .metrics-row {
+        height: 5;
+        margin: 1 0;
+    }
+    
+    .metric-box {
+        border: solid $accent;
+        padding: 1;
+        margin: 0 1;
+        text-align: center;
+    }
+    
+    .big-number {
+        text-style: bold;
+        color: $primary;
+        text-align: center;
+    }
+    
+    .metric-label {
+        color: $text-muted;
+        text-align: center;
+    }
+    
+    .status-indicators {
+        margin: 1 0;
+        height: 1;
+    }
+    
+    .section-title {
+        text-style: bold;
+        margin: 1 0;
+    }
+    
+    .alerts {
+        height: 4;
+        background: $surface;
+        border: solid $warning;
+        padding: 1;
+    }
+    
+    .chart-container {
+        border: solid $accent;
+        padding: 1;
+        margin: 1 0;
+    }
+    
+    .chart-title {
+        text-style: bold;
+        color: $secondary;
+        margin-bottom: 1;
+    }
+    
+    .empty-state {
+        color: $text-muted;
+        text-align: center;
+        margin: 2;
+    }
     """
     
     BINDINGS = [
@@ -312,10 +410,10 @@ class EnhancedControlCenter(App):
         yield ConnectionStatus(id="connection-status")
         yield Header(show_clock=True)
         yield Container(
-            AgentOrchestra(id="agents"),
+            EnhancedAgentOrchestra(id="agents"),
             ActivityMonitor(id="monitor"),
             TaskManager(id="tasks"),
-            SystemMetrics(id="metrics"),
+            SystemHealthDashboard(id="metrics"),
         )
         yield Footer()
     
@@ -379,16 +477,27 @@ class EnhancedControlCenter(App):
             # Update agent status if activity is from an agent
             agent_id = activity.get('agent_id')
             if agent_id:
-                agent_orchestra = self.query_one("#agents", AgentOrchestra)
-                agent_status = AgentStatus(
+                agent_orchestra = self.query_one("#agents", EnhancedAgentOrchestra)
+                
+                # Create detailed agent status from activity
+                metadata = activity.get('metadata', {})
+                detailed_status = DetailedAgentStatus(
                     id=agent_id,
                     name=activity.get('agent_name', 'Unknown'),
+                    role=metadata.get('role', 'Agent'),
                     status=activity.get('status', 'active'),
-                    current_task=activity.get('current_task', ''),
+                    current_task=activity.get('current_task', activity.get('message', '')),
+                    task_progress=metadata.get('progress', 0.0),
                     last_seen=activity.get('stored_at', ''),
-                    activities_count=activity.get('activities_count', 0)
+                    total_activities=metadata.get('total_activities', 0),
+                    success_rate=metadata.get('success_rate', 0.0),
+                    avg_response_time=metadata.get('avg_response_time', 0.0),
+                    capabilities=metadata.get('capabilities', []),
+                    health_score=metadata.get('health_score', 1.0),
+                    tasks_completed=metadata.get('tasks_completed', 0),
+                    tasks_failed=metadata.get('tasks_failed', 0)
                 )
-                agent_orchestra.update_agent(agent_status)
+                agent_orchestra.update_agent(detailed_status)
         
         elif msg_type == 'connection':
             # Connection status update
