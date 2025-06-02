@@ -85,14 +85,29 @@ This document defines the standardized development process for AIOSv3.1, ensurin
 **Repository Cleanup & Sync Checklist:**
 - [ ] Commit all sprint work with conventional commit messages
 - [ ] Push all local changes to remote repository
-- [ ] Delete merged feature branches locally and remotely
-- [ ] Clean up orphaned branches (`git branch -d` and `git push origin --delete`)
-- [ ] Archive or remove unused demo files and temporary artifacts
-- [ ] Organize documentation files into proper directories
-- [ ] Remove duplicate or outdated files
-- [ ] Verify `.gitignore` is properly excluding build artifacts
-- [ ] Run `git gc` to clean up repository database
-- [ ] Validate repository structure and file organization
+- [ ] **Branch Management:**
+  - [ ] List all branches (`git branch -a`) and identify orphaned branches
+  - [ ] Decide on merge vs delete for each orphaned branch (ask if unsure)
+  - [ ] Delete merged feature branches locally (`git branch -d branch_name`)
+  - [ ] Delete remote tracking branches (`git push origin --delete branch_name`)
+  - [ ] Clean up remote tracking references (`git remote prune origin`)
+- [ ] **File Organization & Cleanup:**
+  - [ ] Archive historical/reference .md files to `/archive/` folder
+  - [ ] Remove temporary demo files and test artifacts no longer needed
+  - [ ] Delete duplicate or outdated files (check dates and relevance)
+  - [ ] Organize documentation files into proper directories
+  - [ ] Clean up root directory clutter (move files to appropriate subdirectories)
+  - [ ] Review and clean `/demos/`, `/tests/`, `/docs/` directories
+- [ ] **Repository Hygiene:**
+  - [ ] Verify `.gitignore` is properly excluding build artifacts and temp files
+  - [ ] Remove any committed files that should be in `.gitignore`
+  - [ ] Run `git gc` to clean up repository database and optimize storage
+  - [ ] Validate final repository structure follows project standards
+- [ ] **Remote Synchronization:**
+  - [ ] Pull latest changes from remote to ensure sync (`git pull origin main`)
+  - [ ] Push all local commits to remote (`git push origin main`)
+  - [ ] Verify remote repository reflects current state
+  - [ ] Clean up any remote artifacts or outdated releases if applicable
 
 **Quality Assurance Checklist:**
 - [ ] Run linting and formatting tools (`ruff`, `mypy`, etc.)
