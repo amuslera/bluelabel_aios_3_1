@@ -1,0 +1,654 @@
+{
+  "session_info": {
+    "start_time": "2025-06-02T11:18:52.955972",
+    "end_time": "2025-06-02T11:19:26.031715",
+    "agents": [
+      {
+        "name": "Marcus Chen",
+        "role": "Backend Engineer",
+        "total_actions": 6
+      },
+      {
+        "name": "Emily Rodriguez",
+        "role": "Frontend Engineer",
+        "total_actions": 5
+      },
+      {
+        "name": "Alex Thompson",
+        "role": "QA Engineer",
+        "total_actions": 8
+      },
+      {
+        "name": "Jordan Kim",
+        "role": "DevOps Engineer",
+        "total_actions": 4
+      }
+    ]
+  },
+  "final_metrics": {
+    "lines_written": 120,
+    "tests_passed": 32,
+    "bugs_found": 1,
+    "deployments": 1
+  },
+  "final_workflow": [
+    {
+      "name": "Planning",
+      "completed": true
+    },
+    {
+      "name": "Development",
+      "completed": true
+    },
+    {
+      "name": "Testing",
+      "completed": true
+    },
+    {
+      "name": "Deployment",
+      "completed": true
+    }
+  ],
+  "events": [
+    {
+      "timestamp": "2025-06-02T11:18:52.955972",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Marcus Chen",
+        "activity": "idle",
+        "description": "Ready for interactive sprint",
+        "progress": 0
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:18:52.955985",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Emily Rodriguez",
+        "activity": "idle",
+        "description": "Ready for interactive sprint",
+        "progress": 0
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:18:52.955988",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Alex Thompson",
+        "activity": "idle",
+        "description": "Ready for interactive sprint",
+        "progress": 0
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:18:52.955990",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Jordan Kim",
+        "activity": "idle",
+        "description": "Ready for interactive sprint",
+        "progress": 0
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:18:54.960865",
+      "event_type": "message",
+      "data": {
+        "from": "System",
+        "to": "Team",
+        "content": "\ud83c\udfaf Interactive Demo: Real-time E-Commerce Authentication",
+        "type": "announcement"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:18:54.960874",
+      "event_type": "message",
+      "data": {
+        "from": "Marcus Chen",
+        "to": "Team",
+        "content": "I'll handle the backend API architecture and JWT implementation",
+        "type": "planning"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:18:54.960878",
+      "event_type": "message",
+      "data": {
+        "from": "Emily Rodriguez",
+        "to": "Team",
+        "content": "I'll create the React frontend with accessibility features",
+        "type": "planning"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:18:54.960882",
+      "event_type": "message",
+      "data": {
+        "from": "Alex Thompson",
+        "to": "Team",
+        "content": "I'll focus on security testing and performance validation",
+        "type": "planning"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:18:54.960888",
+      "event_type": "message",
+      "data": {
+        "from": "Jordan Kim",
+        "to": "Team",
+        "content": "I'll set up CI/CD pipelines and Kubernetes deployment",
+        "type": "planning"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:18:54.960891",
+      "event_type": "workflow_update",
+      "data": {
+        "name": "Interactive Sprint",
+        "items": [
+          {
+            "name": "Planning",
+            "completed": true
+          },
+          {
+            "name": "Development",
+            "completed": false
+          },
+          {
+            "name": "Testing",
+            "completed": false
+          },
+          {
+            "name": "Deployment",
+            "completed": false
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:18:57.983339",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Marcus Chen",
+        "activity": "coding",
+        "description": "Setting up FastAPI project structure",
+        "progress": 20
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:18:59.991864",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Marcus Chen",
+        "activity": "coding",
+        "description": "Implementing JWT authentication service",
+        "progress": 40
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:19:01.992677",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Emily Rodriguez",
+        "activity": "coding",
+        "description": "Creating React authentication components",
+        "progress": 30
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:19:03.994377",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Marcus Chen",
+        "activity": "coding",
+        "description": "Adding OAuth2 social login integration",
+        "progress": 60
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:19:03.994402",
+      "event_type": "message",
+      "data": {
+        "from": "Marcus Chen",
+        "to": "Emily Rodriguez",
+        "content": "OAuth2 endpoints ready - check /api/auth/oauth for specs",
+        "type": "handoff"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:19:05.994905",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Emily Rodriguez",
+        "activity": "coding",
+        "description": "Building responsive login/signup forms",
+        "progress": 50
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:19:08.000621",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Alex Thompson",
+        "activity": "coding",
+        "description": "Setting up automated test framework",
+        "progress": 35
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:19:10.006498",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Marcus Chen",
+        "activity": "coding",
+        "description": "Implementing password reset functionality",
+        "progress": 80
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:19:12.007800",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Emily Rodriguez",
+        "activity": "coding",
+        "description": "Adding form validation and error handling",
+        "progress": 70
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:19:12.007830",
+      "event_type": "message",
+      "data": {
+        "from": "Emily Rodriguez",
+        "to": "Alex Thompson",
+        "content": "Frontend validation complete - ready for security testing",
+        "type": "handoff"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:19:14.009705",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Alex Thompson",
+        "activity": "coding",
+        "description": "Running security vulnerability scans",
+        "progress": 60
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:19:14.009775",
+      "event_type": "message",
+      "data": {
+        "from": "Alex Thompson",
+        "to": "Team",
+        "content": "Found 2 potential security issues - creating tickets",
+        "type": "alert"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:19:16.018130",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Jordan Kim",
+        "activity": "coding",
+        "description": "Configuring Docker and Kubernetes manifests",
+        "progress": 45
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:19:18.026109",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Alex Thompson",
+        "activity": "testing",
+        "description": "Running comprehensive test suite",
+        "progress": 75
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:19:20.027568",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Alex Thompson",
+        "activity": "testing",
+        "description": "Performing load testing",
+        "progress": 85
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:19:22.028953",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Alex Thompson",
+        "activity": "testing",
+        "description": "Security penetration testing",
+        "progress": 95
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:19:24.029485",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Alex Thompson",
+        "activity": "testing",
+        "description": "Generating test coverage report",
+        "progress": 100
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:19:26.031595",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Jordan Kim",
+        "activity": "deploying",
+        "description": "Deploying to production with blue-green strategy",
+        "progress": 100
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:19:26.031628",
+      "event_type": "message",
+      "data": {
+        "from": "Jordan Kim",
+        "to": "Team",
+        "content": "\ud83c\udf89 Production deployment successful! All health checks passing",
+        "type": "success"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:19:26.031635",
+      "event_type": "message",
+      "data": {
+        "from": "System",
+        "to": "Team",
+        "content": "\ud83c\udf89 Interactive sprint complete! All objectives achieved",
+        "type": "announcement"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:19:26.031649",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Marcus Chen",
+        "activity": "idle",
+        "description": "Interactive sprint completed! \ud83c\udf89",
+        "progress": 100
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:19:26.031652",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Emily Rodriguez",
+        "activity": "idle",
+        "description": "Interactive sprint completed! \ud83c\udf89",
+        "progress": 100
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:19:26.031654",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Alex Thompson",
+        "activity": "idle",
+        "description": "Interactive sprint completed! \ud83c\udf89",
+        "progress": 100
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:19:26.031662",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Jordan Kim",
+        "activity": "idle",
+        "description": "Interactive sprint completed! \ud83c\udf89",
+        "progress": 100
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:19:26.031670",
+      "event_type": "workflow_update",
+      "data": {
+        "name": "Interactive Sprint",
+        "items": [
+          {
+            "name": "Planning",
+            "completed": true
+          },
+          {
+            "name": "Development",
+            "completed": true
+          },
+          {
+            "name": "Testing",
+            "completed": true
+          },
+          {
+            "name": "Deployment",
+            "completed": true
+          }
+        ]
+      }
+    }
+  ],
+  "chat_history": [
+    {
+      "from": "System",
+      "to": "Team",
+      "content": "\ud83c\udfaf Interactive Demo: Real-time E-Commerce Authentication",
+      "type": "announcement",
+      "timestamp": "2025-06-02T11:18:54.960849"
+    },
+    {
+      "from": "Marcus Chen",
+      "to": "Team",
+      "content": "I'll handle the backend API architecture and JWT implementation",
+      "type": "planning",
+      "timestamp": "2025-06-02T11:18:54.960873"
+    },
+    {
+      "from": "Emily Rodriguez",
+      "to": "Team",
+      "content": "I'll create the React frontend with accessibility features",
+      "type": "planning",
+      "timestamp": "2025-06-02T11:18:54.960877"
+    },
+    {
+      "from": "Alex Thompson",
+      "to": "Team",
+      "content": "I'll focus on security testing and performance validation",
+      "type": "planning",
+      "timestamp": "2025-06-02T11:18:54.960881"
+    },
+    {
+      "from": "Jordan Kim",
+      "to": "Team",
+      "content": "I'll set up CI/CD pipelines and Kubernetes deployment",
+      "type": "planning",
+      "timestamp": "2025-06-02T11:18:54.960888"
+    },
+    {
+      "from": "Marcus Chen",
+      "to": "Emily Rodriguez",
+      "content": "OAuth2 endpoints ready - check /api/auth/oauth for specs",
+      "type": "handoff",
+      "timestamp": "2025-06-02T11:19:03.994389"
+    },
+    {
+      "from": "Emily Rodriguez",
+      "to": "Alex Thompson",
+      "content": "Frontend validation complete - ready for security testing",
+      "type": "handoff",
+      "timestamp": "2025-06-02T11:19:12.007813"
+    },
+    {
+      "from": "Alex Thompson",
+      "to": "Team",
+      "content": "Found 2 potential security issues - creating tickets",
+      "type": "alert",
+      "timestamp": "2025-06-02T11:19:14.009753"
+    },
+    {
+      "from": "Jordan Kim",
+      "to": "Team",
+      "content": "\ud83c\udf89 Production deployment successful! All health checks passing",
+      "type": "success",
+      "timestamp": "2025-06-02T11:19:26.031610"
+    },
+    {
+      "from": "System",
+      "to": "Team",
+      "content": "\ud83c\udf89 Interactive sprint complete! All objectives achieved",
+      "type": "announcement",
+      "timestamp": "2025-06-02T11:19:26.031633"
+    }
+  ],
+  "agent_action_history": {
+    "Marcus Chen": [
+      {
+        "activity_type": "idle",
+        "description": "Ready for interactive sprint",
+        "progress": 0,
+        "timestamp": "2025-06-02T11:18:52.955855"
+      },
+      {
+        "activity_type": "coding",
+        "description": "Setting up FastAPI project structure",
+        "progress": 20,
+        "timestamp": "2025-06-02T11:18:57.971832"
+      },
+      {
+        "activity_type": "coding",
+        "description": "Implementing JWT authentication service",
+        "progress": 40,
+        "timestamp": "2025-06-02T11:18:59.991856"
+      },
+      {
+        "activity_type": "coding",
+        "description": "Adding OAuth2 social login integration",
+        "progress": 60,
+        "timestamp": "2025-06-02T11:19:03.994370"
+      },
+      {
+        "activity_type": "coding",
+        "description": "Implementing password reset functionality",
+        "progress": 80,
+        "timestamp": "2025-06-02T11:19:10.006491"
+      },
+      {
+        "activity_type": "idle",
+        "description": "Interactive sprint completed! \ud83c\udf89",
+        "progress": 100,
+        "timestamp": "2025-06-02T11:19:26.031642"
+      }
+    ],
+    "Emily Rodriguez": [
+      {
+        "activity_type": "idle",
+        "description": "Ready for interactive sprint",
+        "progress": 0,
+        "timestamp": "2025-06-02T11:18:52.955983"
+      },
+      {
+        "activity_type": "coding",
+        "description": "Creating React authentication components",
+        "progress": 30,
+        "timestamp": "2025-06-02T11:19:01.992607"
+      },
+      {
+        "activity_type": "coding",
+        "description": "Building responsive login/signup forms",
+        "progress": 50,
+        "timestamp": "2025-06-02T11:19:05.994896"
+      },
+      {
+        "activity_type": "coding",
+        "description": "Adding form validation and error handling",
+        "progress": 70,
+        "timestamp": "2025-06-02T11:19:12.007791"
+      },
+      {
+        "activity_type": "idle",
+        "description": "Interactive sprint completed! \ud83c\udf89",
+        "progress": 100,
+        "timestamp": "2025-06-02T11:19:26.031651"
+      }
+    ],
+    "Alex Thompson": [
+      {
+        "activity_type": "idle",
+        "description": "Ready for interactive sprint",
+        "progress": 0,
+        "timestamp": "2025-06-02T11:18:52.955986"
+      },
+      {
+        "activity_type": "coding",
+        "description": "Setting up automated test framework",
+        "progress": 35,
+        "timestamp": "2025-06-02T11:19:08.000133"
+      },
+      {
+        "activity_type": "coding",
+        "description": "Running security vulnerability scans",
+        "progress": 60,
+        "timestamp": "2025-06-02T11:19:14.009624"
+      },
+      {
+        "activity_type": "testing",
+        "description": "Running comprehensive test suite",
+        "progress": 75,
+        "timestamp": "2025-06-02T11:19:18.026098"
+      },
+      {
+        "activity_type": "testing",
+        "description": "Performing load testing",
+        "progress": 85,
+        "timestamp": "2025-06-02T11:19:20.027557"
+      },
+      {
+        "activity_type": "testing",
+        "description": "Security penetration testing",
+        "progress": 95,
+        "timestamp": "2025-06-02T11:19:22.028946"
+      },
+      {
+        "activity_type": "testing",
+        "description": "Generating test coverage report",
+        "progress": 100,
+        "timestamp": "2025-06-02T11:19:24.029472"
+      },
+      {
+        "activity_type": "idle",
+        "description": "Interactive sprint completed! \ud83c\udf89",
+        "progress": 100,
+        "timestamp": "2025-06-02T11:19:26.031653"
+      }
+    ],
+    "Jordan Kim": [
+      {
+        "activity_type": "idle",
+        "description": "Ready for interactive sprint",
+        "progress": 0,
+        "timestamp": "2025-06-02T11:18:52.955989"
+      },
+      {
+        "activity_type": "coding",
+        "description": "Configuring Docker and Kubernetes manifests",
+        "progress": 45,
+        "timestamp": "2025-06-02T11:19:16.016969"
+      },
+      {
+        "activity_type": "deploying",
+        "description": "Deploying to production with blue-green strategy",
+        "progress": 100,
+        "timestamp": "2025-06-02T11:19:26.031567"
+      },
+      {
+        "activity_type": "idle",
+        "description": "Interactive sprint completed! \ud83c\udf89",
+        "progress": 100,
+        "timestamp": "2025-06-02T11:19:26.031661"
+      }
+    ]
+  }
+}

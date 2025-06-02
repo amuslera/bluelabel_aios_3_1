@@ -1,0 +1,155 @@
+{
+  "session_info": {
+    "start_time": "2025-06-02T10:46:32.483249",
+    "end_time": "2025-06-02T10:46:32.483272",
+    "agents": [
+      {
+        "name": "Marcus Chen",
+        "role": "Backend Engineer",
+        "total_actions": 1
+      },
+      {
+        "name": "Emily Rodriguez",
+        "role": "Frontend Engineer",
+        "total_actions": 1
+      },
+      {
+        "name": "Alex Thompson",
+        "role": "QA Engineer",
+        "total_actions": 0
+      },
+      {
+        "name": "Jordan Kim",
+        "role": "DevOps Engineer",
+        "total_actions": 0
+      }
+    ]
+  },
+  "final_metrics": {
+    "lines_written": 245,
+    "tests_passed": 32,
+    "bugs_found": 3,
+    "deployments": 1
+  },
+  "final_workflow": [
+    {
+      "name": "Planning",
+      "completed": true
+    },
+    {
+      "name": "Development",
+      "completed": true
+    },
+    {
+      "name": "Testing",
+      "completed": true
+    },
+    {
+      "name": "Deployment",
+      "completed": true
+    }
+  ],
+  "events": [
+    {
+      "timestamp": "2025-06-02T10:46:32.483249",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Marcus Chen",
+        "activity": "coding",
+        "description": "Building authentication API",
+        "progress": 100
+      }
+    },
+    {
+      "timestamp": "2025-06-02T10:46:32.483255",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Emily Rodriguez",
+        "activity": "coding",
+        "description": "Creating React components",
+        "progress": 100
+      }
+    },
+    {
+      "timestamp": "2025-06-02T10:46:32.483258",
+      "event_type": "message",
+      "data": {
+        "from": "System",
+        "to": "Team",
+        "content": "Sprint completed!",
+        "type": "announcement"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T10:46:32.483260",
+      "event_type": "message",
+      "data": {
+        "from": "Marcus Chen",
+        "to": "Emily Rodriguez",
+        "content": "API ready!",
+        "type": "handoff"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T10:46:32.483261",
+      "event_type": "workflow_update",
+      "data": {
+        "name": "Test Sprint",
+        "items": [
+          {
+            "name": "Planning",
+            "completed": true
+          },
+          {
+            "name": "Development",
+            "completed": true
+          },
+          {
+            "name": "Testing",
+            "completed": true
+          },
+          {
+            "name": "Deployment",
+            "completed": true
+          }
+        ]
+      }
+    }
+  ],
+  "agent_action_history": {
+    "Marcus Chen": [
+      {
+        "activity_type": "coding",
+        "description": "Building authentication API",
+        "progress": 100,
+        "timestamp": "2025-06-02T10:46:32.483241"
+      }
+    ],
+    "Emily Rodriguez": [
+      {
+        "activity_type": "coding",
+        "description": "Creating React components",
+        "progress": 100,
+        "timestamp": "2025-06-02T10:46:32.483254"
+      }
+    ],
+    "Alex Thompson": [],
+    "Jordan Kim": []
+  },
+  "message_history": [
+    {
+      "from": "System",
+      "to": "Team",
+      "content": "Sprint completed!",
+      "type": "announcement",
+      "timestamp": "2025-06-02T10:46:32.483257"
+    },
+    {
+      "from": "Marcus Chen",
+      "to": "Emily Rodriguez",
+      "content": "API ready!",
+      "type": "handoff",
+      "timestamp": "2025-06-02T10:46:32.483259"
+    }
+  ]
+}

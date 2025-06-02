@@ -1,0 +1,368 @@
+{
+  "session_info": {
+    "start_time": "2025-06-02T11:22:01.468361",
+    "end_time": "2025-06-02T11:22:01.471059",
+    "agents": [
+      {
+        "name": "Marcus Chen",
+        "role": "Backend Engineer",
+        "total_actions": 1
+      },
+      {
+        "name": "Emily Rodriguez",
+        "role": "Frontend Engineer",
+        "total_actions": 1
+      },
+      {
+        "name": "Alex Thompson",
+        "role": "QA Engineer",
+        "total_actions": 1
+      },
+      {
+        "name": "Jordan Kim",
+        "role": "DevOps Engineer",
+        "total_actions": 1
+      }
+    ]
+  },
+  "final_metrics": {
+    "lines_written": 0,
+    "tests_passed": 0,
+    "bugs_found": 0,
+    "deployments": 0
+  },
+  "final_workflow": [],
+  "events": [
+    {
+      "timestamp": "2025-06-02T11:22:01.468361",
+      "event_type": "message",
+      "data": {
+        "from": "Marcus Chen",
+        "to": "Team",
+        "content": "\ud83d\ude80 Starting backend development",
+        "type": "chat"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:22:01.468367",
+      "event_type": "message",
+      "data": {
+        "from": "Emily Rodriguez",
+        "to": "Team",
+        "content": "\ud83c\udfa8 Creating beautiful UI components",
+        "type": "chat"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:22:01.468369",
+      "event_type": "message",
+      "data": {
+        "from": "Alex Thompson",
+        "to": "Team",
+        "content": "\ud83d\udd0d Running comprehensive test suite",
+        "type": "chat"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:22:01.468371",
+      "event_type": "message",
+      "data": {
+        "from": "Jordan Kim",
+        "to": "Team",
+        "content": "\u2699\ufe0f Setting up CI/CD pipeline",
+        "type": "chat"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:22:01.468373",
+      "event_type": "message",
+      "data": {
+        "from": "Marcus Chen",
+        "to": "Emily Rodriguez",
+        "content": "API endpoints ready for frontend integration",
+        "type": "chat"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:22:01.468375",
+      "event_type": "message",
+      "data": {
+        "from": "Emily Rodriguez",
+        "to": "Marcus Chen",
+        "content": "Perfect! Frontend consuming your APIs now",
+        "type": "chat"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:22:01.468377",
+      "event_type": "message",
+      "data": {
+        "from": "Alex Thompson",
+        "to": "Team",
+        "content": "Found 2 security issues - creating tickets",
+        "type": "chat"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:22:01.468378",
+      "event_type": "message",
+      "data": {
+        "from": "Jordan Kim",
+        "to": "Team",
+        "content": "Production deployment successful! \ud83c\udf89",
+        "type": "chat"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:22:01.468380",
+      "event_type": "message",
+      "data": {
+        "from": "System",
+        "to": "Team",
+        "content": "\ud83c\udfaf Sprint completed successfully!",
+        "type": "chat"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:22:01.468382",
+      "event_type": "message",
+      "data": {
+        "from": "Marcus Chen",
+        "to": "Team",
+        "content": "Great teamwork everyone! \ud83d\udc4f",
+        "type": "chat"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:22:01.468384",
+      "event_type": "message",
+      "data": {
+        "from": "Emily Rodriguez",
+        "to": "Team",
+        "content": "UI performance optimized \u26a1",
+        "type": "chat"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:22:01.468386",
+      "event_type": "message",
+      "data": {
+        "from": "Alex Thompson",
+        "to": "Team",
+        "content": "All tests passing \u2705",
+        "type": "chat"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:22:01.468387",
+      "event_type": "message",
+      "data": {
+        "from": "Jordan Kim",
+        "to": "Team",
+        "content": "Monitoring shows healthy metrics \ud83d\udcca",
+        "type": "chat"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:22:01.468389",
+      "event_type": "message",
+      "data": {
+        "from": "System",
+        "to": "Team",
+        "content": "\ud83d\udcc8 Sprint metrics: 95% success rate",
+        "type": "chat"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:22:01.468390",
+      "event_type": "message",
+      "data": {
+        "from": "Marcus Chen",
+        "to": "Team",
+        "content": "Ready for next sprint planning",
+        "type": "chat"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:22:01.468722",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Marcus Chen",
+        "activity": "coding",
+        "description": "Implementing authentication service",
+        "progress": 85
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:22:01.468726",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Emily Rodriguez",
+        "activity": "designing",
+        "description": "Creating responsive login forms",
+        "progress": 92
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:22:01.468728",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Alex Thompson",
+        "activity": "testing",
+        "description": "Running security vulnerability scans",
+        "progress": 78
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:22:01.468729",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Jordan Kim",
+        "activity": "deploying",
+        "description": "Blue-green production deployment",
+        "progress": 100
+      }
+    }
+  ],
+  "chat_history": [
+    {
+      "from": "Marcus Chen",
+      "to": "Team",
+      "content": "\ud83d\ude80 Starting backend development",
+      "type": "chat",
+      "timestamp": "2025-06-02T11:22:01.468336"
+    },
+    {
+      "from": "Emily Rodriguez",
+      "to": "Team",
+      "content": "\ud83c\udfa8 Creating beautiful UI components",
+      "type": "chat",
+      "timestamp": "2025-06-02T11:22:01.468366"
+    },
+    {
+      "from": "Alex Thompson",
+      "to": "Team",
+      "content": "\ud83d\udd0d Running comprehensive test suite",
+      "type": "chat",
+      "timestamp": "2025-06-02T11:22:01.468368"
+    },
+    {
+      "from": "Jordan Kim",
+      "to": "Team",
+      "content": "\u2699\ufe0f Setting up CI/CD pipeline",
+      "type": "chat",
+      "timestamp": "2025-06-02T11:22:01.468370"
+    },
+    {
+      "from": "Marcus Chen",
+      "to": "Emily Rodriguez",
+      "content": "API endpoints ready for frontend integration",
+      "type": "chat",
+      "timestamp": "2025-06-02T11:22:01.468372"
+    },
+    {
+      "from": "Emily Rodriguez",
+      "to": "Marcus Chen",
+      "content": "Perfect! Frontend consuming your APIs now",
+      "type": "chat",
+      "timestamp": "2025-06-02T11:22:01.468374"
+    },
+    {
+      "from": "Alex Thompson",
+      "to": "Team",
+      "content": "Found 2 security issues - creating tickets",
+      "type": "chat",
+      "timestamp": "2025-06-02T11:22:01.468376"
+    },
+    {
+      "from": "Jordan Kim",
+      "to": "Team",
+      "content": "Production deployment successful! \ud83c\udf89",
+      "type": "chat",
+      "timestamp": "2025-06-02T11:22:01.468378"
+    },
+    {
+      "from": "System",
+      "to": "Team",
+      "content": "\ud83c\udfaf Sprint completed successfully!",
+      "type": "chat",
+      "timestamp": "2025-06-02T11:22:01.468379"
+    },
+    {
+      "from": "Marcus Chen",
+      "to": "Team",
+      "content": "Great teamwork everyone! \ud83d\udc4f",
+      "type": "chat",
+      "timestamp": "2025-06-02T11:22:01.468381"
+    },
+    {
+      "from": "Emily Rodriguez",
+      "to": "Team",
+      "content": "UI performance optimized \u26a1",
+      "type": "chat",
+      "timestamp": "2025-06-02T11:22:01.468383"
+    },
+    {
+      "from": "Alex Thompson",
+      "to": "Team",
+      "content": "All tests passing \u2705",
+      "type": "chat",
+      "timestamp": "2025-06-02T11:22:01.468385"
+    },
+    {
+      "from": "Jordan Kim",
+      "to": "Team",
+      "content": "Monitoring shows healthy metrics \ud83d\udcca",
+      "type": "chat",
+      "timestamp": "2025-06-02T11:22:01.468387"
+    },
+    {
+      "from": "System",
+      "to": "Team",
+      "content": "\ud83d\udcc8 Sprint metrics: 95% success rate",
+      "type": "chat",
+      "timestamp": "2025-06-02T11:22:01.468388"
+    },
+    {
+      "from": "Marcus Chen",
+      "to": "Team",
+      "content": "Ready for next sprint planning",
+      "type": "chat",
+      "timestamp": "2025-06-02T11:22:01.468390"
+    }
+  ],
+  "agent_action_history": {
+    "Marcus Chen": [
+      {
+        "activity_type": "coding",
+        "description": "Implementing authentication service",
+        "progress": 85,
+        "timestamp": "2025-06-02T11:22:01.468708"
+      }
+    ],
+    "Emily Rodriguez": [
+      {
+        "activity_type": "designing",
+        "description": "Creating responsive login forms",
+        "progress": 92,
+        "timestamp": "2025-06-02T11:22:01.468725"
+      }
+    ],
+    "Alex Thompson": [
+      {
+        "activity_type": "testing",
+        "description": "Running security vulnerability scans",
+        "progress": 78,
+        "timestamp": "2025-06-02T11:22:01.468727"
+      }
+    ],
+    "Jordan Kim": [
+      {
+        "activity_type": "deploying",
+        "description": "Blue-green production deployment",
+        "progress": 100,
+        "timestamp": "2025-06-02T11:22:01.468729"
+      }
+    ]
+  }
+}

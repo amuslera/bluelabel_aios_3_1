@@ -1,0 +1,381 @@
+{
+  "session_info": {
+    "start_time": "2025-06-02T11:21:17.223635",
+    "end_time": "2025-06-02T11:21:17.224880",
+    "agents": [
+      {
+        "name": "Marcus Chen",
+        "role": "Backend Engineer",
+        "total_actions": 5
+      },
+      {
+        "name": "Emily Rodriguez",
+        "role": "Frontend Engineer",
+        "total_actions": 0
+      },
+      {
+        "name": "Alex Thompson",
+        "role": "QA Engineer",
+        "total_actions": 0
+      },
+      {
+        "name": "Jordan Kim",
+        "role": "DevOps Engineer",
+        "total_actions": 0
+      }
+    ]
+  },
+  "final_metrics": {
+    "lines_written": 0,
+    "tests_passed": 0,
+    "bugs_found": 0,
+    "deployments": 0
+  },
+  "final_workflow": [],
+  "events": [
+    {
+      "timestamp": "2025-06-02T11:21:17.223635",
+      "event_type": "message",
+      "data": {
+        "from": "Agent 1",
+        "to": "Team",
+        "content": "This is test message number 1 with some longer content to test wrapping",
+        "type": "test"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:21:17.223640",
+      "event_type": "message",
+      "data": {
+        "from": "Agent 2",
+        "to": "Team",
+        "content": "This is test message number 2 with some longer content to test wrapping",
+        "type": "test"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:21:17.223642",
+      "event_type": "message",
+      "data": {
+        "from": "Agent 3",
+        "to": "Team",
+        "content": "This is test message number 3 with some longer content to test wrapping",
+        "type": "test"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:21:17.223644",
+      "event_type": "message",
+      "data": {
+        "from": "Agent 4",
+        "to": "Team",
+        "content": "This is test message number 4 with some longer content to test wrapping",
+        "type": "test"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:21:17.223646",
+      "event_type": "message",
+      "data": {
+        "from": "Agent 1",
+        "to": "Team",
+        "content": "This is test message number 5 with some longer content to test wrapping",
+        "type": "test"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:21:17.223648",
+      "event_type": "message",
+      "data": {
+        "from": "Agent 2",
+        "to": "Team",
+        "content": "This is test message number 6 with some longer content to test wrapping",
+        "type": "test"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:21:17.223650",
+      "event_type": "message",
+      "data": {
+        "from": "Agent 3",
+        "to": "Team",
+        "content": "This is test message number 7 with some longer content to test wrapping",
+        "type": "test"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:21:17.223652",
+      "event_type": "message",
+      "data": {
+        "from": "Agent 4",
+        "to": "Team",
+        "content": "This is test message number 8 with some longer content to test wrapping",
+        "type": "test"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:21:17.223654",
+      "event_type": "message",
+      "data": {
+        "from": "Agent 1",
+        "to": "Team",
+        "content": "This is test message number 9 with some longer content to test wrapping",
+        "type": "test"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:21:17.223656",
+      "event_type": "message",
+      "data": {
+        "from": "Agent 2",
+        "to": "Team",
+        "content": "This is test message number 10 with some longer content to test wrapping",
+        "type": "test"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:21:17.223658",
+      "event_type": "message",
+      "data": {
+        "from": "Agent 3",
+        "to": "Team",
+        "content": "This is test message number 11 with some longer content to test wrapping",
+        "type": "test"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:21:17.223659",
+      "event_type": "message",
+      "data": {
+        "from": "Agent 4",
+        "to": "Team",
+        "content": "This is test message number 12 with some longer content to test wrapping",
+        "type": "test"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:21:17.223661",
+      "event_type": "message",
+      "data": {
+        "from": "Agent 1",
+        "to": "Team",
+        "content": "This is test message number 13 with some longer content to test wrapping",
+        "type": "test"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:21:17.223663",
+      "event_type": "message",
+      "data": {
+        "from": "Agent 2",
+        "to": "Team",
+        "content": "This is test message number 14 with some longer content to test wrapping",
+        "type": "test"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:21:17.223665",
+      "event_type": "message",
+      "data": {
+        "from": "Agent 3",
+        "to": "Team",
+        "content": "This is test message number 15 with some longer content to test wrapping",
+        "type": "test"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:21:17.224481",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Marcus Chen",
+        "activity": "coding",
+        "description": "Setting up project structure",
+        "progress": 25
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:21:17.224484",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Marcus Chen",
+        "activity": "coding",
+        "description": "Implementing core features",
+        "progress": 50
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:21:17.224486",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Marcus Chen",
+        "activity": "coding",
+        "description": "Adding error handling",
+        "progress": 75
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:21:17.224488",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Marcus Chen",
+        "activity": "coding",
+        "description": "Writing documentation",
+        "progress": 90
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:21:17.224489",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Marcus Chen",
+        "activity": "coding",
+        "description": "Code review and cleanup",
+        "progress": 100
+      }
+    }
+  ],
+  "chat_history": [
+    {
+      "from": "Agent 1",
+      "to": "Team",
+      "content": "This is test message number 1 with some longer content to test wrapping",
+      "type": "test",
+      "timestamp": "2025-06-02T11:21:17.223628"
+    },
+    {
+      "from": "Agent 2",
+      "to": "Team",
+      "content": "This is test message number 2 with some longer content to test wrapping",
+      "type": "test",
+      "timestamp": "2025-06-02T11:21:17.223638"
+    },
+    {
+      "from": "Agent 3",
+      "to": "Team",
+      "content": "This is test message number 3 with some longer content to test wrapping",
+      "type": "test",
+      "timestamp": "2025-06-02T11:21:17.223641"
+    },
+    {
+      "from": "Agent 4",
+      "to": "Team",
+      "content": "This is test message number 4 with some longer content to test wrapping",
+      "type": "test",
+      "timestamp": "2025-06-02T11:21:17.223643"
+    },
+    {
+      "from": "Agent 1",
+      "to": "Team",
+      "content": "This is test message number 5 with some longer content to test wrapping",
+      "type": "test",
+      "timestamp": "2025-06-02T11:21:17.223645"
+    },
+    {
+      "from": "Agent 2",
+      "to": "Team",
+      "content": "This is test message number 6 with some longer content to test wrapping",
+      "type": "test",
+      "timestamp": "2025-06-02T11:21:17.223647"
+    },
+    {
+      "from": "Agent 3",
+      "to": "Team",
+      "content": "This is test message number 7 with some longer content to test wrapping",
+      "type": "test",
+      "timestamp": "2025-06-02T11:21:17.223649"
+    },
+    {
+      "from": "Agent 4",
+      "to": "Team",
+      "content": "This is test message number 8 with some longer content to test wrapping",
+      "type": "test",
+      "timestamp": "2025-06-02T11:21:17.223651"
+    },
+    {
+      "from": "Agent 1",
+      "to": "Team",
+      "content": "This is test message number 9 with some longer content to test wrapping",
+      "type": "test",
+      "timestamp": "2025-06-02T11:21:17.223653"
+    },
+    {
+      "from": "Agent 2",
+      "to": "Team",
+      "content": "This is test message number 10 with some longer content to test wrapping",
+      "type": "test",
+      "timestamp": "2025-06-02T11:21:17.223655"
+    },
+    {
+      "from": "Agent 3",
+      "to": "Team",
+      "content": "This is test message number 11 with some longer content to test wrapping",
+      "type": "test",
+      "timestamp": "2025-06-02T11:21:17.223657"
+    },
+    {
+      "from": "Agent 4",
+      "to": "Team",
+      "content": "This is test message number 12 with some longer content to test wrapping",
+      "type": "test",
+      "timestamp": "2025-06-02T11:21:17.223659"
+    },
+    {
+      "from": "Agent 1",
+      "to": "Team",
+      "content": "This is test message number 13 with some longer content to test wrapping",
+      "type": "test",
+      "timestamp": "2025-06-02T11:21:17.223660"
+    },
+    {
+      "from": "Agent 2",
+      "to": "Team",
+      "content": "This is test message number 14 with some longer content to test wrapping",
+      "type": "test",
+      "timestamp": "2025-06-02T11:21:17.223662"
+    },
+    {
+      "from": "Agent 3",
+      "to": "Team",
+      "content": "This is test message number 15 with some longer content to test wrapping",
+      "type": "test",
+      "timestamp": "2025-06-02T11:21:17.223664"
+    }
+  ],
+  "agent_action_history": {
+    "Marcus Chen": [
+      {
+        "activity_type": "coding",
+        "description": "Setting up project structure",
+        "progress": 25,
+        "timestamp": "2025-06-02T11:21:17.224479"
+      },
+      {
+        "activity_type": "coding",
+        "description": "Implementing core features",
+        "progress": 50,
+        "timestamp": "2025-06-02T11:21:17.224483"
+      },
+      {
+        "activity_type": "coding",
+        "description": "Adding error handling",
+        "progress": 75,
+        "timestamp": "2025-06-02T11:21:17.224485"
+      },
+      {
+        "activity_type": "coding",
+        "description": "Writing documentation",
+        "progress": 90,
+        "timestamp": "2025-06-02T11:21:17.224487"
+      },
+      {
+        "activity_type": "coding",
+        "description": "Code review and cleanup",
+        "progress": 100,
+        "timestamp": "2025-06-02T11:21:17.224489"
+      }
+    ],
+    "Emily Rodriguez": [],
+    "Alex Thompson": [],
+    "Jordan Kim": []
+  }
+}
