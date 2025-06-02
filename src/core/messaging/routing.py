@@ -8,7 +8,7 @@ efficient agent-to-agent communication.
 import logging
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any
+from typing import Any, Dict, Optional
 
 import yaml
 
@@ -46,7 +46,7 @@ class ExchangeConfig:
     type: str  # direct, topic, fanout, headers
     durable: bool = True
     auto_delete: bool = False
-    arguments: dict[str, Any] | None = None
+    arguments: Optional[Dict[str, Any]] = None
 
 
 @dataclass

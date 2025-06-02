@@ -11,6 +11,7 @@ import time
 from contextlib import asynccontextmanager
 from datetime import datetime
 from enum import Enum
+from typing import Optional
 
 from fastapi import Response
 from prometheus_client import (
@@ -219,7 +220,7 @@ class AIOSv3Metrics:
         agent_id: str,
         operation_type: str,
         status: str = "success",
-        duration: float | None = None,
+        duration: Optional[float] = None,
     ):
         """Track an agent operation."""
         self.agent_operations_total.labels(
@@ -279,7 +280,7 @@ class AIOSv3Metrics:
         bucket: str,
         operation: str,
         status: str = "success",
-        duration: float | None = None,
+        duration: Optional[float] = None,
         bytes_transferred: int | None = None,
     ):
         """Track a storage operation."""

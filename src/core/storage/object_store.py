@@ -14,7 +14,7 @@ import os
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any, BinaryIO
+from typing import Any, BinaryIO, Optional, Dict
 from urllib.parse import urlparse
 
 from minio import Minio
@@ -33,9 +33,9 @@ class StorageMetadata:
     last_modified: datetime
     etag: str
     content_type: str
-    version_id: str | None = None
-    tags: dict[str, str] | None = None
-    user_metadata: dict[str, str] | None = None
+    version_id: Optional[str] = None
+    tags: Optional[Dict[str, str]] = None
+    user_metadata: Optional[Dict[str, str]] = None
 
 
 @dataclass

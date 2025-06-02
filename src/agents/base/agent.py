@@ -11,7 +11,7 @@ import time
 import uuid
 from abc import ABC, abstractmethod
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any, Dict, List, Optional, Set
 
 from pydantic import BaseModel, Field
 
@@ -41,13 +41,13 @@ class Task(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     type: TaskType
     description: str
-    parameters: dict[str, Any] = Field(default_factory=dict)
+    parameters: Dict[str, Any] = Field(default_factory=dict)
     priority: Priority = Priority.MEDIUM
     complexity: int = Field(default=5, ge=1, le=10)
     requires_privacy: bool = False
     created_at: datetime = Field(default_factory=datetime.utcnow)
     deadline: Optional[datetime] = None
-    context: dict[str, Any] = Field(default_factory=dict)
+    context: Dict[str, Any] = Field(default_factory=dict)
     assigned_agent_id: Optional[str] = None
     parent_task_id: Optional[str] = None
 
@@ -126,18 +126,18 @@ class BaseAgent(ABC):
         self.last_heartbeat = datetime.utcnow()
 
         # Task management
-        self.current_tasks: dict[str, Task] = {}
-        self.task_history: list[TaskResult] = []
+        self.current_tasks: Dict[str, Task] = {}
+        self.task_history: List[TaskResult] = []
         self.task_queue: asyncio.Queue = asyncio.Queue()
 
         # Memory and statistics
-        self.memory: dict[str, Any] = {}
+        self.memory: Dict[str, Any] = {}
         self.stats = AgentStats(agent_id=self.id)
         self.error_count = 0
         self.last_error: Optional[str] = None
 
         # Background tasks
-        self._background_tasks: set[asyncio.Task] = set()
+        self._background_tasks: Set[asyncio.Task] = set()
         self._shutdown_event = asyncio.Event()
 
         # Initialize logging for this agent

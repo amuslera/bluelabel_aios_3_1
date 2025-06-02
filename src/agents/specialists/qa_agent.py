@@ -242,7 +242,7 @@ class QAAgent(MonitoringAgent):
         
         # Set up collaboration topics and handlers
         self.collaboration_topics = [
-            f"agent.{self.agent_id}.inbox",
+            f"agent.{self.id}.inbox",
             "qa.code_review",
             "qa.test_results", 
             "qa.quality_metrics",

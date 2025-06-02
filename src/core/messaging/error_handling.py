@@ -11,7 +11,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from enum import Enum
-from typing import Any
+from typing import Any, Optional
 
 from src.core.messaging.queue import AgentMessage, MessageHandler, MessageQueue
 
@@ -53,7 +53,7 @@ class ErrorInfo:
     retry_count: int = 0
     max_retries: int = 3
     retry_strategy: RetryStrategy = RetryStrategy.EXPONENTIAL
-    stack_trace: str | None = None
+    stack_trace: Optional[str] = None
 
 
 @dataclass
