@@ -164,7 +164,20 @@ Building a production-ready, modular AI agent platform that orchestrates special
 4. **Commit regularly** with descriptive messages following conventional commits
 5. **Update documentation** as you implement features
 6. **Run tests** before committing changes
-7. **Update PROJECT_PHASES.md** at the end of each sprint with progress checkmarks (✅/❌)
+
+### Sprint Closeout Routine
+At the end of each sprint:
+1. **Complete sprint documentation** with final status updates
+2. **Update sprint timeline** (`/sprints/SPRINT_TIMELINE.md`)
+3. **Move completed sprint** to `/sprints/completed/` folder
+4. **Sync git repository**:
+   ```bash
+   git add -A
+   git commit -m "feat: Complete Sprint X.Y - [Sprint Name]"
+   git push origin main
+   ```
+5. **Update CURRENT_SPRINT.md** for next sprint planning
+6. **Update this file** with progress and current status
 
 ## Commands to Run
 
