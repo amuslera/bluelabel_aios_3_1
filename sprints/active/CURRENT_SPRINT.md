@@ -1,6 +1,6 @@
 # Sprint "Foundation Completion" - Control Center & Monitoring
 
-**Duration**: December 2024 (1-2 weeks)  
+**Duration**: June 2025 (1-2 weeks)  
 **Sprint Goal**: Complete foundational visibility and control systems  
 **Status**: Planning
 
