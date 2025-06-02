@@ -188,7 +188,7 @@ class SessionMenu:
             menu_content,
             title="Interactive Session Menu",
             border_style="green",
-            box=box.DOUBLE
+            box=box.SQUARE
         )
         
         return menu_panel
@@ -358,7 +358,7 @@ class EnhancedVisualizer:
         return Panel(
             content,
             border_style=agent.color,
-            box=box.ROUNDED,
+            box=box.SQUARE,
             padding=(0, 1)
         )
         
@@ -403,7 +403,7 @@ class EnhancedVisualizer:
             table,
             title=title,
             border_style="blue",
-            box=box.ROUNDED
+            box=box.SQUARE
         )
         
     def render_workflow_panel(self) -> Panel:
@@ -426,7 +426,7 @@ class EnhancedVisualizer:
             content,
             title="📋 Workflow",
             border_style="purple",
-            box=box.ROUNDED
+            box=box.SQUARE
         )
         
     def render_metrics_panel(self) -> Panel:
@@ -444,7 +444,7 @@ class EnhancedVisualizer:
             table,
             title="📊 Metrics",
             border_style="green",
-            box=box.ROUNDED
+            box=box.SQUARE
         )
         
     def render_header(self) -> Panel:
@@ -457,7 +457,7 @@ class EnhancedVisualizer:
         
         return Panel(
             Align.center(header_text),
-            box=box.DOUBLE,
+            box=box.SQUARE,
             border_style="cyan"
         )
         
@@ -468,7 +468,7 @@ class EnhancedVisualizer:
         
         return Panel(
             Align.center(Text(status, style="dim")),
-            box=box.ROUNDED,
+            box=box.SQUARE,
             border_style="dim"
         )
         
@@ -483,7 +483,7 @@ class EnhancedVisualizer:
             session_content,
             title="Session Log",
             border_style="cyan",
-            box=box.ROUNDED
+            box=box.SQUARE
         )
         
         results_content = Text()
@@ -497,7 +497,7 @@ class EnhancedVisualizer:
             results_content,
             title="Sprint Results",
             border_style="yellow",
-            box=box.ROUNDED
+            box=box.SQUARE
         )
         
         export_content = Text()
@@ -515,7 +515,7 @@ class EnhancedVisualizer:
             export_content,
             title="Export Status",
             border_style="magenta",
-            box=box.ROUNDED
+            box=box.SQUARE
         )
         
         columns = Columns([session_panel, results_panel, export_panel], equal=True)
@@ -524,7 +524,7 @@ class EnhancedVisualizer:
             columns,
             title="🎉 Sprint Complete - Session Summary",
             border_style="green",
-            box=box.DOUBLE
+            box=box.SQUARE
         )
         
     def _get_activity_icon(self, activity_type: ActivityType) -> str:

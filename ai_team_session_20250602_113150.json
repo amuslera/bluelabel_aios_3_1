@@ -1,0 +1,1228 @@
+{
+  "session_info": {
+    "start_time": "2025-06-02T11:30:00.215609",
+    "end_time": "2025-06-02T11:31:50.782943",
+    "agents": [
+      {
+        "name": "Marcus Chen",
+        "role": "Backend Engineer",
+        "total_actions": 18
+      },
+      {
+        "name": "Emily Rodriguez",
+        "role": "Frontend Engineer",
+        "total_actions": 10
+      },
+      {
+        "name": "Alex Thompson",
+        "role": "QA Engineer",
+        "total_actions": 9
+      },
+      {
+        "name": "Jordan Kim",
+        "role": "DevOps Engineer",
+        "total_actions": 9
+      }
+    ]
+  },
+  "final_metrics": {
+    "lines_written": 224,
+    "tests_passed": 35,
+    "bugs_found": 4,
+    "deployments": 1
+  },
+  "final_workflow": [
+    {
+      "name": "Requirements & Analysis",
+      "completed": true
+    },
+    {
+      "name": "Architecture Design",
+      "completed": true
+    },
+    {
+      "name": "Backend Development",
+      "completed": true
+    },
+    {
+      "name": "Frontend Development",
+      "completed": true
+    },
+    {
+      "name": "Testing & Quality Assurance",
+      "completed": true
+    },
+    {
+      "name": "Production Deployment",
+      "completed": true
+    }
+  ],
+  "events": [
+    {
+      "timestamp": "2025-06-02T11:30:00.215609",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Marcus Chen",
+        "activity": "idle",
+        "description": "Ready for sprint assignment",
+        "progress": 0
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:00.215615",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Emily Rodriguez",
+        "activity": "idle",
+        "description": "Ready for sprint assignment",
+        "progress": 0
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:00.215617",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Alex Thompson",
+        "activity": "idle",
+        "description": "Ready for sprint assignment",
+        "progress": 0
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:00.215619",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Jordan Kim",
+        "activity": "idle",
+        "description": "Ready for sprint assignment",
+        "progress": 0
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:02.216867",
+      "event_type": "message",
+      "data": {
+        "from": "System",
+        "to": "Team",
+        "content": "\ud83c\udfaf Sprint Goal: Build E-Commerce Authentication System",
+        "type": "announcement"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:02.216873",
+      "event_type": "workflow_update",
+      "data": {
+        "name": "Authentication Sprint",
+        "items": [
+          {
+            "name": "Requirements & Analysis",
+            "completed": false
+          },
+          {
+            "name": "Architecture Design",
+            "completed": false
+          },
+          {
+            "name": "Backend Development",
+            "completed": false
+          },
+          {
+            "name": "Frontend Development",
+            "completed": false
+          },
+          {
+            "name": "Testing & Quality Assurance",
+            "completed": false
+          },
+          {
+            "name": "Production Deployment",
+            "completed": false
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:04.218195",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Marcus Chen",
+        "activity": "thinking",
+        "description": "Gathering authentication requirements",
+        "progress": 20
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:06.219481",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Marcus Chen",
+        "activity": "thinking",
+        "description": "Analyzing security compliance needs",
+        "progress": 40
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:08.220749",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Marcus Chen",
+        "activity": "thinking",
+        "description": "Defining user story acceptance criteria",
+        "progress": 60
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:10.222054",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Marcus Chen",
+        "activity": "thinking",
+        "description": "Documenting API specification",
+        "progress": 80
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:12.223410",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Marcus Chen",
+        "activity": "thinking",
+        "description": "Requirements review and approval",
+        "progress": 100
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:14.224718",
+      "event_type": "message",
+      "data": {
+        "from": "Marcus Chen",
+        "to": "Team",
+        "content": "Requirements complete: JWT auth, OAuth2 social login, MFA support",
+        "type": "status"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:14.224725",
+      "event_type": "workflow_update",
+      "data": {
+        "name": "Authentication Sprint",
+        "items": [
+          {
+            "name": "Requirements & Analysis",
+            "completed": true
+          },
+          {
+            "name": "Architecture Design",
+            "completed": false
+          },
+          {
+            "name": "Backend Development",
+            "completed": false
+          },
+          {
+            "name": "Frontend Development",
+            "completed": false
+          },
+          {
+            "name": "Testing & Quality Assurance",
+            "completed": false
+          },
+          {
+            "name": "Production Deployment",
+            "completed": false
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:16.226070",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Marcus Chen",
+        "activity": "designing",
+        "description": "Designing database schema",
+        "progress": 25
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:18.726470",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Marcus Chen",
+        "activity": "designing",
+        "description": "Planning API endpoint structure",
+        "progress": 50
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:21.228084",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Marcus Chen",
+        "activity": "designing",
+        "description": "Defining security architecture",
+        "progress": 75
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:23.729464",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Marcus Chen",
+        "activity": "designing",
+        "description": "Creating system architecture diagram",
+        "progress": 100
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:26.230741",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Emily Rodriguez",
+        "activity": "designing",
+        "description": "Creating login/signup UI mockups",
+        "progress": 40
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:26.230747",
+      "event_type": "message",
+      "data": {
+        "from": "Emily Rodriguez",
+        "to": "Marcus Chen",
+        "content": "Should we include biometric login option?",
+        "type": "question"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:26.230749",
+      "event_type": "message",
+      "data": {
+        "from": "Marcus Chen",
+        "to": "Emily Rodriguez",
+        "content": "Phase 2 feature - focus on core auth first",
+        "type": "response"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:26.230751",
+      "event_type": "workflow_update",
+      "data": {
+        "name": "Authentication Sprint",
+        "items": [
+          {
+            "name": "Requirements & Analysis",
+            "completed": true
+          },
+          {
+            "name": "Architecture Design",
+            "completed": true
+          },
+          {
+            "name": "Backend Development",
+            "completed": false
+          },
+          {
+            "name": "Frontend Development",
+            "completed": false
+          },
+          {
+            "name": "Testing & Quality Assurance",
+            "completed": false
+          },
+          {
+            "name": "Production Deployment",
+            "completed": false
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:28.232019",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Marcus Chen",
+        "activity": "coding",
+        "description": "Setting up FastAPI project",
+        "progress": 10
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:30.733293",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Marcus Chen",
+        "activity": "coding",
+        "description": "Implementing user model",
+        "progress": 25
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:33.234586",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Marcus Chen",
+        "activity": "coding",
+        "description": "Creating JWT service",
+        "progress": 40
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:35.737903",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Marcus Chen",
+        "activity": "coding",
+        "description": "Building auth endpoints",
+        "progress": 55
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:38.239441",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Marcus Chen",
+        "activity": "coding",
+        "description": "Adding OAuth2 integration",
+        "progress": 70
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:40.740722",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Marcus Chen",
+        "activity": "coding",
+        "description": "Implementing rate limiting",
+        "progress": 85
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:43.242016",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Marcus Chen",
+        "activity": "coding",
+        "description": "Adding comprehensive logging",
+        "progress": 100
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:45.743282",
+      "event_type": "message",
+      "data": {
+        "from": "Marcus Chen",
+        "to": "Emily Rodriguez",
+        "content": "Backend API complete! Swagger docs available at /docs",
+        "type": "handoff"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:45.743286",
+      "event_type": "workflow_update",
+      "data": {
+        "name": "Authentication Sprint",
+        "items": [
+          {
+            "name": "Requirements & Analysis",
+            "completed": true
+          },
+          {
+            "name": "Architecture Design",
+            "completed": true
+          },
+          {
+            "name": "Backend Development",
+            "completed": true
+          },
+          {
+            "name": "Frontend Development",
+            "completed": false
+          },
+          {
+            "name": "Testing & Quality Assurance",
+            "completed": false
+          },
+          {
+            "name": "Production Deployment",
+            "completed": false
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:47.744543",
+      "event_type": "message",
+      "data": {
+        "from": "Emily Rodriguez",
+        "to": "Marcus Chen",
+        "content": "Excellent! Starting React components now",
+        "type": "response"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:47.744553",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Emily Rodriguez",
+        "activity": "coding",
+        "description": "Setting up React TypeScript project",
+        "progress": 15
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:50.245949",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Emily Rodriguez",
+        "activity": "coding",
+        "description": "Creating authentication context",
+        "progress": 30
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:52.747313",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Emily Rodriguez",
+        "activity": "coding",
+        "description": "Building login form component",
+        "progress": 45
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:55.248600",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Emily Rodriguez",
+        "activity": "coding",
+        "description": "Implementing signup workflow",
+        "progress": 60
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:30:57.748909",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Emily Rodriguez",
+        "activity": "coding",
+        "description": "Adding form validation",
+        "progress": 75
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:31:00.250309",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Emily Rodriguez",
+        "activity": "coding",
+        "description": "Creating password reset flow",
+        "progress": 90
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:31:02.751635",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Emily Rodriguez",
+        "activity": "coding",
+        "description": "Styling with responsive design",
+        "progress": 100
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:31:05.252941",
+      "event_type": "workflow_update",
+      "data": {
+        "name": "Authentication Sprint",
+        "items": [
+          {
+            "name": "Requirements & Analysis",
+            "completed": true
+          },
+          {
+            "name": "Architecture Design",
+            "completed": true
+          },
+          {
+            "name": "Backend Development",
+            "completed": true
+          },
+          {
+            "name": "Frontend Development",
+            "completed": true
+          },
+          {
+            "name": "Testing & Quality Assurance",
+            "completed": false
+          },
+          {
+            "name": "Production Deployment",
+            "completed": false
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:31:07.254312",
+      "event_type": "message",
+      "data": {
+        "from": "Alex Thompson",
+        "to": "Team",
+        "content": "Beginning comprehensive test suite execution",
+        "type": "status"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:31:07.254329",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Alex Thompson",
+        "activity": "testing",
+        "description": "Setting up test environment",
+        "progress": 12
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:31:09.755663",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Alex Thompson",
+        "activity": "testing",
+        "description": "Writing unit tests for auth logic",
+        "progress": 25
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:31:12.260802",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Alex Thompson",
+        "activity": "testing",
+        "description": "Creating API integration tests",
+        "progress": 40
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:31:14.762353",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Alex Thompson",
+        "activity": "testing",
+        "description": "Testing security vulnerabilities",
+        "progress": 55
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:31:14.762360",
+      "event_type": "message",
+      "data": {
+        "from": "Alex Thompson",
+        "to": "Team",
+        "content": "Security scan found 4 issues: password policy, session timeout, CSRF tokens, input sanitization",
+        "type": "alert"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:31:17.263765",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Alex Thompson",
+        "activity": "testing",
+        "description": "Running cross-browser tests",
+        "progress": 70
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:31:19.765182",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Alex Thompson",
+        "activity": "testing",
+        "description": "Performance and load testing",
+        "progress": 85
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:31:22.269459",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Alex Thompson",
+        "activity": "testing",
+        "description": "Generating test reports",
+        "progress": 100
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:31:24.770996",
+      "event_type": "message",
+      "data": {
+        "from": "Alex Thompson",
+        "to": "Team",
+        "content": "Testing complete! 35 tests passed, 4 security issues documented",
+        "type": "success"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:31:24.771007",
+      "event_type": "workflow_update",
+      "data": {
+        "name": "Authentication Sprint",
+        "items": [
+          {
+            "name": "Requirements & Analysis",
+            "completed": true
+          },
+          {
+            "name": "Architecture Design",
+            "completed": true
+          },
+          {
+            "name": "Backend Development",
+            "completed": true
+          },
+          {
+            "name": "Frontend Development",
+            "completed": true
+          },
+          {
+            "name": "Testing & Quality Assurance",
+            "completed": true
+          },
+          {
+            "name": "Production Deployment",
+            "completed": false
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:31:26.772495",
+      "event_type": "message",
+      "data": {
+        "from": "Jordan Kim",
+        "to": "Team",
+        "content": "Initiating production deployment sequence",
+        "type": "status"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:31:26.772507",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Jordan Kim",
+        "activity": "deploying",
+        "description": "Building production Docker images",
+        "progress": 15
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:31:29.773120",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Jordan Kim",
+        "activity": "deploying",
+        "description": "Running security compliance scans",
+        "progress": 30
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:31:32.774531",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Jordan Kim",
+        "activity": "deploying",
+        "description": "Deploying to staging environment",
+        "progress": 45
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:31:35.775903",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Jordan Kim",
+        "activity": "deploying",
+        "description": "Executing automated smoke tests",
+        "progress": 60
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:31:38.777251",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Jordan Kim",
+        "activity": "deploying",
+        "description": "Configuring CDN and load balancer",
+        "progress": 75
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:31:41.778606",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Jordan Kim",
+        "activity": "deploying",
+        "description": "Blue-green production deployment",
+        "progress": 90
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:31:44.780186",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Jordan Kim",
+        "activity": "deploying",
+        "description": "Monitoring deployment health",
+        "progress": 100
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:31:47.781563",
+      "event_type": "message",
+      "data": {
+        "from": "System",
+        "to": "Team",
+        "content": "\ud83c\udf89 SPRINT COMPLETE! Authentication system live in production!",
+        "type": "announcement"
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:31:47.781581",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Marcus Chen",
+        "activity": "idle",
+        "description": "Sprint completed successfully! \ud83c\udf89",
+        "progress": 100
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:31:47.781584",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Emily Rodriguez",
+        "activity": "idle",
+        "description": "Sprint completed successfully! \ud83c\udf89",
+        "progress": 100
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:31:47.781586",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Alex Thompson",
+        "activity": "idle",
+        "description": "Sprint completed successfully! \ud83c\udf89",
+        "progress": 100
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:31:47.781588",
+      "event_type": "activity_update",
+      "data": {
+        "agent": "Jordan Kim",
+        "activity": "idle",
+        "description": "Sprint completed successfully! \ud83c\udf89",
+        "progress": 100
+      }
+    },
+    {
+      "timestamp": "2025-06-02T11:31:47.781590",
+      "event_type": "workflow_update",
+      "data": {
+        "name": "Authentication Sprint",
+        "items": [
+          {
+            "name": "Requirements & Analysis",
+            "completed": true
+          },
+          {
+            "name": "Architecture Design",
+            "completed": true
+          },
+          {
+            "name": "Backend Development",
+            "completed": true
+          },
+          {
+            "name": "Frontend Development",
+            "completed": true
+          },
+          {
+            "name": "Testing & Quality Assurance",
+            "completed": true
+          },
+          {
+            "name": "Production Deployment",
+            "completed": true
+          }
+        ]
+      }
+    }
+  ],
+  "agent_action_history": {
+    "Marcus Chen": [
+      {
+        "activity_type": "idle",
+        "description": "Ready for sprint assignment",
+        "progress": 0,
+        "timestamp": "2025-06-02T11:30:00.215592"
+      },
+      {
+        "activity_type": "thinking",
+        "description": "Gathering authentication requirements",
+        "progress": 20,
+        "timestamp": "2025-06-02T11:30:04.218175"
+      },
+      {
+        "activity_type": "thinking",
+        "description": "Analyzing security compliance needs",
+        "progress": 40,
+        "timestamp": "2025-06-02T11:30:06.219472"
+      },
+      {
+        "activity_type": "thinking",
+        "description": "Defining user story acceptance criteria",
+        "progress": 60,
+        "timestamp": "2025-06-02T11:30:08.220740"
+      },
+      {
+        "activity_type": "thinking",
+        "description": "Documenting API specification",
+        "progress": 80,
+        "timestamp": "2025-06-02T11:30:10.222044"
+      },
+      {
+        "activity_type": "thinking",
+        "description": "Requirements review and approval",
+        "progress": 100,
+        "timestamp": "2025-06-02T11:30:12.223391"
+      },
+      {
+        "activity_type": "designing",
+        "description": "Designing database schema",
+        "progress": 25,
+        "timestamp": "2025-06-02T11:30:16.226061"
+      },
+      {
+        "activity_type": "designing",
+        "description": "Planning API endpoint structure",
+        "progress": 50,
+        "timestamp": "2025-06-02T11:30:18.726463"
+      },
+      {
+        "activity_type": "designing",
+        "description": "Defining security architecture",
+        "progress": 75,
+        "timestamp": "2025-06-02T11:30:21.228032"
+      },
+      {
+        "activity_type": "designing",
+        "description": "Creating system architecture diagram",
+        "progress": 100,
+        "timestamp": "2025-06-02T11:30:23.729457"
+      },
+      {
+        "activity_type": "coding",
+        "description": "Setting up FastAPI project",
+        "progress": 10,
+        "timestamp": "2025-06-02T11:30:28.232011"
+      },
+      {
+        "activity_type": "coding",
+        "description": "Implementing user model",
+        "progress": 25,
+        "timestamp": "2025-06-02T11:30:30.733285"
+      },
+      {
+        "activity_type": "coding",
+        "description": "Creating JWT service",
+        "progress": 40,
+        "timestamp": "2025-06-02T11:30:33.234578"
+      },
+      {
+        "activity_type": "coding",
+        "description": "Building auth endpoints",
+        "progress": 55,
+        "timestamp": "2025-06-02T11:30:35.737882"
+      },
+      {
+        "activity_type": "coding",
+        "description": "Adding OAuth2 integration",
+        "progress": 70,
+        "timestamp": "2025-06-02T11:30:38.239432"
+      },
+      {
+        "activity_type": "coding",
+        "description": "Implementing rate limiting",
+        "progress": 85,
+        "timestamp": "2025-06-02T11:30:40.740713"
+      },
+      {
+        "activity_type": "coding",
+        "description": "Adding comprehensive logging",
+        "progress": 100,
+        "timestamp": "2025-06-02T11:30:43.242009"
+      },
+      {
+        "activity_type": "idle",
+        "description": "Sprint completed successfully! \ud83c\udf89",
+        "progress": 100,
+        "timestamp": "2025-06-02T11:31:47.781570"
+      }
+    ],
+    "Emily Rodriguez": [
+      {
+        "activity_type": "idle",
+        "description": "Ready for sprint assignment",
+        "progress": 0,
+        "timestamp": "2025-06-02T11:30:00.215613"
+      },
+      {
+        "activity_type": "designing",
+        "description": "Creating login/signup UI mockups",
+        "progress": 40,
+        "timestamp": "2025-06-02T11:30:26.230734"
+      },
+      {
+        "activity_type": "coding",
+        "description": "Setting up React TypeScript project",
+        "progress": 15,
+        "timestamp": "2025-06-02T11:30:47.744550"
+      },
+      {
+        "activity_type": "coding",
+        "description": "Creating authentication context",
+        "progress": 30,
+        "timestamp": "2025-06-02T11:30:50.245926"
+      },
+      {
+        "activity_type": "coding",
+        "description": "Building login form component",
+        "progress": 45,
+        "timestamp": "2025-06-02T11:30:52.747305"
+      },
+      {
+        "activity_type": "coding",
+        "description": "Implementing signup workflow",
+        "progress": 60,
+        "timestamp": "2025-06-02T11:30:55.248593"
+      },
+      {
+        "activity_type": "coding",
+        "description": "Adding form validation",
+        "progress": 75,
+        "timestamp": "2025-06-02T11:30:57.748901"
+      },
+      {
+        "activity_type": "coding",
+        "description": "Creating password reset flow",
+        "progress": 90,
+        "timestamp": "2025-06-02T11:31:00.250283"
+      },
+      {
+        "activity_type": "coding",
+        "description": "Styling with responsive design",
+        "progress": 100,
+        "timestamp": "2025-06-02T11:31:02.751626"
+      },
+      {
+        "activity_type": "idle",
+        "description": "Sprint completed successfully! \ud83c\udf89",
+        "progress": 100,
+        "timestamp": "2025-06-02T11:31:47.781583"
+      }
+    ],
+    "Alex Thompson": [
+      {
+        "activity_type": "idle",
+        "description": "Ready for sprint assignment",
+        "progress": 0,
+        "timestamp": "2025-06-02T11:30:00.215616"
+      },
+      {
+        "activity_type": "testing",
+        "description": "Setting up test environment",
+        "progress": 12,
+        "timestamp": "2025-06-02T11:31:07.254321"
+      },
+      {
+        "activity_type": "testing",
+        "description": "Writing unit tests for auth logic",
+        "progress": 25,
+        "timestamp": "2025-06-02T11:31:09.755656"
+      },
+      {
+        "activity_type": "testing",
+        "description": "Creating API integration tests",
+        "progress": 40,
+        "timestamp": "2025-06-02T11:31:12.260793"
+      },
+      {
+        "activity_type": "testing",
+        "description": "Testing security vulnerabilities",
+        "progress": 55,
+        "timestamp": "2025-06-02T11:31:14.762345"
+      },
+      {
+        "activity_type": "testing",
+        "description": "Running cross-browser tests",
+        "progress": 70,
+        "timestamp": "2025-06-02T11:31:17.263744"
+      },
+      {
+        "activity_type": "testing",
+        "description": "Performance and load testing",
+        "progress": 85,
+        "timestamp": "2025-06-02T11:31:19.765162"
+      },
+      {
+        "activity_type": "testing",
+        "description": "Generating test reports",
+        "progress": 100,
+        "timestamp": "2025-06-02T11:31:22.269384"
+      },
+      {
+        "activity_type": "idle",
+        "description": "Sprint completed successfully! \ud83c\udf89",
+        "progress": 100,
+        "timestamp": "2025-06-02T11:31:47.781585"
+      }
+    ],
+    "Jordan Kim": [
+      {
+        "activity_type": "idle",
+        "description": "Ready for sprint assignment",
+        "progress": 0,
+        "timestamp": "2025-06-02T11:30:00.215618"
+      },
+      {
+        "activity_type": "deploying",
+        "description": "Building production Docker images",
+        "progress": 15,
+        "timestamp": "2025-06-02T11:31:26.772504"
+      },
+      {
+        "activity_type": "deploying",
+        "description": "Running security compliance scans",
+        "progress": 30,
+        "timestamp": "2025-06-02T11:31:29.773111"
+      },
+      {
+        "activity_type": "deploying",
+        "description": "Deploying to staging environment",
+        "progress": 45,
+        "timestamp": "2025-06-02T11:31:32.774512"
+      },
+      {
+        "activity_type": "deploying",
+        "description": "Executing automated smoke tests",
+        "progress": 60,
+        "timestamp": "2025-06-02T11:31:35.775894"
+      },
+      {
+        "activity_type": "deploying",
+        "description": "Configuring CDN and load balancer",
+        "progress": 75,
+        "timestamp": "2025-06-02T11:31:38.777242"
+      },
+      {
+        "activity_type": "deploying",
+        "description": "Blue-green production deployment",
+        "progress": 90,
+        "timestamp": "2025-06-02T11:31:41.778598"
+      },
+      {
+        "activity_type": "deploying",
+        "description": "Monitoring deployment health",
+        "progress": 100,
+        "timestamp": "2025-06-02T11:31:44.780167"
+      },
+      {
+        "activity_type": "idle",
+        "description": "Sprint completed successfully! \ud83c\udf89",
+        "progress": 100,
+        "timestamp": "2025-06-02T11:31:47.781587"
+      }
+    ]
+  },
+  "message_history": [
+    {
+      "from": "System",
+      "to": "Team",
+      "content": "\ud83c\udfaf Sprint Goal: Build E-Commerce Authentication System",
+      "type": "announcement",
+      "timestamp": "2025-06-02T11:30:02.216850"
+    },
+    {
+      "from": "Marcus Chen",
+      "to": "Team",
+      "content": "Requirements complete: JWT auth, OAuth2 social login, MFA support",
+      "type": "status",
+      "timestamp": "2025-06-02T11:30:14.224708"
+    },
+    {
+      "from": "Emily Rodriguez",
+      "to": "Marcus Chen",
+      "content": "Should we include biometric login option?",
+      "type": "question",
+      "timestamp": "2025-06-02T11:30:26.230746"
+    },
+    {
+      "from": "Marcus Chen",
+      "to": "Emily Rodriguez",
+      "content": "Phase 2 feature - focus on core auth first",
+      "type": "response",
+      "timestamp": "2025-06-02T11:30:26.230749"
+    },
+    {
+      "from": "Marcus Chen",
+      "to": "Emily Rodriguez",
+      "content": "Backend API complete! Swagger docs available at /docs",
+      "type": "handoff",
+      "timestamp": "2025-06-02T11:30:45.743277"
+    },
+    {
+      "from": "Emily Rodriguez",
+      "to": "Marcus Chen",
+      "content": "Excellent! Starting React components now",
+      "type": "response",
+      "timestamp": "2025-06-02T11:30:47.744537"
+    },
+    {
+      "from": "Alex Thompson",
+      "to": "Team",
+      "content": "Beginning comprehensive test suite execution",
+      "type": "status",
+      "timestamp": "2025-06-02T11:31:07.254295"
+    },
+    {
+      "from": "Alex Thompson",
+      "to": "Team",
+      "content": "Security scan found 4 issues: password policy, session timeout, CSRF tokens, input sanitization",
+      "type": "alert",
+      "timestamp": "2025-06-02T11:31:14.762359"
+    },
+    {
+      "from": "Alex Thompson",
+      "to": "Team",
+      "content": "Testing complete! 35 tests passed, 4 security issues documented",
+      "type": "success",
+      "timestamp": "2025-06-02T11:31:24.770981"
+    },
+    {
+      "from": "Jordan Kim",
+      "to": "Team",
+      "content": "Initiating production deployment sequence",
+      "type": "status",
+      "timestamp": "2025-06-02T11:31:26.772490"
+    },
+    {
+      "from": "System",
+      "to": "Team",
+      "content": "\ud83c\udf89 SPRINT COMPLETE! Authentication system live in production!",
+      "type": "announcement",
+      "timestamp": "2025-06-02T11:31:47.781555"
+    }
+  ]
+}
