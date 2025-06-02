@@ -3,7 +3,7 @@
 **Current Phase**: Phase 2 - Agent Development  
 **Last Update**: June 2025 - Session 2  
 **Previous Sprint**: Sprint 2.2 - Backend Agent (Marcus Chen) ✅ COMPLETE  
-**Current Sprint**: Sprint 2.3 Planning Phase
+**Current Sprint**: Sprint 2.3 - Frontend Agent (Emily Rodriguez)
 
 ## 🎉 Recently Completed: Sprint 2.2 - Backend Agent
 
@@ -140,4 +140,6 @@ To start Sprint 2.3:
 
 ---
 
-**Action Required**: Confirm next sprint selection to proceed with detailed planning.
+**Sprint 2.3 Plan**: See detailed plan at `/sprints/active/SPRINT_2.3_FRONTEND_AGENT.md`
+
+**Next Action**: Begin FE-001 - Create Emily base agent class
