@@ -125,8 +125,20 @@ class FrontendAgent(MonitoringAgent):
         self.component_library = {}  # Track generated components
         self.accessibility_checks = []  # Track A11y validations
         
+        # CSS-in-JS and styling state
+        self.styling_library = "styled-components"  # Default preference
+        self.current_theme = None  # Active theme configuration
+        self.css_utilities = {}  # Store reusable CSS utilities
+        self.animation_library = []  # Track created animations
+        
+        # Accessibility features and tracking
+        self.accessibility_toolkit = {}  # Store accessibility utilities
+        self.wcag_compliance_level = "AA"  # Default WCAG level
+        self.accessibility_tests = []  # Track accessibility test results
+        self.aria_patterns = {}  # Store ARIA pattern library
+        
         # Initialize message queue for collaboration
-        self.message_queue = MessageQueue(agent_id=agent_id)
+        self.message_queue = MessageQueue()
         self.collaboration_partners = {}  # Track active collaborations
         
     async def on_start(self) -> None:
@@ -405,7 +417,7 @@ class FrontendAgent(MonitoringAgent):
         - Use modern CSS practices
         """)
         
-        # Add Emily's design preferences
+        # Add Emily's design preferences with enhanced CSS-in-JS guidance
         emily_preferences = f"""
         Emily's Design Preferences:
         - Clean, modern aesthetic
@@ -416,20 +428,48 @@ class FrontendAgent(MonitoringAgent):
         - Mobile-first responsive approach
         
         Technical Preferences:
-        - CSS-in-JS with styled-components or emotion
-        - React Hook Form for form handling
-        - React Query for data fetching (if needed)
-        - Proper error boundaries
-        - Performance optimizations (memo, useMemo, useCallback when needed)
+        - CSS-in-JS with {self.styling_library} (current preference)
+        - Design token integration for consistency
+        - Theme-aware styling with CSS custom properties
+        - Responsive utilities and breakpoint management
+        - Performance-optimized styled components
+        - Accessible animations and transitions
+        
+        CSS-in-JS Styling Requirements:
+        1. **Styled Components Structure**
+           - Use {self.styling_library} for component styling
+           - Implement proper TypeScript interfaces for styled props
+           - Create reusable styled component primitives
+           - Use theme provider for consistent design tokens
+        
+        2. **Design Token Integration**
+           - Reference design system tokens (colors, spacing, typography)
+           - Implement consistent spacing scale (theme.spacing)
+           - Use semantic color names (theme.colors.primary, etc.)
+           - Apply typography scale (theme.fonts, theme.fontSizes)
+        
+        3. **Responsive Design**
+           - Mobile-first media queries
+           - Breakpoint utilities (theme.breakpoints)
+           - Container queries where applicable
+           - Responsive typography and spacing
+        
+        4. **Performance Considerations**
+           - Minimize CSS-in-JS runtime overhead
+           - Use CSS custom properties for theme values
+           - Implement proper component memoization
+           - Consider server-side rendering implications
         
         Generate a complete, production-ready component with:
-        1. TypeScript interface for props
-        2. Accessible JSX structure
-        3. Appropriate styling approach
-        4. Example usage
-        5. Brief component documentation
+        1. TypeScript interface for props and styled component props
+        2. Accessible JSX structure with semantic HTML
+        3. Comprehensive CSS-in-JS styling with {self.styling_library}
+        4. Theme integration and responsive design
+        5. Animation and interaction states
+        6. Example usage with different variants
+        7. Brief component documentation
         
-        Make it beautiful, accessible, and user-friendly!
+        Make it beautiful, accessible, performant, and maintainable!
         """
         
         return base_prompt + guidelines + emily_preferences
@@ -593,7 +633,7 @@ class FrontendAgent(MonitoringAgent):
         return self.personality.format_message("success", result)
     
     async def _handle_ui_design(self, task: Task) -> str:
-        """Handle UI/UX design tasks with user-centered approach."""
+        """Handle UI/UX design tasks with comprehensive design thinking."""
         self.logger.info("🎨 Designing user-centered interfaces...")
         
         # Update mood for design work
@@ -603,38 +643,1151 @@ class FrontendAgent(MonitoringAgent):
         thinking = self.dynamic_personality.get_thinking_phrase()
         self.logger.info(thinking)
         
-        prompt = f"""As Emily Rodriguez, a frontend developer with strong UX focus, design a solution for: {task.description}
+        # Analyze what type of design task this is
+        design_type = self._analyze_design_type(task.description)
         
-        Consider:
-        - User experience and usability
-        - Accessibility (WCAG 2.1 AA)
-        - Responsive design patterns
-        - Component reusability
-        - Visual hierarchy and design principles
-        - Performance optimization
-        
-        Provide a practical, user-friendly design."""
-        
-        response = await llm_integration.generate(
-            prompt=prompt,
-            agent_id=self.id,
-            task_type=TaskType.SYSTEM_DESIGN,
-            complexity=8,  # UI design is complex
-            max_tokens=2500,
-            temperature=0.8,  # More creative for design
-        )
+        # Route to appropriate design handler
+        if design_type == "design_system":
+            result = await self._create_design_system(task)
+        elif design_type == "user_journey":
+            result = await self._design_user_journey(task)
+        elif design_type == "wireframe":
+            result = await self._create_wireframes(task)
+        elif design_type == "responsive_layout":
+            result = await self._design_responsive_layout(task)
+        elif design_type == "accessibility_review":
+            result = await self._conduct_accessibility_review(task)
+        else:
+            # Generic UI design
+            result = await self._create_generic_ui_design(task)
         
         # Apply personality to the response
-        result = self.dynamic_personality.apply_personality_to_code(response.content)
+        result = self.dynamic_personality.apply_personality_to_code(result)
         
         # Remember this design decision
         self.dynamic_personality.remember_design_decision(
-            decision=f"UI design for: {task.description[:50]}",
+            decision=f"UI design ({design_type}): {task.description[:50]}",
             outcome="success",
             user_impact="positive"
         )
         
         return self.personality.format_message("success", result)
+    
+    async def generate_theme_system(self, design_system_name: str = None) -> str:
+        """Generate a comprehensive theme system for CSS-in-JS."""
+        # Update personality for systematic work
+        self.dynamic_personality.update_mood("detail_work")
+        
+        thinking = self.dynamic_personality.get_thinking_phrase()
+        self.logger.info(f"🎨 {thinking}")
+        
+        system_name = design_system_name or getattr(self, 'current_design_system', 'DefaultTheme')
+        
+        prompt = f"""As Emily Rodriguez, create a comprehensive theme system for {self.styling_library} based on the {system_name} design system.
+        
+        Theme System Requirements:
+        1. **Color Palette**
+           - Primary, secondary, and accent color scales
+           - Semantic colors (success, warning, error, info, neutral)
+           - Light and dark mode variants
+           - Accessibility-compliant contrast ratios
+        
+        2. **Typography Scale**
+           - Font family definitions (heading, body, monospace)
+           - Font size scale with responsive considerations
+           - Font weight mappings
+           - Line height and letter spacing values
+        
+        3. **Spacing System**
+           - Consistent spacing scale (4px base unit)
+           - Named spacing tokens (xs, sm, md, lg, xl, etc.)
+           - Component-specific spacing guidelines
+        
+        4. **Breakpoint System**
+           - Mobile-first breakpoint definitions
+           - Responsive utility functions
+           - Container max-widths
+        
+        5. **Component Tokens**
+           - Border radius scale
+           - Shadow/elevation system
+           - Animation timing and easing functions
+           - Z-index scale
+        
+        6. **CSS-in-JS Integration**
+           - Proper TypeScript theme interface
+           - {self.styling_library} theme provider setup
+           - Theme switching utilities
+           - CSS custom property fallbacks
+        
+        Generate a production-ready theme system with proper TypeScript types and comprehensive token coverage."""
+        
+        response = await llm_integration.generate(
+            prompt=prompt,
+            agent_id=self.id,
+            task_type=TaskType.CODE_GENERATION,
+            complexity=8,
+            max_tokens=3500,
+            temperature=0.7,
+        )
+        
+        # Store the theme system
+        theme_name = f"{system_name}Theme"
+        if not hasattr(self, 'theme_systems'):
+            self.theme_systems = {}
+        
+        self.theme_systems[theme_name] = {
+            "content": response.content,
+            "design_system": system_name,
+            "styling_library": self.styling_library,
+            "created_at": datetime.utcnow().isoformat(),
+            "personality_mood": self.dynamic_personality.state.mood.value,
+        }
+        
+        self.current_theme = theme_name
+        
+        return self.personality.format_message("success", response.content)
+    
+    async def generate_styled_component(self, component_description: str, component_type: str = "generic") -> str:
+        """Generate a styled component with comprehensive CSS-in-JS implementation."""
+        # Update personality for creative component work
+        self.dynamic_personality.update_mood("design_complete", success=True)
+        
+        thinking = self.dynamic_personality.get_thinking_phrase()
+        self.logger.info(f"🎨 {thinking}")
+        
+        prompt = f"""As Emily Rodriguez, create a styled component using {self.styling_library} for: {component_description}
+        
+        Styled Component Requirements:
+        1. **Component Structure**
+           - Main styled component with proper TypeScript props interface
+           - Supporting styled sub-components as needed
+           - Variant handling through props and theme integration
+           - Proper component composition and extensibility
+        
+        2. **Styling Implementation**
+           - Use {self.styling_library} with theme integration
+           - Implement responsive design with mobile-first approach
+           - Include hover, focus, active, and disabled states
+           - Add smooth transitions and micro-animations
+        
+        3. **Design System Integration**
+           - Reference theme tokens for colors, spacing, typography
+           - Use consistent design patterns and component APIs
+           - Implement proper semantic color usage
+           - Follow spacing and typography scales
+        
+        4. **Accessibility Features**
+           - Proper focus indicators and keyboard navigation
+           - Color contrast compliance for all states
+           - Screen reader friendly implementation
+           - ARIA attributes integration
+        
+        5. **Performance Optimization**
+           - Minimize CSS-in-JS runtime overhead
+           - Use CSS custom properties for dynamic values
+           - Implement proper prop filtering to avoid DOM warnings
+           - Consider server-side rendering compatibility
+        
+        6. **Variants and Customization**
+           - Size variants (xs, sm, md, lg, xl)
+           - Color/theme variants (primary, secondary, etc.)
+           - State variants (loading, error, success)
+           - Custom prop injection for specific use cases
+        
+        Generate a complete styled component with TypeScript interfaces, comprehensive styling, and usage examples."""
+        
+        response = await llm_integration.generate(
+            prompt=prompt,
+            agent_id=self.id,
+            task_type=TaskType.CODE_GENERATION,
+            complexity=7,
+            max_tokens=3000,
+            temperature=0.8,
+        )
+        
+        # Store in component library with styling metadata
+        component_name = self._extract_component_name(response.content, component_description)
+        if component_name not in self.component_library:
+            self.component_library[component_name] = {}
+        
+        self.component_library[component_name].update({
+            "styled_version": response.content,
+            "styling_library": self.styling_library,
+            "theme_integrated": bool(self.current_theme),
+            "responsive": True,
+            "accessibility_features": True,
+            "created_at": datetime.utcnow().isoformat(),
+        })
+        
+        return self.personality.format_message("success", response.content)
+    
+    async def generate_css_utilities(self, utility_type: str = "responsive") -> str:
+        """Generate CSS utility functions and helpers for styled-components."""
+        # Update personality for systematic utility work
+        self.dynamic_personality.update_mood("focused")
+        
+        prompt = f"""As Emily Rodriguez, create CSS utility functions for {self.styling_library} focusing on {utility_type} utilities.
+        
+        CSS Utility Requirements:
+        1. **Responsive Utilities**
+           - Breakpoint helper functions
+           - Responsive spacing utilities
+           - Container and grid utilities
+           - Typography responsive utilities
+        
+        2. **Theme Utilities**
+           - Color palette helper functions
+           - Spacing scale utilities
+           - Typography utilities
+           - Shadow and border utilities
+        
+        3. **Animation Utilities**
+           - Transition timing functions
+           - Keyframe animation helpers
+           - Hover and focus utilities
+           - Loading state animations
+        
+        4. **Layout Utilities**
+           - Flexbox utility functions
+           - Grid layout helpers
+           - Positioning utilities
+           - Overflow and clipping utilities
+        
+        5. **Accessibility Utilities**
+           - Screen reader only content
+           - Focus management utilities
+           - Color contrast helpers
+           - Motion preference utilities
+        
+        6. **Performance Utilities**
+           - CSS custom property helpers
+           - Styled component optimization
+           - Critical CSS utilities
+           - Bundle size optimization helpers
+        
+        Generate reusable utility functions with proper TypeScript types and comprehensive documentation."""
+        
+        response = await llm_integration.generate(
+            prompt=prompt,
+            agent_id=self.id,
+            task_type=TaskType.CODE_GENERATION,
+            complexity=6,
+            max_tokens=2500,
+            temperature=0.7,
+        )
+        
+        # Store utilities
+        utility_name = f"{utility_type.capitalize()}Utilities"
+        self.css_utilities[utility_name] = {
+            "content": response.content,
+            "type": utility_type,
+            "styling_library": self.styling_library,
+            "created_at": datetime.utcnow().isoformat(),
+        }
+        
+        return self.personality.format_message("success", response.content)
+    
+    async def generate_animation_system(self, animation_focus: str = "micro-interactions") -> str:
+        """Generate an animation system for enhanced user experience."""
+        # Update personality for creative animation work
+        self.dynamic_personality.update_mood("design_complete", success=True)
+        
+        thinking = self.dynamic_personality.get_thinking_phrase()
+        self.logger.info(f"✨ {thinking}")
+        
+        prompt = f"""As Emily Rodriguez, create a comprehensive animation system focusing on {animation_focus} using {self.styling_library}.
+        
+        Animation System Requirements:
+        1. **Micro-Interactions**
+           - Button hover and click animations
+           - Form field focus and validation states
+           - Loading indicators and progress animations
+           - Tooltip and popover entrance/exit
+        
+        2. **Page Transitions**
+           - Route change animations
+           - Modal and overlay transitions
+           - Sidebar and navigation animations
+           - Content reveal and hide animations
+        
+        3. **Accessibility Considerations**
+           - Respect prefers-reduced-motion settings
+           - Provide animation on/off toggles
+           - Ensure animations don't cause vestibular issues
+           - Maintain functionality without animations
+        
+        4. **Performance Optimization**
+           - Use transform and opacity for animations
+           - Implement will-change property appropriately
+           - Avoid layout thrashing animations
+           - Provide efficient keyframe animations
+        
+        5. **Design Integration**
+           - Use theme-based timing and easing functions
+           - Implement consistent animation language
+           - Support different animation personalities
+           - Integrate with design system tokens
+        
+        6. **Implementation Utilities**
+           - Reusable animation components
+           - Custom hooks for animation states
+           - CSS-in-JS animation helpers
+           - TypeScript interfaces for animation props
+        
+        Generate a complete animation system with smooth, accessible, and performant animations."""
+        
+        response = await llm_integration.generate(
+            prompt=prompt,
+            agent_id=self.id,
+            task_type=TaskType.CODE_GENERATION,
+            complexity=7,
+            max_tokens=2800,
+            temperature=0.8,
+        )
+        
+        # Store animation system
+        animation_name = f"{animation_focus.replace('-', '').capitalize()}Animations"
+        self.animation_library.append({
+            "name": animation_name,
+            "content": response.content,
+            "focus": animation_focus,
+            "styling_library": self.styling_library,
+            "accessibility_compliant": True,
+            "created_at": datetime.utcnow().isoformat(),
+        })
+        
+        return self.personality.format_message("success", response.content)
+    
+    async def switch_styling_library(self, new_library: str) -> str:
+        """Switch Emily's preferred CSS-in-JS library."""
+        valid_libraries = ["styled-components", "emotion", "@stitches/react", "vanilla-extract"]
+        
+        if new_library not in valid_libraries:
+            return self.personality.format_message(
+                "problem", 
+                f"I'm not familiar with {new_library}. I work best with: {', '.join(valid_libraries)}"
+            )
+        
+        old_library = self.styling_library
+        self.styling_library = new_library
+        
+        # Update personality to reflect the change
+        self.dynamic_personality.update_mood("collaboration_start")
+        
+        return self.personality.format_message(
+            "success",
+            f"Switched from {old_library} to {new_library}! I'll now generate components using {new_library} patterns and best practices."
+        )
+    
+    def _analyze_design_type(self, description: str) -> str:
+        """Analyze the description to determine what type of design task this is."""
+        description_lower = description.lower()
+        
+        # Design type mapping based on keywords
+        if any(word in description_lower for word in ["design system", "tokens", "theme", "brand", "consistency"]):
+            return "design_system"
+        elif any(word in description_lower for word in ["user journey", "flow", "user story", "experience", "path"]):
+            return "user_journey"
+        elif any(word in description_lower for word in ["wireframe", "layout", "structure", "skeleton"]):
+            return "wireframe"
+        elif any(word in description_lower for word in ["responsive", "mobile", "tablet", "desktop", "breakpoint"]):
+            return "responsive_layout"
+        elif any(word in description_lower for word in ["accessibility", "a11y", "screen reader", "wcag", "inclusive"]):
+            return "accessibility_review"
+        else:
+            return "generic_ui"
+    
+    async def _create_design_system(self, task: Task) -> str:
+        """Create a comprehensive design system."""
+        # Update personality for systematic work
+        self.dynamic_personality.update_mood("detail_work")
+        
+        prompt = f"""As Emily Rodriguez, create a comprehensive design system for: {task.description}
+        
+        Design System Requirements:
+        1. **Color Palette**
+           - Primary, secondary, and accent colors
+           - Semantic colors (success, warning, error, info)
+           - Neutral grays and backgrounds
+           - Accessibility-compliant contrast ratios (WCAG AA)
+        
+        2. **Typography Scale**
+           - Font families (headings, body, code)
+           - Type scale (h1-h6, body sizes)
+           - Line heights and spacing
+           - Font weights and styles
+        
+        3. **Spacing System**
+           - Consistent spacing units (4px, 8px, 16px, etc.)
+           - Margin and padding guidelines
+           - Component spacing rules
+        
+        4. **Component Specifications**
+           - Button variants and states
+           - Form field specifications
+           - Card and container styles
+           - Navigation patterns
+        
+        5. **Accessibility Guidelines**
+           - Color contrast requirements
+           - Focus state specifications
+           - Screen reader considerations
+           - Keyboard navigation patterns
+        
+        6. **CSS Custom Properties/Tokens**
+           - CSS variables for easy theming
+           - Design token structure
+           - Dark mode considerations
+        
+        Create a production-ready design system with clear documentation and implementation guidelines."""
+        
+        response = await llm_integration.generate(
+            prompt=prompt,
+            agent_id=self.id,
+            task_type=TaskType.SYSTEM_DESIGN,
+            complexity=9,  # Design systems are complex
+            max_tokens=3500,
+            temperature=0.7,  # Balanced creativity and consistency
+        )
+        
+        # Store the design system for future reference
+        if not hasattr(self, 'design_systems'):
+            self.design_systems = {}
+        
+        system_name = self._extract_design_system_name(task.description)
+        self.design_systems[system_name] = {
+            "content": response.content,
+            "created_at": datetime.utcnow().isoformat(),
+            "description": task.description,
+            "personality_mood": self.dynamic_personality.state.mood.value,
+        }
+        
+        self.current_design_system = system_name
+        
+        return response.content
+    
+    async def _design_user_journey(self, task: Task) -> str:
+        """Design comprehensive user journeys and experience flows."""
+        # Update personality for empathetic design
+        self.dynamic_personality.update_mood("empathetic")
+        
+        prompt = f"""As Emily Rodriguez, design a comprehensive user journey for: {task.description}
+        
+        User Journey Requirements:
+        1. **User Research Insights**
+           - User personas and goals
+           - Pain points and motivations
+           - Context of use scenarios
+        
+        2. **Journey Mapping**
+           - Key touchpoints and interactions
+           - User emotions at each stage
+           - Opportunities for improvement
+           - Critical decision points
+        
+        3. **Information Architecture**
+           - Content structure and hierarchy
+           - Navigation patterns
+           - Search and discovery flows
+        
+        4. **Interaction Design**
+           - User flow diagrams
+           - State transitions
+           - Error handling paths
+           - Success scenarios
+        
+        5. **Accessibility Considerations**
+           - Inclusive design principles
+           - Alternative interaction methods
+           - Cognitive load considerations
+        
+        6. **Responsive Behavior**
+           - Mobile-first considerations
+           - Cross-device continuity
+           - Context switching scenarios
+        
+        Provide a detailed user journey with clear recommendations for implementation."""
+        
+        response = await llm_integration.generate(
+            prompt=prompt,
+            agent_id=self.id,
+            task_type=TaskType.SYSTEM_DESIGN,
+            complexity=8,
+            max_tokens=3000,
+            temperature=0.8,  # More creative for user experience
+        )
+        
+        return response.content
+    
+    async def _create_wireframes(self, task: Task) -> str:
+        """Create detailed wireframes and layout structures."""
+        # Update personality for structural thinking
+        self.dynamic_personality.update_mood("focused")
+        
+        prompt = f"""As Emily Rodriguez, create comprehensive wireframes for: {task.description}
+        
+        Wireframe Requirements:
+        1. **Layout Structure**
+           - Grid system and containers
+           - Content blocks and sections
+           - Navigation placement
+           - Interactive element positioning
+        
+        2. **Content Hierarchy**
+           - Information priority and flow
+           - Heading and text placement
+           - Image and media areas
+           - Call-to-action positioning
+        
+        3. **Responsive Considerations**
+           - Mobile wireframes (320px+)
+           - Tablet wireframes (768px+)
+           - Desktop wireframes (1024px+)
+           - Breakpoint behavior
+        
+        4. **Accessibility Structure**
+           - Logical tab order
+           - Landmark regions
+           - Skip navigation elements
+           - Screen reader flow
+        
+        5. **Interactive Elements**
+           - Form field groupings
+           - Button placements
+           - Link text and context
+           - Error message locations
+        
+        6. **Implementation Notes**
+           - HTML semantic structure
+           - CSS layout recommendations
+           - Component breakdown
+           - State considerations
+        
+        Provide detailed wireframes with clear annotations and implementation guidance."""
+        
+        response = await llm_integration.generate(
+            prompt=prompt,
+            agent_id=self.id,
+            task_type=TaskType.SYSTEM_DESIGN,
+            complexity=7,
+            max_tokens=2800,
+            temperature=0.7,
+        )
+        
+        return response.content
+    
+    async def _design_responsive_layout(self, task: Task) -> str:
+        """Design responsive layouts with mobile-first approach."""
+        # Update personality for technical precision
+        self.dynamic_personality.update_mood("focused")
+        
+        prompt = f"""As Emily Rodriguez, design a responsive layout for: {task.description}
+        
+        Responsive Design Requirements:
+        1. **Mobile-First Strategy**
+           - Base styles for mobile (320px+)
+           - Progressive enhancement for larger screens
+           - Touch-friendly interface elements
+           - Thumb-zone considerations
+        
+        2. **Breakpoint Strategy**
+           - Small mobile: 320px - 480px
+           - Large mobile: 481px - 768px
+           - Tablet: 769px - 1024px
+           - Desktop: 1025px+
+           - Large desktop: 1200px+
+        
+        3. **Layout Techniques**
+           - CSS Grid for complex layouts
+           - Flexbox for component layouts
+           - Container queries where applicable
+           - Responsive typography scaling
+        
+        4. **Performance Considerations**
+           - Optimized image delivery
+           - Progressive loading strategies
+           - Critical CSS identification
+           - Mobile performance optimization
+        
+        5. **Accessibility Across Devices**
+           - Touch target sizing (44px minimum)
+           - Readable text sizes
+           - Sufficient color contrast
+           - Keyboard navigation on all devices
+        
+        6. **CSS Implementation**
+           - Media query structure
+           - Responsive utility classes
+           - Component-specific breakpoints
+           - Print stylesheet considerations
+        
+        Provide a complete responsive design with CSS implementation details."""
+        
+        response = await llm_integration.generate(
+            prompt=prompt,
+            agent_id=self.id,
+            task_type=TaskType.SYSTEM_DESIGN,
+            complexity=8,
+            max_tokens=3000,
+            temperature=0.7,
+        )
+        
+        return response.content
+    
+    async def _conduct_accessibility_review(self, task: Task) -> str:
+        """Conduct comprehensive accessibility review and recommendations."""
+        # Update personality for empathetic, inclusive design
+        self.dynamic_personality.update_mood("accessibility_work")
+        
+        prompt = f"""As Emily Rodriguez, conduct an accessibility review for: {task.description}
+        
+        Accessibility Review Requirements:
+        1. **WCAG 2.1 AA Compliance**
+           - Color contrast ratios (4.5:1 for normal text, 3:1 for large text)
+           - Keyboard navigation support
+           - Screen reader compatibility
+           - Focus management
+        
+        2. **Semantic HTML Structure**
+           - Proper heading hierarchy (h1-h6)
+           - Landmark roles and regions
+           - Form label associations
+           - List and table semantics
+        
+        3. **Interactive Element Accessibility**
+           - Button vs link usage
+           - ARIA labels and descriptions
+           - State announcements
+           - Error messaging
+        
+        4. **Visual Design Accessibility**
+           - Text sizing and readability
+           - Color-blind friendly palette
+           - Focus indicator visibility
+           - Animation and motion considerations
+        
+        5. **Mobile Accessibility**
+           - Touch target sizing
+           - Gesture alternatives
+           - Orientation support
+           - Screen reader mobile optimization
+        
+        6. **Testing Recommendations**
+           - Automated testing tools
+           - Manual testing procedures
+           - User testing with disabilities
+           - Ongoing accessibility monitoring
+        
+        Provide specific, actionable accessibility improvements with implementation guidance."""
+        
+        response = await llm_integration.generate(
+            prompt=prompt,
+            agent_id=self.id,
+            task_type=TaskType.SYSTEM_DESIGN,
+            complexity=7,
+            max_tokens=2800,
+            temperature=0.6,  # More structured for accessibility
+        )
+        
+        # Track accessibility work
+        if not hasattr(self, 'accessibility_reviews'):
+            self.accessibility_reviews = []
+        
+        self.accessibility_reviews.append({
+            "description": task.description,
+            "review_content": response.content,
+            "timestamp": datetime.utcnow().isoformat(),
+            "mood": self.dynamic_personality.state.mood.value,
+        })
+        
+        return response.content
+    
+    async def _create_generic_ui_design(self, task: Task) -> str:
+        """Handle generic UI design tasks with comprehensive approach."""
+        prompt = f"""As Emily Rodriguez, design a user interface solution for: {task.description}
+        
+        Comprehensive UI Design Approach:
+        1. **User-Centered Design**
+           - Understanding user needs and goals
+           - Usability and user experience principles
+           - Accessibility and inclusive design
+        
+        2. **Visual Design**
+           - Layout and visual hierarchy
+           - Typography and readability
+           - Color theory and accessibility
+           - Spacing and proportion
+        
+        3. **Interaction Design**
+           - User flows and navigation
+           - Feedback and state communication
+           - Error prevention and handling
+           - Progressive disclosure
+        
+        4. **Technical Implementation**
+           - Semantic HTML structure
+           - CSS architecture and maintainability
+           - Component-based design
+           - Performance considerations
+        
+        5. **Responsive Design**
+           - Mobile-first approach
+           - Flexible layouts and components
+           - Touch-friendly interfaces
+           - Cross-device experience
+        
+        6. **Accessibility Integration**
+           - WCAG 2.1 AA compliance
+           - Screen reader compatibility
+           - Keyboard navigation
+           - Inclusive design patterns
+        
+        Provide a comprehensive UI design with clear implementation guidance."""
+        
+        response = await llm_integration.generate(
+            prompt=prompt,
+            agent_id=self.id,
+            task_type=TaskType.SYSTEM_DESIGN,
+            complexity=7,
+            max_tokens=2500,
+            temperature=0.8,
+        )
+        
+        return response.content
+    
+    async def generate_accessibility_toolkit(self) -> str:
+        """Generate a comprehensive accessibility toolkit for React applications."""
+        # Update personality for empathetic accessibility work
+        self.dynamic_personality.update_mood("accessibility_work")
+        
+        thinking = self.dynamic_personality.get_thinking_phrase()
+        self.logger.info(f"♿ {thinking}")
+        
+        prompt = f"""As Emily Rodriguez, create a comprehensive accessibility toolkit for React applications using {self.styling_library}.
+        
+        Accessibility Toolkit Requirements:
+        1. **WCAG {self.wcag_compliance_level} Compliance Utilities**
+           - Color contrast checking functions
+           - Text size and readability validators
+           - Focus management utilities
+           - Keyboard navigation helpers
+        
+        2. **Screen Reader Support**
+           - ARIA label and description generators
+           - Live region announcement utilities
+           - Screen reader testing helpers
+           - Voice-over simulation tools
+        
+        3. **Keyboard Navigation**
+           - Focus trap implementation
+           - Skip navigation components
+           - Keyboard event handlers
+           - Tab order management
+        
+        4. **Visual Accessibility**
+           - High contrast mode support
+           - Reduced motion preferences
+           - Font size scaling utilities
+           - Color blind friendly palettes
+        
+        5. **Form Accessibility**
+           - Accessible form validation
+           - Error announcement systems
+           - Field grouping and labeling
+           - Progress indication for multi-step forms
+        
+        6. **Testing and Validation**
+           - Automated accessibility testing hooks
+           - Manual testing checklists
+           - WCAG compliance validators
+           - Real-time accessibility monitoring
+        
+        Generate a production-ready accessibility toolkit with TypeScript interfaces and comprehensive documentation."""
+        
+        response = await llm_integration.generate(
+            prompt=prompt,
+            agent_id=self.id,
+            task_type=TaskType.CODE_GENERATION,
+            complexity=8,
+            max_tokens=3500,
+            temperature=0.6,  # More structured for accessibility
+        )
+        
+        # Store the accessibility toolkit
+        self.accessibility_toolkit["comprehensive"] = {
+            "content": response.content,
+            "wcag_level": self.wcag_compliance_level,
+            "styling_library": self.styling_library,
+            "created_at": datetime.utcnow().isoformat(),
+            "personality_mood": self.dynamic_personality.state.mood.value,
+        }
+        
+        return self.personality.format_message("success", response.content)
+    
+    async def generate_aria_pattern_library(self, pattern_focus: str = "common") -> str:
+        """Generate ARIA design patterns and components."""
+        # Update personality for systematic pattern work
+        self.dynamic_personality.update_mood("detail_work")
+        
+        prompt = f"""As Emily Rodriguez, create a comprehensive ARIA pattern library focusing on {pattern_focus} patterns.
+        
+        ARIA Pattern Library Requirements:
+        1. **Common Patterns**
+           - Button (including toggle and menu buttons)
+           - Dialog/Modal with proper focus management
+           - Dropdown/Combobox with keyboard support
+           - Tabs with proper ARIA relationships
+           - Accordion with state management
+        
+        2. **Navigation Patterns**
+           - Menu and menubar implementations
+           - Breadcrumb navigation
+           - Pagination with screen reader support
+           - Tree view navigation
+           - Skip links and landmarks
+        
+        3. **Form Patterns**
+           - Form validation with ARIA live regions
+           - Radio group and checkbox group
+           - Date picker accessibility
+           - Multi-select with proper announcements
+           - Progress indicators for forms
+        
+        4. **Content Patterns**
+           - Data tables with sorting and filtering
+           - Card layouts with proper semantics
+           - Image galleries with descriptions
+           - Feed/timeline patterns
+           - Toast/notification systems
+        
+        5. **Interactive Patterns**
+           - Drag and drop accessibility
+           - Slider/range inputs
+           - Tooltip and popover patterns
+           - Carousel with keyboard and screen reader support
+           - Loading states and progress indicators
+        
+        6. **Implementation Details**
+           - Proper ARIA attributes for each pattern
+           - Keyboard event handling
+           - Focus management strategies
+           - Screen reader testing notes
+           - Browser compatibility considerations
+        
+        Generate reusable ARIA pattern components with TypeScript interfaces and comprehensive accessibility documentation."""
+        
+        response = await llm_integration.generate(
+            prompt=prompt,
+            agent_id=self.id,
+            task_type=TaskType.CODE_GENERATION,
+            complexity=8,
+            max_tokens=3500,
+            temperature=0.6,
+        )
+        
+        # Store the ARIA patterns
+        pattern_name = f"{pattern_focus.capitalize()}AriaPatterns"
+        self.aria_patterns[pattern_name] = {
+            "content": response.content,
+            "focus": pattern_focus,
+            "wcag_level": self.wcag_compliance_level,
+            "created_at": datetime.utcnow().isoformat(),
+        }
+        
+        return self.personality.format_message("success", response.content)
+    
+    async def perform_accessibility_audit(self, component_code: str, audit_type: str = "comprehensive") -> str:
+        """Perform detailed accessibility audit of component code."""
+        # Update personality for analytical accessibility work
+        self.dynamic_personality.update_mood("analytical")
+        
+        thinking = self.dynamic_personality.get_thinking_phrase()
+        self.logger.info(f"🔍 {thinking}")
+        
+        prompt = f"""As Emily Rodriguez, perform a comprehensive accessibility audit of the following React component code:
+        
+        COMPONENT CODE:
+        {component_code}
+        
+        Accessibility Audit Requirements:
+        1. **WCAG {self.wcag_compliance_level} Compliance Check**
+           - Identify all accessibility violations
+           - Check semantic HTML usage
+           - Validate ARIA attributes and roles
+           - Assess keyboard navigation support
+        
+        2. **Screen Reader Compatibility**
+           - Evaluate screen reader experience
+           - Check for proper announcements
+           - Validate heading hierarchy
+           - Assess content structure
+        
+        3. **Visual Accessibility**
+           - Analyze color contrast ratios
+           - Check text sizing and readability
+           - Evaluate focus indicators
+           - Assess motion and animation accessibility
+        
+        4. **Keyboard Accessibility**
+           - Validate tab order and navigation
+           - Check for keyboard traps
+           - Assess custom keyboard handlers
+           - Evaluate focus management
+        
+        5. **Mobile Accessibility**
+           - Check touch target sizing
+           - Validate gesture accessibility
+           - Assess mobile screen reader support
+           - Evaluate responsive accessibility
+        
+        6. **Specific Recommendations**
+           - Provide concrete fixes for issues found
+           - Suggest ARIA improvements
+           - Recommend testing strategies
+           - Include code examples for fixes
+        
+        Provide a detailed accessibility audit report with specific, actionable recommendations and priority levels for each issue."""
+        
+        response = await llm_integration.generate(
+            prompt=prompt,
+            agent_id=self.id,
+            task_type=TaskType.CODE_REVIEW,
+            complexity=7,
+            max_tokens=3000,
+            temperature=0.6,
+        )
+        
+        # Store the audit results
+        audit_result = {
+            "component_code": component_code[:200] + "..." if len(component_code) > 200 else component_code,
+            "audit_content": response.content,
+            "audit_type": audit_type,
+            "wcag_level": self.wcag_compliance_level,
+            "timestamp": datetime.utcnow().isoformat(),
+            "personality_mood": self.dynamic_personality.state.mood.value,
+        }
+        
+        self.accessibility_tests.append(audit_result)
+        
+        return self.personality.format_message("problem", response.content)
+    
+    async def generate_accessibility_testing_suite(self) -> str:
+        """Generate automated accessibility testing utilities."""
+        # Update personality for systematic testing work
+        self.dynamic_personality.update_mood("focused")
+        
+        prompt = f"""As Emily Rodriguez, create a comprehensive accessibility testing suite for React applications.
+        
+        Accessibility Testing Suite Requirements:
+        1. **Automated Testing Tools**
+           - Jest accessibility testing utilities
+           - React Testing Library accessibility helpers
+           - Axe-core integration for automated checks
+           - Custom accessibility matchers
+        
+        2. **Manual Testing Helpers**
+           - Screen reader simulation utilities
+           - Keyboard navigation testing tools
+           - Color contrast checking functions
+           - Focus management validators
+        
+        3. **Visual Regression Testing**
+           - High contrast mode testing
+           - Focus indicator validation
+           - Text scaling verification
+           - Color blind simulation tools
+        
+        4. **Performance Testing**
+           - Screen reader performance tests
+           - Keyboard navigation timing
+           - ARIA updates performance monitoring
+           - Memory usage for accessibility features
+        
+        5. **Integration Testing**
+           - Cross-browser accessibility testing
+           - Mobile accessibility validation
+           - Touch target verification
+           - Responsive accessibility checks
+        
+        6. **Reporting and Monitoring**
+           - Accessibility test reporting
+           - WCAG compliance dashboards
+           - Regression tracking systems
+           - Continuous accessibility monitoring
+        
+        Generate a complete testing suite with TypeScript interfaces, comprehensive test coverage, and detailed documentation."""
+        
+        response = await llm_integration.generate(
+            prompt=prompt,
+            agent_id=self.id,
+            task_type=TaskType.TESTING,
+            complexity=7,
+            max_tokens=3000,
+            temperature=0.7,
+        )
+        
+        # Store the testing suite
+        self.accessibility_toolkit["testing_suite"] = {
+            "content": response.content,
+            "includes_automation": True,
+            "wcag_level": self.wcag_compliance_level,
+            "created_at": datetime.utcnow().isoformat(),
+        }
+        
+        return self.personality.format_message("success", response.content)
+    
+    async def check_color_contrast(self, foreground_color: str, background_color: str) -> str:
+        """Check color contrast ratio for WCAG compliance."""
+        # Update personality for analytical work
+        self.dynamic_personality.update_mood("analytical")
+        
+        prompt = f"""As Emily Rodriguez, analyze the color contrast between:
+        - Foreground color: {foreground_color}
+        - Background color: {background_color}
+        
+        Color Contrast Analysis Requirements:
+        1. **WCAG {self.wcag_compliance_level} Compliance**
+           - Calculate exact contrast ratio
+           - Determine compliance for normal text (4.5:1 minimum)
+           - Determine compliance for large text (3:1 minimum)
+           - Check compliance for UI components (3:1 minimum)
+        
+        2. **Accessibility Recommendations**
+           - Suggest alternative colors if non-compliant
+           - Provide accessible color palette options
+           - Recommend design adjustments
+           - Consider color-blind accessibility
+        
+        3. **Implementation Guidance**
+           - CSS color values for recommended alternatives
+           - Design system token suggestions
+           - Testing strategies for color combinations
+           - Dynamic color adjustment techniques
+        
+        Provide specific, actionable color contrast analysis with compliance recommendations."""
+        
+        response = await llm_integration.generate(
+            prompt=prompt,
+            agent_id=self.id,
+            task_type=TaskType.CODE_REVIEW,
+            complexity=5,
+            max_tokens=1500,
+            temperature=0.6,
+        )
+        
+        # Store the contrast check
+        contrast_check = {
+            "foreground": foreground_color,
+            "background": background_color,
+            "analysis": response.content,
+            "wcag_level": self.wcag_compliance_level,
+            "timestamp": datetime.utcnow().isoformat(),
+        }
+        
+        if not hasattr(self, 'contrast_checks'):
+            self.contrast_checks = []
+        self.contrast_checks.append(contrast_check)
+        
+        return self.personality.format_message("thinking", response.content)
+    
+    async def generate_focus_management_system(self) -> str:
+        """Generate advanced focus management utilities."""
+        # Update personality for systematic focus work
+        self.dynamic_personality.update_mood("detail_work")
+        
+        prompt = f"""As Emily Rodriguez, create a comprehensive focus management system for React applications.
+        
+        Focus Management System Requirements:
+        1. **Focus Trap Implementation**
+           - Modal and dialog focus trapping
+           - Dropdown and menu focus management
+           - Form wizard focus progression
+           - Sidebar and drawer focus handling
+        
+        2. **Focus Restoration**
+           - Return focus to trigger elements
+           - Context-aware focus restoration
+           - Deep link focus management
+           - Route change focus handling
+        
+        3. **Custom Focus Utilities**
+           - Skip links implementation
+           - Focus indicators enhancement
+           - Programmatic focus management
+           - Focus debugging tools
+        
+        4. **Keyboard Navigation**
+           - Arrow key navigation systems
+           - Tab order management
+           - Custom keyboard shortcuts
+           - Escape key handling patterns
+        
+        5. **Accessibility Integration**
+           - Screen reader announcements
+           - ARIA live region updates
+           - Focus change notifications
+           - Context preservation
+        
+        6. **Performance Optimization**
+           - Efficient focus event handling
+           - Memory management for focus states
+           - Debounced focus updates
+           - Focus state caching
+        
+        Generate a complete focus management system with React hooks, utilities, and comprehensive documentation."""
+        
+        response = await llm_integration.generate(
+            prompt=prompt,
+            agent_id=self.id,
+            task_type=TaskType.CODE_GENERATION,
+            complexity=7,
+            max_tokens=3000,
+            temperature=0.7,
+        )
+        
+        # Store the focus management system
+        self.accessibility_toolkit["focus_management"] = {
+            "content": response.content,
+            "includes_hooks": True,
+            "performance_optimized": True,
+            "created_at": datetime.utcnow().isoformat(),
+        }
+        
+        return self.personality.format_message("success", response.content)
+    
+    async def set_wcag_compliance_level(self, level: str) -> str:
+        """Set Emily's WCAG compliance target level."""
+        valid_levels = ["A", "AA", "AAA"]
+        
+        if level not in valid_levels:
+            return self.personality.format_message(
+                "problem",
+                f"I'm not familiar with WCAG level {level}. I work with: {', '.join(valid_levels)}"
+            )
+        
+        old_level = self.wcag_compliance_level
+        self.wcag_compliance_level = level
+        
+        # Update personality to reflect higher accessibility focus
+        self.dynamic_personality.state.accessibility_focus = min(1.0, self.dynamic_personality.state.accessibility_focus + 0.05)
+        self.dynamic_personality.update_mood("accessibility_work")
+        
+        return self.personality.format_message(
+            "success",
+            f"Updated WCAG compliance target from {old_level} to {level}! I'll now ensure all accessibility work meets WCAG {level} standards."
+        )
+    
+    def _extract_design_system_name(self, description: str) -> str:
+        """Extract or generate a name for the design system."""
+        # Look for project names or create from description
+        words = description.split()
+        name_candidates = [word for word in words if word.isalpha() and len(word) > 3]
+        
+        if name_candidates:
+            return f"{name_candidates[0].capitalize()}DesignSystem"
+        else:
+            return f"DesignSystem_{datetime.utcnow().strftime('%Y%m%d_%H%M')}"
     
     async def _handle_code_review(self, task: Task) -> str:
         """Review code with Emily's focus on UX and accessibility."""
@@ -1022,6 +2175,50 @@ class FrontendAgent(MonitoringAgent):
                 "design_memories": len(self.dynamic_personality.design_memory),
                 "favorite_patterns": len(self.dynamic_personality.favorite_patterns),
             },
+            "design_work": {
+                "design_systems_created": len(getattr(self, 'design_systems', {})),
+                "accessibility_reviews": len(getattr(self, 'accessibility_reviews', [])),
+                "current_design_system": getattr(self, 'current_design_system', None),
+                "ui_capabilities": [
+                    "design_system_creation",
+                    "user_journey_mapping", 
+                    "wireframe_generation",
+                    "responsive_layout_design",
+                    "accessibility_review",
+                    "component_generation"
+                ],
+            },
+            "styling_work": {
+                "preferred_library": self.styling_library,
+                "theme_systems": len(getattr(self, 'theme_systems', {})),
+                "current_theme": self.current_theme,
+                "css_utilities": len(self.css_utilities),
+                "animation_systems": len(self.animation_library),
+                "styling_capabilities": [
+                    "css_in_js_components",
+                    "theme_system_generation",
+                    "responsive_utilities",
+                    "animation_systems",
+                    "design_token_integration",
+                    "performance_optimization"
+                ],
+            },
+            "accessibility_work": {
+                "wcag_compliance_level": self.wcag_compliance_level,
+                "accessibility_toolkits": len(self.accessibility_toolkit),
+                "aria_patterns": len(self.aria_patterns),
+                "accessibility_tests": len(self.accessibility_tests),
+                "contrast_checks": len(getattr(self, 'contrast_checks', [])),
+                "accessibility_capabilities": [
+                    "wcag_compliance_auditing",
+                    "aria_pattern_library",
+                    "focus_management_systems",
+                    "color_contrast_analysis",
+                    "accessibility_testing_suites",
+                    "screen_reader_optimization",
+                    "keyboard_navigation_systems"
+                ],
+            },
         }
         
         return emily_status
@@ -1135,6 +2332,33 @@ class FrontendAgent(MonitoringAgent):
                 f"- {name} ({component.get('type', 'unknown')}): {component.get('description', 'No description')}"
             )
         return "\n".join(component_summary)
+    
+    async def _execute_task_internal(self, task: Task, model_id: str) -> dict[str, Any]:
+        """Internal task execution logic required by BaseAgent."""
+        # Use Emily's task routing system
+        if task.type == TaskType.UI_DEVELOPMENT:
+            result = await self.handle_ui_development(task.description)
+        elif task.type == TaskType.COMPONENT_GENERATION:
+            result = await self.generate_react_component(task.description)
+        elif task.type == TaskType.CSS_STYLING:
+            result = await self.handle_styling_task(task.description)
+        elif task.type == TaskType.ACCESSIBILITY:
+            result = await self.handle_accessibility_task(task.description)
+        elif task.type == TaskType.UI_DESIGN:
+            result = await self.handle_ui_design(task.description)
+        else:
+            # Default to UI development
+            result = await self.handle_ui_development(task.description)
+            
+        return {
+            "result": result,
+            "agent_id": self.id,
+            "task_id": task.id,
+            "model_used": model_id,
+            "timestamp": datetime.now().isoformat(),
+            "personality_mood": self.dynamic_personality.state.mood.value,
+            "creative_energy": self.dynamic_personality.state.creative_energy.value,
+        }
     
     async def on_stop(self) -> None:
         """Clean up Emily's resources."""

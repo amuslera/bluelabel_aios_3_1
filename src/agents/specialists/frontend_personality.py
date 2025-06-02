@@ -33,7 +33,7 @@ class CreativeEnergyLevel(Enum):
 @dataclass
 class DesignPersonalityState:
     """Current state of Emily's design-focused personality."""
-    mood: DesignMoodState = DesignMoodState.BALANCED
+    mood: DesignMoodState = DesignMoodState.FOCUSED
     creative_energy: CreativeEnergyLevel = CreativeEnergyLevel.BALANCED
     user_empathy_level: float = 0.9  # 0.0 to 1.0 - how much she considers users
     design_confidence: float = 0.8   # 0.0 to 1.0 - confidence in design decisions
@@ -153,11 +153,11 @@ class EmilyDynamicPersonality:
         base_energy = 3  # Start balanced
         
         # Boost from recent creative breakthrough
-        if recent_breakthrough and (datetime.now() - recent_breakthrough).hours < 2:
+        if recent_breakthrough and (datetime.now() - recent_breakthrough).total_seconds() < 7200:  # 2 hours
             base_energy += 2
         
         # Boost from positive user feedback
-        if recent_feedback and (datetime.now() - recent_feedback).hours < 4:
+        if recent_feedback and (datetime.now() - recent_feedback).total_seconds() < 14400:  # 4 hours
             base_energy += 1
             
         # Drain from too many iterations without breakthrough

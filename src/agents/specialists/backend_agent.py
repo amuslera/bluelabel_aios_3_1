@@ -133,7 +133,7 @@ class BackendAgent(MonitoringAgent):
         self.db_designer = DatabaseDesigner()
         
         # Initialize message queue for collaboration
-        self.message_queue = MessageQueue(agent_id=agent_id)
+        self.message_queue = MessageQueue()
         self.collaboration_partners = {}  # Track active collaborations
         
     async def on_start(self) -> None:
@@ -1056,6 +1056,35 @@ class BackendAgent(MonitoringAgent):
         }
         
         return marcus_status
+    
+    async def _execute_task_internal(self, task: Task, model_id: str) -> dict[str, Any]:
+        """Internal task execution logic required by BaseAgent."""
+        # Use Marcus's task routing system
+        if task.type == TaskType.CODE_GENERATION:
+            result = await self.handle_fastapi_generation(task.description)
+        elif task.type == TaskType.DATABASE_DESIGN:
+            result = await self.handle_database_design(task.description)
+        elif task.type == TaskType.SYSTEM_DESIGN:
+            result = await self.handle_system_design(task.description)
+        elif task.type == TaskType.CODE_REVIEW:
+            result = await self.handle_code_review(task.description)
+        elif task.type == TaskType.BUG_FIX:
+            result = await self.handle_bug_fix(task.description)
+        elif task.type == TaskType.PERFORMANCE_ANALYSIS:
+            result = await self.handle_performance_analysis(task.description)
+        else:
+            # Default to FastAPI generation for backend tasks
+            result = await self.handle_fastapi_generation(task.description)
+            
+        return {
+            "result": result,
+            "agent_id": self.id,
+            "task_id": task.id,
+            "model_used": model_id,
+            "timestamp": datetime.now().isoformat(),
+            "personality_mood": self.dynamic_personality.state.mood.value,
+            "energy_level": self.dynamic_personality.state.energy.value,
+        }
     
     async def on_stop(self) -> None:
         """Clean up Marcus's resources."""

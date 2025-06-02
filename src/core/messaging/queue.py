@@ -12,7 +12,7 @@ import uuid
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any
+from typing import Any, Optional
 
 import aio_pika
 from aio_pika import Exchange, Message, Queue
@@ -32,9 +32,9 @@ class MessageEnvelope:
     message_type: str
     priority: int
     created_at: datetime
-    expires_at: datetime | None = None
-    correlation_id: str | None = None
-    reply_to: str | None = None
+    expires_at: Optional[datetime] = None
+    correlation_id: Optional[str] = None
+    reply_to: Optional[str] = None
 
 
 class AgentMessage(BaseModel):
@@ -49,7 +49,7 @@ class MessageHandler(ABC):
     """Abstract base class for message handlers."""
 
     @abstractmethod
-    async def handle_message(self, message: AgentMessage) -> AgentMessage | None:
+    async def handle_message(self, message: AgentMessage) -> Optional[AgentMessage]:
         """Handle an incoming message and optionally return a response."""
         pass
 
@@ -68,7 +68,7 @@ class MessageQueue:
 
     def __init__(
         self,
-        rabbitmq_url: str | None = None,
+        rabbitmq_url: Optional[str] = None,
         exchange_name: str = "aiosv3.agents",
         dlx_name: str = "aiosv3.agents.dlx",
     ):
@@ -86,10 +86,10 @@ class MessageQueue:
         self.exchange_name = exchange_name
         self.dlx_name = dlx_name
 
-        self.connection: AbstractRobustConnection | None = None
+        self.connection: Optional[AbstractRobustConnection] = None
         self.channel = None
-        self.exchange: Exchange | None = None
-        self.dlx: Exchange | None = None
+        self.exchange: Optional[Exchange] = None
+        self.dlx: Optional[Exchange] = None
 
         self.message_handlers: dict[str, MessageHandler] = {}
         self.is_connected = False
@@ -138,8 +138,8 @@ class MessageQueue:
         recipient_id: str = "*",
         message_type: str = "general",
         priority: int = 5,
-        correlation_id: str | None = None,
-        reply_to: str | None = None,
+        correlation_id: Optional[str] = None,
+        reply_to: Optional[str] = None,
     ) -> str:
         """
         Publish a message to the exchange.
@@ -251,7 +251,7 @@ class MessageQueue:
         agent_id: str,
         handler: MessageHandler,
         routing_keys: list[str],
-        queue_name: str | None = None,
+        queue_name: Optional[str] = None,
     ) -> None:
         """
         Register a message handler for an agent.
@@ -313,7 +313,7 @@ class MessageQueue:
         priority: int = 5,
         wait_for_response: bool = False,
         timeout: float = 30.0,
-    ) -> AgentMessage | None:
+    ) -> Optional[AgentMessage]:
         """
         Send a message directly to another agent.
 
@@ -390,7 +390,7 @@ class MessageQueue:
         payload: dict[str, Any],
         sender_id: str,
         message_type: str = "broadcast",
-        agent_filter: str | None = None,
+        agent_filter: Optional[str] = None,
     ) -> str:
         """
         Broadcast a message to all agents.

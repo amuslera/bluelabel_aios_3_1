@@ -33,7 +33,7 @@ class EnergyLevel(Enum):
 @dataclass
 class PersonalityState:
     """Current state of an agent's personality."""
-    mood: MoodState = MoodState.NORMAL
+    mood: MoodState = MoodState.THOUGHTFUL
     energy: EnergyLevel = EnergyLevel.NORMAL
     stress_level: float = 0.0  # 0.0 to 1.0
     confidence: float = 0.8    # 0.0 to 1.0
