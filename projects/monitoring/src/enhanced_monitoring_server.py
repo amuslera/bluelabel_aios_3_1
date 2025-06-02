@@ -22,6 +22,9 @@ import aiohttp_cors
 import jwt
 from functools import wraps
 
+from .agent_registry import AgentRegistry
+from .database import MonitoringDatabase
+
 # Rate limiting store (in production, use Redis)
 RATE_LIMIT_STORE = {}
 
@@ -72,7 +75,10 @@ class EnhancedMonitoringServer:
         self.port = port
         self.app = web.Application()
         self.websockets: Set[weakref.ref] = set()
-        self.activity_store = None  # Will be initialized with SQLite
+        
+        # Initialize database
+        self.db = None
+        self.db_path = os.getenv('MONITORING_DB_PATH', 'monitoring.db')
         
         # Authentication
         self.master_api_key = os.getenv('MONITORING_API_KEY', self.generate_api_key())
@@ -81,6 +87,9 @@ class EnhancedMonitoringServer:
         
         # Rate limiting (requests per minute)
         self.rate_limit = int(os.getenv('RATE_LIMIT', '100'))
+        
+        # Agent registry
+        self.agent_registry = AgentRegistry(self)
         
         self.setup_routes()
         self.setup_cors()
@@ -129,6 +138,12 @@ class EnhancedMonitoringServer:
         self.app.router.add_post('/api/activities', self.post_activity)
         self.app.router.add_get('/api/activities', self.get_activities)
         self.app.router.add_get('/api/agents', self.get_agents)
+        
+        # Agent registration endpoints
+        self.app.router.add_post('/api/agents/register', self.register_agent)
+        self.app.router.add_delete('/api/agents/{agent_id}', self.unregister_agent)
+        self.app.router.add_post('/api/agents/{agent_id}/heartbeat', self.agent_heartbeat)
+        self.app.router.add_get('/api/agents/{agent_id}', self.get_agent)
         
         # Admin endpoints
         self.app.router.add_post('/api/admin/api-keys', self.create_api_key)
@@ -243,19 +258,22 @@ class EnhancedMonitoringServer:
         activity.update({
             'stored_at': datetime.utcnow().isoformat(),
             'server_version': '1.0.0',
-            'id': secrets.token_urlsafe(8)
+            'id': activity.get('id', secrets.token_urlsafe(8))
         })
         
-        # TODO: Store in SQLite database
-        # For now, use in-memory store
-        if not hasattr(self, '_activities'):
-            self._activities = []
-        
-        self._activities.append(activity)
-        
-        # Keep only last 1000 in memory
-        if len(self._activities) > 1000:
-            self._activities = self._activities[-1000:]
+        # Store in database if available
+        if self.db:
+            await self.db.store_activity(activity)
+        else:
+            # Fallback to in-memory store
+            if not hasattr(self, '_activities'):
+                self._activities = []
+            
+            self._activities.append(activity)
+            
+            # Keep only last 1000 in memory
+            if len(self._activities) > 1000:
+                self._activities = self._activities[-1000:]
         
         return activity
     
@@ -355,25 +373,31 @@ class EnhancedMonitoringServer:
     
     @require_auth
     async def get_agents(self, request):
-        """Get active agents."""
-        # Extract unique agents from activities
-        activities = getattr(self, '_activities', [])
-        agents = {}
-        
-        for activity in activities:
-            agent_id = activity.get('agent_id')
-            if agent_id:
-                agents[agent_id] = {
-                    'id': agent_id,
-                    'name': activity.get('agent_name', 'Unknown'),
-                    'last_seen': activity.get('stored_at'),
-                    'status': activity.get('status', 'unknown')
-                }
-        
-        return web.json_response({
-            'agents': list(agents.values()),
-            'count': len(agents)
-        })
+        """Get registered agents."""
+        try:
+            # Get status filter if provided
+            status_filter = request.query.get('status')
+            agent_type = request.query.get('type')
+            capability = request.query.get('capability')
+            
+            # Get agents from registry
+            if agent_type:
+                agents = self.agent_registry.get_agents_by_type(agent_type)
+            elif capability:
+                agents = self.agent_registry.get_agents_by_capability(capability)
+            else:
+                agents = self.agent_registry.get_agents(status_filter)
+            
+            return web.json_response({
+                'agents': agents,
+                'count': len(agents),
+                'total_registered': len(self.agent_registry.agents)
+            })
+            
+        except Exception as e:
+            return web.json_response({
+                'error': str(e)
+            }, status=500)
     
     @require_auth
     async def create_api_key(self, request):
@@ -431,12 +455,145 @@ class EnhancedMonitoringServer:
             'count': len(keys_info)
         })
     
+    # Agent Registration Endpoints
+    @require_auth
+    async def register_agent(self, request):
+        """Register a new agent with the monitoring server."""
+        try:
+            data = await request.json()
+            result = await self.agent_registry.register_agent(data)
+            
+            if result['success']:
+                return web.json_response(result, status=200)
+            else:
+                return web.json_response(result, status=400)
+                
+        except Exception as e:
+            return web.json_response({
+                'success': False,
+                'error': str(e),
+                'message': 'Agent registration failed'
+            }, status=500)
+    
+    @require_auth
+    async def unregister_agent(self, request):
+        """Unregister an agent."""
+        try:
+            agent_id = request.match_info['agent_id']
+            result = await self.agent_registry.unregister_agent(agent_id)
+            
+            if result['success']:
+                return web.json_response(result, status=200)
+            else:
+                return web.json_response(result, status=404)
+                
+        except Exception as e:
+            return web.json_response({
+                'success': False,
+                'error': str(e),
+                'message': 'Agent unregistration failed'
+            }, status=500)
+    
+    @require_auth
+    async def agent_heartbeat(self, request):
+        """Process agent heartbeat."""
+        try:
+            agent_id = request.match_info['agent_id']
+            data = await request.json()
+            result = await self.agent_registry.heartbeat(agent_id, data)
+            
+            if result['success']:
+                return web.json_response(result, status=200)
+            else:
+                return web.json_response(result, status=400)
+                
+        except Exception as e:
+            return web.json_response({
+                'success': False,
+                'error': str(e),
+                'message': 'Heartbeat processing failed'
+            }, status=500)
+    
+    @require_auth
+    async def get_agent(self, request):
+        """Get specific agent information."""
+        try:
+            agent_id = request.match_info['agent_id']
+            agent = self.agent_registry.get_agent(agent_id)
+            
+            if agent:
+                return web.json_response({
+                    'success': True,
+                    'agent': agent
+                })
+            else:
+                return web.json_response({
+                    'success': False,
+                    'error': 'Agent not found'
+                }, status=404)
+                
+        except Exception as e:
+            return web.json_response({
+                'success': False,
+                'error': str(e)
+            }, status=500)
+    
+    async def broadcast_to_websockets(self, message: Dict[str, Any]):
+        """Broadcast message to all connected WebSocket clients."""
+        await self.broadcast_activity(message)
+    
+    async def initialize(self):
+        """Initialize the server components."""
+        # Initialize database
+        self.db = MonitoringDatabase(self.db_path)
+        await self.db.initialize()
+        
+        # Add agent_registrations table to database
+        await self.db.db.executescript("""
+            CREATE TABLE IF NOT EXISTS agent_registrations (
+                agent_id TEXT PRIMARY KEY,
+                name TEXT,
+                agent_type TEXT,
+                capabilities TEXT,
+                endpoint TEXT,
+                status TEXT,
+                registered_at TIMESTAMP,
+                last_heartbeat TIMESTAMP,
+                metadata TEXT
+            );
+            
+            CREATE INDEX IF NOT EXISTS idx_agent_registrations_status 
+            ON agent_registrations(status);
+            CREATE INDEX IF NOT EXISTS idx_agent_registrations_type 
+            ON agent_registrations(agent_type);
+        """)
+        await self.db.db.commit()
+        
+        print("✅ Database initialized")
+    
+    async def start_server(self):
+        """Start the server with initialization."""
+        await self.initialize()
+        runner = web.AppRunner(self.app)
+        await runner.setup()
+        site = web.TCPSite(runner, '0.0.0.0', self.port)
+        await site.start()
+        print(f"✅ Server running on http://0.0.0.0:{self.port}")
+        
+        # Keep running
+        try:
+            await asyncio.Event().wait()
+        except KeyboardInterrupt:
+            print("Shutting down...")
+            await runner.cleanup()
+    
     def run(self):
         """Start the enhanced server."""
         print(f"🚀 Enhanced Monitoring Server starting on port {self.port}")
         print(f"🔑 Master API Key: {self.master_api_key}")
         print(f"📊 Rate limit: {self.rate_limit} requests/minute")
-        web.run_app(self.app, host='0.0.0.0', port=self.port)
+        
+        asyncio.run(self.start_server())
 
 
 if __name__ == '__main__':
