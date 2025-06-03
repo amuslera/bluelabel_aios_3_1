@@ -1,0 +1,68 @@
+# Local LLM Model Recommendations for AIOSv3.1
+# Hardware: M4 Pro MacBook Pro with 24GB RAM
+
+recommended_models:
+  code_generation:
+    primary:
+      name: "deepseek-coder-v2:16b"
+      size: "9GB"
+      context: "16k tokens"
+      strengths: "Excellent at code generation, bug fixing"
+      command: "ollama pull deepseek-coder-v2:16b"
+    
+    alternative:
+      name: "codellama:13b"
+      size: "7.4GB"
+      context: "4k tokens"
+      strengths: "Fast, good for smaller tasks"
+      command: "ollama pull codellama:13b"
+    
+    lightweight:
+      name: "qwen2.5-coder:7b"
+      size: "4.5GB"
+      context: "32k tokens"
+      strengths: "Very fast, huge context window"
+      command: "ollama pull qwen2.5-coder:7b"
+
+  general_purpose:
+    installed:
+      name: "mistral:latest"
+      size: "4.1GB"
+      context: "8k tokens"
+      strengths: "Good general purpose, already installed"
+    
+    recommended:
+      name: "llama3.1:8b"
+      size: "4.7GB"
+      context: "128k tokens"
+      strengths: "Excellent reasoning, huge context"
+      command: "ollama pull llama3.1:8b"
+
+usage_strategy:
+  development:
+    - Use qwen2.5-coder:7b for quick iterations
+    - Use deepseek-coder-v2:16b for complex code generation
+    - Keep mistral as fallback
+  
+  agent_mapping:
+    marcus_backend: "deepseek-coder-v2:16b"  # Best for API/database work
+    emily_frontend: "qwen2.5-coder:7b"       # Fast UI iterations
+    alex_qa: "codellama:13b"                 # Good at test generation
+    jordan_devops: "mistral:latest"          # Config files and scripts
+
+deployment_options:
+  local_development:
+    host: "localhost"
+    port: 11434
+    models: ["qwen2.5-coder:7b", "mistral:latest"]
+  
+  mac_mini_server:
+    host: "mac-mini.local"  # or IP address
+    port: 11434
+    models: ["deepseek-coder-v2:16b", "codellama:13b", "llama3.1:8b"]
+    setup: |
+      # On Mac Mini:
+      OLLAMA_HOST=0.0.0.0:11434 ollama serve
+      
+      # On MacBook Pro:
+      export OLLAMA_HOST=mac-mini.local:11434

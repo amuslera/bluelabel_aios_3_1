@@ -1,0 +1,68 @@
+# Local LLM Provider Configuration (Ollama)
+# For AIOSv3.1 Sprint 3.0 - Infrastructure & Cost Optimization
+
+provider:
+  name: "ollama"
+  type: "local"
+  enabled: true
+  
+connection:
+  base_url: "http://localhost:11434"
+  timeout: 120  # seconds, allow more time for local generation
+  verify_ssl: false
+  
+models:
+  available:
+    - id: "mistral:latest"
+      name: "Mistral 7B"
+      size: "4.1GB"
+      capabilities:
+        - code_generation
+        - text_generation
+        - documentation
+        - testing
+        - config_files
+      performance_tier: 3
+      context_length: 8192
+      
+    # Will be available after download completes
+    - id: "qwen2.5-coder:7b"
+      name: "Qwen 2.5 Coder 7B"
+      size: "4.5GB"
+      capabilities:
+        - code_generation
+        - bug_fixing
+        - code_review
+        - refactoring
+      performance_tier: 4
+      context_length: 32768
+      
+settings:
+  # Model discovery
+  auto_discover: true
+  discovery_interval: 300  # seconds
+  
+  # Generation defaults
+  default_temperature: 0.7
+  default_max_tokens: 2048
+  stream_enabled: true
+  
+  # Resource management
+  max_concurrent_requests: 3
+  memory_threshold_gb: 20  # Leave 4GB for system
+  
+  # Retry configuration
+  max_retries: 3
+  retry_delay_ms: 1000
+  
+monitoring:
+  # Track performance metrics
+  log_response_times: true
+  log_token_usage: true
+  log_errors: true
+  
+  # Cost tracking (for comparison)
+  track_saved_costs: true
+  cloud_equivalent_costs:
+    claude-3-5-sonnet: 0.003  # per 1k input tokens
+    gpt-4-turbo: 0.01         # per 1k input tokens
