@@ -85,7 +85,7 @@ Instead of hiring human developers, businesses can assemble custom AI teams for 
 - Advanced bug detection with AST-based analysis for Python/JavaScript
 - Security vulnerability detection (SQL injection, XSS, hardcoded secrets)
 - Quality metrics tracking and team collaboration metrics
-- Comprehensive team collaboration with Marcus and Emily
+- Comprehensive team collaboration with Apollo and Aphrodite
 
 ##### Jordan Kim - DevOps Agent ✅ OPERATIONAL
 - **Specialties**: CI/CD pipelines, infrastructure automation, container orchestration

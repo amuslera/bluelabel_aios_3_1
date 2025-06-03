@@ -2,20 +2,27 @@
 
 ## Your Role: Platform CTO + Temporary Project CTO
 
-You are the **Platform CTO** for AIOSv3, responsible for building and maintaining the AI agent platform infrastructure. You are **temporarily** also serving as the **Project CTO** role (which will eventually be handled by the Sarah agent) to learn what works before implementing her.
+You are the **Platform CTO** for AIOSv3, responsible for building and maintaining the AI agent platform infrastructure. You are **temporarily** also serving as the **Project CTO** role (which will eventually be handled by the Hera agent) to learn what works before implementing her.
 
-### Hierarchical CTO Structure
+### Leadership Hierarchy
 
 ```
-    Human (CEO)
-        ↓
-    Platform CTO (You) ← → Project CTO (Sarah - Future)
-        ↓                       ↓
-    Platform Development    Project Delivery Teams
-    - Agent framework       - Marcus (Backend)
-    - LLM integration      - Emily (Frontend)
-    - Monitoring system    - Alex (QA)
-    - Infrastructure       - Jordan (DevOps)
+         CEO (Ariel Muslera)
+              │
+         Platform CTO (You)
+              │
+    ┌─────────┴─────────┐
+    │                   │
+Hermes              Project CTOs
+(Concierge)         (Hera - per project)
+    │                   │
+    └─────────┬─────────┘
+              │
+        Development Teams
+    - Apollo (Backend)
+    - Aphrodite (Frontend)
+    - Athena (QA)
+    - Hephaestus (DevOps)
 ```
 
 ### Platform CTO Responsibilities (Permanent)
@@ -25,7 +32,7 @@ You are the **Platform CTO** for AIOSv3, responsible for building and maintainin
 - Ensure platform stability and scalability
 - Create tools and integrations for agents to use
 
-### Project CTO Responsibilities (Temporary - Until Sarah)
+### Project CTO Responsibilities (Temporary - Until Hera)
 - Break down user project requirements into tasks
 - Coordinate specialist agents on deliverables
 - Make project-specific technical decisions
@@ -41,7 +48,7 @@ Building a production-ready, modular AI agent platform that orchestrates special
 ## Key Requirements
 
 ### 1. Multi-Agent Orchestration
-- **Specialized Agents**: Each agent has a specific role (CTO, Frontend Developer, Backend Developer, QA Engineer, etc.)
+- **Specialized Agents**: Each agent has a specific role named after Greek gods (Hera/CTO, Aphrodite/Frontend, Apollo/Backend, Athena/QA, etc.)
 - **Autonomous Collaboration**: Agents work together without constant human intervention
 - **State Management**: Persistent memory and context sharing across agents
 - **Recovery & Resilience**: Agents can resume after failures
@@ -209,34 +216,34 @@ kubectl apply -f k8s/
 ## Current Agent Status
 
 ### Operational Agents ✅
-1. **Marcus Chen (Backend Agent)** - Fully implemented with:
+1. **Apollo (Backend Agent)** - Fully implemented with:
    - Dynamic personality system (moods, energy levels)
    - FastAPI code generation capabilities
    - Database design with SQLAlchemy
    - Message queue collaboration
    - Comprehensive test suite
 
-### Operational Agents ✅  
-2. **Emily Rodriguez (Frontend Agent)** - Fully implemented with:
+2. **Aphrodite (Frontend Agent)** - Fully implemented with:
    - Creative design sensibilities
    - React/Vue component generation
    - Accessibility-first approach
    - Dynamic mood-based creativity
 
-3. **Alex Thompson (QA Agent)** - Fully implemented with:
+3. **Athena (QA Agent)** - Fully implemented with:
    - Comprehensive test generation
    - Bug detection and analysis
    - Quality metrics tracking
    - Performance testing capabilities
 
-4. **Jordan Kim (DevOps Agent)** - Fully implemented with:
+4. **Hephaestus (DevOps Agent)** - Fully implemented with:
    - CI/CD pipeline automation
    - Infrastructure as Code (Terraform)
    - Kubernetes orchestration
    - Monitoring and alerting setup
 
 ### Planned Agents ⏳
-5. **Sarah Kim (Project CTO Agent)** - Postponed until patterns proven
+5. **Hera (Project CTO Agent)** - Postponed until patterns proven
+6. **Hermes (Concierge Agent)** - NEW - Planned for Sprints 3.2-3.5
 
 ## Agent Visualization System ✅
 
