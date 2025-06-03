@@ -1,0 +1,220 @@
+/* Theatrical Dashboard CSS - v3.0 Style */
+
+/* Main app styling */
+TheatricalDashboard {
+    background: black;
+}
+
+/* Agent widgets */
+.agent-widget {
+    border: round cyan;
+    height: 22;
+    width: 1fr;
+    margin: 1;
+    padding: 1;
+    background: rgb(20,20,20);
+}
+
+.agent-content {
+    height: 100%;
+    layout: horizontal;
+}
+
+.agent-activity {
+    width: 65%;
+    padding-right: 1;
+    border-right: vkey white 20%;
+}
+
+.agent-metrics {
+    width: 35%;
+    padding-left: 1;
+}
+
+.agent-name {
+    text-style: bold;
+    color: ansi_bright_cyan;
+    margin-bottom: 1;
+}
+
+.agent-status {
+    color: white 50%;
+    margin-bottom: 1;
+}
+
+.activity-log {
+    height: 13;
+    border: round white 20%;
+    padding: 0 1;
+    margin-top: 1;
+    background: black;
+    overflow-y: scroll;
+}
+
+.activity-item {
+    color: white;
+    padding: 0;
+    height: 1;
+}
+
+.metrics-header {
+    text-style: bold;
+    color: yellow;
+    margin-bottom: 1;
+}
+
+.progress-label {
+    margin-top: 1;
+    color: white 50%;
+}
+
+.agent-progress {
+    margin-top: 1;
+    color: green;
+    background: white 20%;
+}
+
+/* Event log styling */
+.event-log-scroll {
+    height: 100%;
+    border: round white 20%;
+    padding: 1;
+    background: black;
+    overflow-y: scroll;
+}
+
+.log-init {
+    color: blue;
+}
+
+.log-phase {
+    text-style: bold;
+    color: ansi_bright_magenta;
+    text-align: center;
+    margin: 1 0;
+}
+
+.log-think {
+    color: yellow;
+}
+
+.log-work {
+    color: ansi_bright_cyan;
+}
+
+.log-success {
+    color: green;
+}
+
+.log-error {
+    color: red;
+}
+
+.log-project {
+    text-style: bold;
+    color: ansi_bright_yellow;
+    text-align: center;
+}
+
+/* System panel */
+.system-panel {
+    background: rgb(15,15,15);
+    border: round yellow;
+}
+
+.system-header {
+    text-style: bold;
+    color: ansi_bright_yellow;
+    margin-bottom: 1;
+    text-align: center;
+}
+
+/* Config tab */
+#config-container {
+    padding: 2;
+    align: center middle;
+    height: 100%;
+}
+
+.config-header {
+    text-style: bold;
+    color: magenta;
+    margin-bottom: 2;
+}
+
+#config-container Label {
+    margin: 1 0;
+}
+
+#config-container Button {
+    margin: 2 1;
+    width: 30;
+}
+
+/* Layout adjustments */
+.agent-row {
+    height: 50%;
+    layout: horizontal;
+}
+
+#agents-container {
+    height: 100%;
+    padding: 1;
+}
+
+/* Tab styling */
+TabbedContent {
+    height: 100%;
+}
+
+TabPane {
+    padding: 1;
+}
+
+/* Header and footer */
+Header {
+    background: rgb(0,50,100);
+}
+
+Footer {
+    background: rgb(20,20,20);
+}
+
+/* Scrollbar styling */
+ScrollBar {
+    background: white 20%;
+    color: cyan;
+    width: 1;
+}
+
+/* Button variants */
+Button {
+    width: auto;
+    min-width: 16;
+}
+
+Button.primary {
+    background: cyan;
+    color: black;
+}
+
+Button.primary:hover {
+    background: ansi_bright_cyan;
+}
+
+Button.warning {
+    background: yellow;
+    color: black;
+}
+
+Button.warning:hover {
+    background: ansi_bright_yellow;
+}
+
+/* Note: Textual doesn't support @media queries
+   Adjust these values manually for smaller terminals */
+
+/* For smaller terminals, you can modify:
+   .agent-widget { height: 18; }
+   .activity-log { height: 10; }
+*/

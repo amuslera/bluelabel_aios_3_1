@@ -1,0 +1,11 @@
+{
+  "duration": "0:00:52",
+  "metrics": {
+    "tasks_completed": 20,
+    "total_cost": 0.018000000000000002,
+    "lines_of_code": 3525,
+    "test_coverage": 96,
+    "files_created": 36
+  },
+  "events": []
+}
