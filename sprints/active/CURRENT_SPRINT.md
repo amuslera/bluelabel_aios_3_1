@@ -1,10 +1,11 @@
-# Current Sprint: Phase 3 Planning & Visualization Enhancement
+# Current Sprint: 3.0 - Infrastructure & Cost Optimization
 
-**Sprint Goal**: Complete Phase 2 documentation and plan Phase 3 production hardening
+**Sprint Goal**: Set up local LLM infrastructure for 95%+ cost reduction in development/testing
 
-**Sprint Duration**: 1-2 sessions  
+**Sprint Duration**: June 3-5, 2025 (2 days)  
 **Priority**: High  
-**Phase**: Phase 2 Complete → Phase 3 Planning
+**Phase**: Phase 3 - Production Hardening  
+**Sprint Plan**: See SPRINT_3.0_PLAN.md
 
 ## Phase 2 Completion Status ✅
 
@@ -21,25 +22,37 @@ All Phase 2 objectives achieved across 6 sprints:
 
 ## Current Sprint Objectives
 
-### Primary Tasks
-1. **Phase 2 Documentation & Git Management** 
-   - [x] Complete Phase 2 summary documentation
-   - [x] Update CLAUDE.md with visualization system details
-   - [x] Create comprehensive PHASE_2_COMPLETE.md
-   - [ ] Git commit with proper tag for Phase 2 completion
-   - [ ] Update sprint timeline and status files
+### Sprint 3.0 Tasks
+1. **Local LLM Infrastructure Setup** (T1)
+   - [ ] Install Ollama on macOS
+   - [ ] Verify system requirements
+   - [ ] Configure for optimal performance
+   - [ ] Test basic connectivity
 
-2. **Visualization Enhancement** ✅
-   - [x] Implement scrollable chat history implementation
-   - [x] Design and build interactive session menu system  
-   - [x] Create comprehensive enhancement features
-   - [x] Test all enhanced visualization capabilities
+2. **Model Selection and Download** (T2)
+   - [ ] Research code-optimized models
+   - [ ] Download Code Llama or DeepSeek Coder
+   - [ ] Benchmark model performance
+   - [ ] Document resource usage
 
-3. **Phase 3 Strategic Planning**
-   - [ ] Define Phase 3 objectives and scope
-   - [ ] Plan production hardening approach
-   - [ ] Security and scalability assessment
-   - [ ] Set Phase 3 sprint roadmap
+3. **LLM Router Configuration** (T3)
+   - [ ] Update llm_routing.yaml
+   - [ ] Implement local provider
+   - [ ] Configure hybrid routing rules
+   - [ ] Test failover scenarios
+
+4. **Agent Integration Testing** (T4)
+   - [ ] Test Marcus (Backend) with local LLM
+   - [ ] Test Emily (Frontend) with local LLM
+   - [ ] Test Alex (QA) with local LLM
+   - [ ] Test Jordan (DevOps) with local LLM
+   - [ ] Run demo_final.py end-to-end
+
+5. **Performance Analysis** (T5)
+   - [ ] Measure response times
+   - [ ] Calculate cost savings
+   - [ ] Document quality differences
+   - [ ] Create comparison report
 
 ## Current Status
 

@@ -1,13 +1,24 @@
 # 🔄 Claude Code Handoff Documentation
 
-**Date**: December 2, 2024 - Phase 2 Complete  
-**Time**: All Phase 2 Sprints Complete + Ready for Phase 3  
+**Date**: June 3, 2025  
+**Phase**: Starting Phase 3 - Production Hardening  
 **Project**: AIOSv3.1 - Modular AI Agent Platform  
-**Status**: Phase 2 COMPLETE - 4 OPERATIONAL AGENTS ✅ + Real LLM Integration Tested
+**Status**: Phase 2 COMPLETE ✅ | Sprint 3.0 Active (Local LLM Setup)
+
+## 📍 IMPORTANT: Where to Find Current Information
+
+Per DEVELOPMENT_PROCESS.md, always check these **Single Sources of Truth**:
+1. **Current State**: `/PROJECT_CONTEXT.md` - Project vision, progress, architecture
+2. **Active Sprint**: `/sprints/active/CURRENT_SPRINT.md` - What we're working on now
+3. **Agent Info**: `/AGENT_ROSTER.md` - Agent definitions and capabilities
+4. **Process**: `/DEVELOPMENT_PROCESS.md` - How we work
+5. **Core Instructions**: `/CLAUDE.md` - Your role and responsibilities
+
+**Note**: Information below may be outdated. Always verify with the documents above.
 
 ## 🎯 Who You Are
 
-You are the **Platform CTO** for AIOSv3.1, working directly with the CEO (the user). You are also **temporarily** serving as the **Project CTO** role until the Sarah agent is implemented. This is a continuation from a previous Claude Code session that has successfully completed Sprint 2.3 (Frontend Agent) and Sprint 2.2.1 (Marcus Integration Fixes).
+You are the **Platform CTO** for AIOSv3.1, working directly with the CEO (the user). You are also **temporarily** serving as the **Project CTO** role until the Sarah agent is implemented.
 
 **Your dual role**:
 
