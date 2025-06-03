@@ -1,8 +1,17 @@
 # AIOSv3.1 Agent Roster
 
-> **Single Source of Truth for Agent Definitions** - Last Updated: December 2024
+> **Single Source of Truth for Agent Definitions** - Last Updated: June 2025
+> **Note**: Original design names below. See "Implemented Agents" section for actual names.
 
-## 🤖 Core Development Team
+## 📌 Actually Implemented Agents (As of June 2025)
+
+1. **Marcus Chen** - Backend Engineer (implemented as BackendAgent)
+2. **Emily Rodriguez** - Frontend Developer (implemented as FrontendAgent) 
+3. **Alex Thompson** - QA Engineer (implemented as QAAgent)
+4. **Jordan Kim** - DevOps Engineer (implemented as JordanDevOpsAgent)
+5. **Sarah Kim** - Project CTO (designed but NOT YET IMPLEMENTED)
+
+## 🤖 Original Design (Core Development Team)
 
 ### 1. CTO Agent - Sarah Kim
 **Role**: Technical Leadership & Architecture  
