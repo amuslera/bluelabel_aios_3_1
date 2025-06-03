@@ -12,12 +12,13 @@ from datetime import datetime
 from typing import Dict, List, Any, Optional, Tuple
 from dataclasses import dataclass, field
 
-from src.agents.base.agent import Agent
-from src.agents.base.enhanced_agent import EnhancedAgent
-from src.agents.base.types import AgentConfig, TaskResult, TaskStatus
+from src.agents.base.agent import BaseAgent
+from src.agents.base.enhanced_agent import EnhancedBaseAgent
+from src.agents.base.types import AgentConfig
+from src.agents.base.agent import TaskResult
 from src.agents.collaborative_agent import CollaborativeAgent
 from src.core.messaging.queue import MessageQueue
-from src.core.routing.router import RoutingSystem
+from src.core.routing.router import LLMRouter
 from src.agents.specialists.devops_personality import DevOpsPersonality
 
 
@@ -47,7 +48,7 @@ class JordanDevOpsAgent(CollaborativeAgent):
     def __init__(
         self,
         message_queue: Optional[MessageQueue] = None,
-        routing_system: Optional[RoutingSystem] = None
+        routing_system: Optional[LLMRouter] = None
     ):
         # Initialize with Jordan's specific configuration
         config = AgentConfig(
