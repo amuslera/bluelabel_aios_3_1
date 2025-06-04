@@ -163,10 +163,11 @@ Building a production-ready, modular AI agent platform that orchestrates special
 - ✅ Conversational onboarding with Hermes
 - ✅ Intent detection and session export
 
-### Current Sprint: 3.3 - Multi-Agent Handoff
-- Connect Hermes to specialist agents
-- Build orchestration workflows
-- Enable conversation → development pipeline
+### Current Sprint: 3.3 - Hermes LLM Integration
+- Connect Hermes to real LLMs (Ollama, Claude, OpenAI)
+- Smart routing for cost optimization (<$0.01/conversation)
+- Fix "canned response" issue discovered in testing
+- Enable natural, context-aware conversations
 
 📋 **Full Timeline**: See `/sprints/SPRINT_TIMELINE.md`
 

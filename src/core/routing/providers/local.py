@@ -431,7 +431,23 @@ class LocalProvider(LLMProvider):
             response = await self.client.post(self.api_paths["chat"], json=payload)
 
         response.raise_for_status()
-        response_data = response.json()
+        
+        # Handle streaming response from Ollama
+        if self.config.provider_type == "ollama":
+            # Read all chunks from streaming response
+            full_content = ""
+            response_text = response.text
+            for line in response_text.strip().split('\n'):
+                if line:
+                    try:
+                        chunk_data = json.loads(line)
+                        if 'message' in chunk_data and 'content' in chunk_data['message']:
+                            full_content += chunk_data['message']['content']
+                    except json.JSONDecodeError:
+                        continue
+            response_data = {"message": {"content": full_content}}
+        else:
+            response_data = response.json()
 
         response_time = (time.time() - start_time) * 1000
 
