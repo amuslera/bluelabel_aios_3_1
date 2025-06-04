@@ -1,6 +1,6 @@
 # AIOSv3.1 Project Context
 
-> **Single Source of Truth** - Last Updated: June 3, 2025 - Demo System Ready
+> **Single Source of Truth** - Last Updated: June 3, 2025 - Critical Architecture Review Complete
 
 ## 🎯 What is AIOSv3.1?
 
@@ -35,16 +35,27 @@ Instead of hiring human developers, businesses can assemble custom AI teams for 
 2. **Secondary**: Enterprises for rapid prototyping
 3. **Tertiary**: Developers wanting AI assistance
 
-## 📊 Current State (Phase 2 COMPLETE - Ready for Phase 3)
+## 📊 Current State (Phase 3.4 COMPLETE - Critical Infrastructure Gaps Identified)
 
-### ✅ What's Built & Operational
+### ⚠️ Critical Architecture Findings (June 3, 2025)
 
-#### 1. **Platform Infrastructure (Complete)**
-- **LLM Integration**: Multi-provider routing (Claude, OpenAI, Ollama) with 88% cost reduction
-- **Message Queue System**: RabbitMQ-based agent communication with Python 3.9 compatibility
-- **Monitoring & Control**: Real-time agent status dashboard with WebSocket updates
-- **Agent Registry**: Auto-registration and discovery system
-- **Testing Framework**: Comprehensive test suites with full Python 3.9 compatibility
+**IMPORTANT**: Architecture review revealed system is ~40% production-ready with critical infrastructure gaps:
+- **Memory System**: 95% missing - only MockMemoryManager exists (no Redis/Qdrant)
+- **Message Infrastructure**: 90% missing - RabbitMQ code exists but not deployed
+- **LLM Integration**: 85% missing - all providers return mocks
+- **Storage Layer**: 100% missing - no database connections
+- **Security**: 100% missing - no authentication or authorization
+
+**Impact**: Agents have "goldfish memory" (6-message context), cannot communicate, and have no real LLM intelligence.
+
+### ✅ What's Actually Built & Working
+
+#### 1. **Agent Logic & Frameworks (90% Complete)**
+- **Agent Base Classes**: Sophisticated lifecycle management and personality systems
+- **Specialist Implementations**: All 5 agents fully coded with domain expertise
+- **Orchestration Logic**: Task assignment and workflow management algorithms
+- **Visualization System**: Rich terminal UI for monitoring agent collaboration
+- **Testing Framework**: Comprehensive test suites (but testing mocked systems)
 
 #### 2. **Operational AI Agents (4/5 Complete) - Full Development Team Ready**
 
@@ -135,7 +146,35 @@ Instead of hiring human developers, businesses can assemble custom AI teams for 
 - **Documentation**: Complete demo guide and simplified launcher
 - **Ready for**: Recording, presentations, and client demonstrations
 
-### 🔄 What's Next - Phase 3 Planning
+### 🧪 Simple Agents Experiment (NEW - June 3, 2025)
+
+Created `/experiments/simple_agents/` to test simplified architecture:
+- **File-based messaging** instead of RabbitMQ
+- **JSON state files** instead of Redis
+- **Direct LLM calls** instead of complex routing
+- **Proven**: Apollo → Aphrodite collaboration works
+- **Result**: Multi-agent collaboration successful without infrastructure
+
+This experiment validates that agent patterns work with minimal complexity.
+
+### 🎯 Strategic Direction & Decision Point
+
+**CEO Directive**: "STOP focusing on production readiness" - PLAN FIRST, EXECUTE LATER
+- Use agents as "very junior developers" to identify issues
+- Consider Claude Code instances as agents for testing
+- All agent code must use development branches with PR reviews
+
+**Three Paths Forward**:
+1. **Simple Experiment Path** (Recommended) - Evolve file-based system (1-2 weeks to MVP)
+2. **Fix Infrastructure Path** - Implement full architecture (2-3 months to MVP)
+3. **Claude Code as Agents** - Use Claude instances for testing (3-5 days, $100-200/day)
+
+**Recommended**: Hybrid Progressive Approach
+- Phase 1: Production-ize simple experiment (2 weeks)
+- Phase 2: Add infrastructure gradually (4 weeks)
+- Phase 3: Scale when customer demand requires it
+
+### 🔄 What's Next - Post Sprint 3.4
 
 #### Phase 3: Production Hardening & Commercial Deployment
 - Multi-agent collaboration testing with real projects

@@ -1,0 +1,21 @@
+{
+  "type": "handoff",
+  "from_agent": "Apollo",
+  "to_agent": "Aphrodite",
+  "conversation_state": [],
+  "context": {
+    "reason": "Task requires frontend implementation",
+    "backend_status": "Ready to integrate with frontend",
+    "api_endpoints": [
+      "GET /api/data",
+      "POST /api/data"
+    ],
+    "original_task": {
+      "id": "task_001",
+      "type": "implement_logic",
+      "description": "Create dashboard with user interface",
+      "service_name": "Dashboard"
+    }
+  },
+  "timestamp": "2025-06-03T22:53:34.523246"
+}
